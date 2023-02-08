@@ -18,7 +18,7 @@ const NavbarItem = forwardRef(
     const classes = classNames(
       `navbar-item ${
         activeNewItem && 'nav-tab'
-      }  relative flex items-center h-10  xl:h-20 cursor-pointer text-[#ffffffbf] text-sm uppercase mr-10 hover:text-primary`,
+      }  relative flex items-center h-10 xl:h-20 cursor-pointer text-[#ffffffbf] text-md mr-10 hover:text-primary`,
       {
         [className]: className,
       }

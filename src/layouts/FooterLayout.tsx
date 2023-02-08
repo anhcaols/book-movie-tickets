@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 
 function Footer() {
   return (
-    <footer className={cx('footer content-head relative bg-bgd')}>
+    <footer className={cx('content-head', 'relative bg-bgd')}>
       <div className="container flex flex-row flex-wrap content-center items-center mx-auto pl-[15px] pr-[15px]">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] xl:gap-[30px] my-[40px] xl:my-[70px]">
           <div className="download">

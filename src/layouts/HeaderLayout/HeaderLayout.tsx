@@ -9,9 +9,9 @@ import Subnav from '@components/shared/Navbar/Subnav/Subnav';
 import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
 import Button from '@components/shared/Button/Button';
 import Image from '@components/shared/images/Image';
-import styles from './header-layout.module.scss';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
+import styles from './header-layout.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +21,7 @@ function Header() {
   const [iconSearch, setIconSearch] = useState(false);
   const [toggleBtn, setToggleBtn] = useState(false);
   const { pathname } = useRouter();
-
+  console.log(styles);
   //handle Events
   const handleShowSearch = () => {
     setIconSearch(!iconSearch);
@@ -36,15 +36,13 @@ function Header() {
     setToggleBtn(!toggleBtn);
   };
   return (
-    <header className={cx('header-wrapper fixed top-0 right-0 left-0 z-50 bg-bgd')}>
-      <div className={cx('header-top bg-bgd')}>
+    <header className={cx('header-wrapper', 'fixed top-0 right-0 left-0 z-50 bg-bgd')}>
+      <div className={cx('header-top', 'bg-bgd')}>
         <div className="container h-[70px] md:h-20 flex flex-row items-center mx-auto pl-[15px] pr-[15px] ">
           {/* Logo */}
           <Link
             onClick={handleCloseSearch}
-            className={cx(
-              'logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] hover:bg-bgd'
-            )}
+            className="logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] hover:bg-bgd"
             href={'/'}
           >
             <Image
@@ -54,28 +52,33 @@ function Header() {
             />
           </Link>
           {/* Navbar */}
-          <div className={cx(`navbar-header ${toggleBtn ? 'active' : ''}`)}>
+          <div className={cx('navbar-header ', `${toggleBtn ? 'active' : ''}`)}>
             <div onClick={handleToggle} className={cx(`overlay ${toggleBtn ? 'active' : ''}`)}></div>
             <Navbar className="ml-[40px]">
               <NavbarItem
                 onClick={handleCloseSearch}
-                title="HOME"
+                title="Trang chủ"
                 className={cx(pathname === '/' ? 'text-primary' : '')}
+                href={'/'}
+              />
+              <NavbarItem
+                onClick={handleCloseSearch}
+                title="Lịch chiếu"
+                className={cx(pathname === '/showtimes' ? 'text-primary' : '')}
                 href={'/'}
               />
               <div>
                 <Tippy
                   interactive
                   delay={[200, 500]}
-                  trigger="click"
                   render={(attrs: any) => (
                     <PopperWrapper>
                       <div className="" tabIndex="-1" {...attrs}>
                         <Subnav>
-                          <SubnavItem title="Actor" href={'/'} />
-                          <SubnavItem title="Movie genre" href={'/'} />
-                          <SubnavItem title="Director" href={'/'} />
-                          <SubnavItem title="Movie Blog" href={'/'} />
+                          <SubnavItem title="Thể loại phim" href={'/'} />
+                          <SubnavItem title="Diễn viên" href={'/'} />
+                          <SubnavItem title="Đạo diễn" href={'/'} />
+                          <SubnavItem title="Bình luận phim" href={'/'} />
                         </Subnav>
                       </div>
                     </PopperWrapper>
@@ -83,32 +86,31 @@ function Header() {
                   placement="top-start"
                   offset={[0, 0]}
                 >
-                  <NavbarItem title="Cinema blog" href={'/'} />
+                  <NavbarItem title="Góc điện ảnh" href={'/'} />
                 </Tippy>
               </div>
 
-              <NavbarItem title="Event" href={'/'} />
-              <NavbarItem title="HELP" href={'/'} />
+              <NavbarItem className={cx(pathname === '/event' ? 'text-primary' : '')} title="Sự kiện" href={'/'} />
+              <NavbarItem className={cx(pathname === '/help' ? 'text-primary' : '')} title="Hỗ trợ" href={'/'} />
             </Navbar>
           </div>
           {/* Action */}
           <div className="actions ml-auto flex items-center">
             <Link href={'/'} onClick={handleShowSearch}>
               <SearchIcon
-                className={cx(`${iconSearch && 'fill-[#ff55a5] '} w-[22px] h- fill-text hover:fill-[#ff55a5] `)}
+                className={`${iconSearch && 'fill-[#ff55a5] '} w-[22px] h- fill-text hover:fill-[#ff55a5] `}
               />
             </Link>
             <div>
               <Tippy
                 interactive
-                trigger="click"
                 delay={[200, 500]}
                 render={(attrs: any) => (
                   <PopperWrapper>
                     <div className="" tabIndex="-1" {...attrs}>
                       <Subnav>
-                        <SubnavItem title="English" href={'/'} />
-                        <SubnavItem title="VietNamese" href={'/'} />
+                        <SubnavItem title="Tiếng anh" href={'/'} />
+                        <SubnavItem title="Tiếng việt" href={'/'} />
                       </Subnav>
                     </div>
                   </PopperWrapper>
@@ -117,7 +119,7 @@ function Header() {
                 offset={[0, 0]}
               >
                 <button className="hover:text-primary text-text text-sm h-[70px] md:h-20 ml-[20px] mr-[10px] md:mr-[45px] md:ml-[35px]">
-                  EN
+                  VN
                 </button>
               </Tippy>
             </div>
@@ -149,7 +151,7 @@ function Header() {
             ) : (
               <>
                 <Button className="hidden md:flex " primary large>
-                  SIGN IN
+                  Đăng nhập
                 </Button>
                 <Button
                   className="flex md:hidden w-[40px]"
@@ -162,7 +164,8 @@ function Header() {
             <button
               onClick={handleToggle}
               className={cx(
-                `header-toggle-btn block xl:hidden relative ml-[20px] md:ml-[30px]  ${toggleBtn ? 'active' : ''}`
+                'header-toggle-btn',
+                ` block xl:hidden relative ml-[20px] md:ml-[30px]  ${toggleBtn ? 'active' : ''}`
               )}
             >
               <span></span>

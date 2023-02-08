@@ -1,0 +1,32 @@
+.movie-image::before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(21, 21, 21, 0.92) !important;
+  z-index: 2;
+  opacity: 0;
+  transition: 0.4s ease;
+  border-radius: 4px;
+}
+.movie-image:hover:before {
+  opacity: 1;
+}
+.movie-image:hover .ticket {
+  opacity: 1;
+}
+.ticket {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+}

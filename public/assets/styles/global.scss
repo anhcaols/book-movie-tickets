@@ -45,16 +45,15 @@ button {
   justify-content: center;
   padding: 0 16px;
   border-radius: 4px;
-  + .wrapper-btn {
-    margin-left: 10px;
-  }
+  // + .wrapper-btn {
+  //   margin-left: 10px;
+  // }
 }
 .primary {
   box-shadow: 0 0 20px 0 rgb(255 88 96 / 50%);
   min-width: 40px;
   background-image: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
   opacity: 0.85;
-  text-transform: uppercase;
   &:hover {
     opacity: 1;
   }
@@ -63,9 +62,9 @@ button {
 .outline {
   min-width: 40px;
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #fff;
+  outline: none;
   opacity: 0.85;
-  text-transform: uppercase;
   font-weight: 500;
   &:hover {
     opacity: 1;
@@ -73,7 +72,7 @@ button {
 }
 .large {
   height: 50px;
-  width: 130px;
+  min-width: 130px;
 }
 .large .title {
   font-size: 14px;
@@ -84,4 +83,11 @@ button {
 }
 .small .title {
   font-size: 12px;
+}
+
+.text-color-primary {
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: -webkit-linear-gradient(0deg, #ff55a5, #ff5860);
+  color: #ff5860;
 }
