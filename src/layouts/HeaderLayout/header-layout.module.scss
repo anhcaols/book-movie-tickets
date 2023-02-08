@@ -1,0 +1,122 @@
+.header-wrapper {
+  box-shadow: 0 5px 25px 0 rgb(0 0 0 / 30%);
+}
+
+.header-top {
+  position: relative;
+  z-index: 2;
+}
+
+.navbar-item:hover {
+  .navbar-icon {
+    fill: #ff55a5;
+  }
+}
+
+// responsive
+@media (min-width: 540px) {
+}
+@media (max-width: 719px) {
+  .navbar-header {
+    .navbar {
+      top: 70px !important;
+    }
+  }
+}
+
+// mobile and tablet
+@media (max-width: 1139px) {
+  .header-toggle-btn {
+    display: block;
+    right: 0;
+    width: 24px;
+    height: 40px;
+    opacity: 0.8;
+  }
+  .header-toggle-btn span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 24px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: 0.4s ease;
+    top: 11px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+  .header-toggle-btn span:nth-child(2) {
+    top: 19px;
+  }
+  .header-toggle-btn span:nth-child(3) {
+    top: 27px;
+  }
+
+  .header-toggle-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .header-toggle-btn.active span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 19px;
+  }
+  .header-toggle-btn.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 19px;
+  }
+
+  .navbar-header {
+    .navbar {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: fixed;
+      top: 80px;
+      right: 0;
+      bottom: 0;
+      background-color: #2b2b31;
+      z-index: 99;
+      width: 260px;
+      padding: 20px 30px 0;
+      transform: translate3d(260px, 0, 0);
+      transition: 0.8s ease;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        display: block;
+        background-image: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+        box-shadow: 0 0 20px 0 rgb(255 88 96 / 50%);
+      }
+    }
+  }
+  .navbar-header.active {
+    .navbar {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: red;
+    opacity: 0;
+    background-color: rgba(43, 43, 49, 0.75);
+    display: none;
+    transition: 0.4s ease;
+  }
+  .overlay.active {
+    opacity: 1;
+    display: block;
+  }
+}
+@media (min-width: 1140px) {
+}
