@@ -7,9 +7,10 @@ import Button from '../Button/Button';
 const cx = classNames.bind(styles);
 interface MovieItemProps {
   data?: any;
+  state: string;
 }
 
-function MovieItem({ data }: MovieItemProps) {
+function MovieItem({ data, state }: MovieItemProps) {
   return (
     <div className="px-[10px] xl:px-[15px] mt-[15px] md:mt-[30px] flex flex-col">
       <div className={cx('movie-image', 'relative h-[355px]')}>
@@ -19,18 +20,18 @@ function MovieItem({ data }: MovieItemProps) {
           alt={'img'}
         />
         <div className={cx('ticket', 'flex flex-col justify-center items-center gap-2')}>
-          <Link href={'/movie'}>
-            <p className="text-[#fff] hover:text-primary font-normal text-[15px]">READ MORE</p>
+          <Link href={`/movies/${state}/slug`}>
+            <p className="text-[#fff] hover:text-primary font-normal text-[15px]">CHI TIẾT PHIM</p>
           </Link>
-          <Link href="/booking">
+          <Link href="/book-tickets/slug">
             <Button className="w-[150px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
-              BOOK IT NOW
+              ĐẶT VÉ NGAY
             </Button>
           </Link>
         </div>
       </div>
       <div className="text-[white]">
-        <Link href="/">
+        <Link href={`/movies/${state}/slug`}>
           <h3 className="hover:text-primary text-xl mt-4 mb-1 leading-[30px] overflow-hidden whitespace-nowrap text-ellipsis ">
             Sherlock Holmes
           </h3>

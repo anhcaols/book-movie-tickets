@@ -91,3 +91,17 @@ button {
   background-image: -webkit-linear-gradient(0deg, #ff55a5, #ff5860);
   color: #ff5860;
 }
+
+// underline title
+.underline-title {
+  content: '';
+  position: absolute;
+  top: 42px;
+  left: 13px;
+  right: 0;
+  width: 100px;
+  height: 2px;
+  display: block;
+  background-image: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+  box-shadow: 0 0 20px 0 rgb(255 88 96 / 50%);
+}

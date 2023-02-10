@@ -16,21 +16,9 @@ function SimpleSlider() {
   return (
     <div className="w-full block">
       <Slider {...settings}>
-        <img
-          className="h-[528px]"
-          alt="img"
-          src="https://cdn.galaxycine.vn/media/2023/1/14/chi-chi-em-em-2-3_1673710348053.jpg"
-        />
-        <img
-          className="h-[528px]"
-          alt="img"
-          src="https://cdn.galaxycine.vn/media/2023/1/14/nha-ba-nu-4_1673710602771.jpg"
-        />
-        <img
-          className="h-[528px]"
-          alt="img"
-          src="https://cdn.galaxycine.vn/media/2023/2/8/titanic-5_1675823758136.jpg"
-        />
+        <img alt="img" src="https://cdn.galaxycine.vn/media/2023/1/14/chi-chi-em-em-2-3_1673710348053.jpg" />
+        <img alt="img" src="https://cdn.galaxycine.vn/media/2023/1/14/nha-ba-nu-4_1673710602771.jpg" />
+        <img alt="img" src="https://cdn.galaxycine.vn/media/2023/2/8/titanic-5_1675823758136.jpg" />
       </Slider>
     </div>
   );
