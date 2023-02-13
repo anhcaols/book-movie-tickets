@@ -9,7 +9,7 @@ function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="app">
       <Header />
-      <main className="main mt-[70px] md:mt-20">{children}</main>
+      <main className="main mt-[70px] md:mt-20 bg-bgd">{children}</main>
       <Footer />
     </div>
   );

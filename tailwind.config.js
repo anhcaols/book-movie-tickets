@@ -15,7 +15,7 @@ module.exports = {
     },
     colors: {
       primary: '#ff55a5',
-      text: '#ffffffb3',
+      text: '#ffffffbf',
       bgd: '#2b2b31',
     },
     fontFamily: {

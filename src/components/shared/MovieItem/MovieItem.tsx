@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import Image from '../images/Image';
 import styles from './movie-item.module.scss';
 import classNames from 'classnames/bind';
 import Button from '../Button/Button';
@@ -14,9 +14,9 @@ function MovieItem({ data, state }: MovieItemProps) {
   return (
     <div className="px-[10px] xl:px-[15px] mt-[15px] md:mt-[30px] flex flex-col">
       <div className={cx('movie-image', 'relative h-[355px]')}>
-        <Image
+        <img
           className="block rounded w-full h-full object-cover overflow-hidden"
-          src={'https://image.tmdb.org/t/p/original/wsJkEzktZV83DXlQItsO1ooGGq0.jpg'}
+          src={'/assets/images/nhabanu.jpg'}
           alt={'img'}
         />
         <div className={cx('ticket', 'flex flex-col justify-center items-center gap-2')}>

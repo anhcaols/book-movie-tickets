@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 function Home() {
   return (
-    <div className={cx('main-movie bg-bgd')}>
+    <div>
       <div className="mt-16">
         <SimpleSlider />
       </div>
@@ -18,7 +18,7 @@ function Home() {
           <div className="w-full">
             <div className="flex items-center justify-between w-full pb-4">
               <h2 className="text-3xl text-[#fff] leading-[100%] pl-[10px] relative">
-                Phim đang chiếu <p className="underline-title"></p>
+                Phim đang chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/now-showing">
                 <p className="underline cursor-pointer text-lg text-primary pr-3">Xem thêm</p>
@@ -39,7 +39,7 @@ function Home() {
           <div className={cx('content-head', 'w-full')}>
             <div className="flex items-center justify-between w-full pb-4 mt-16">
               <h2 className="text-3xl text-[#fff] leading-[100%] pl-[10px] relative">
-                Phim sắp chiếu <p className="underline-title"></p>
+                Phim sắp chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/coming-soon">
                 <p className="underline cursor-pointer text-lg text-primary pr-3">Xem thêm</p>

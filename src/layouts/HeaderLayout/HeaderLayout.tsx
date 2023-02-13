@@ -8,7 +8,6 @@ import PopperWrapper from '@components/shared/Popper';
 import Subnav from '@components/shared/Navbar/Subnav/Subnav';
 import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
 import Button from '@components/shared/Button/Button';
-import Image from '@components/shared/images/Image';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';
@@ -45,9 +44,9 @@ function Header() {
             className="logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] hover:bg-bgd"
             href={'/'}
           >
-            <Image
+            <img
               className="w-[80px] sm:w-[100px] md:w-[120px] h-[70px] md:h-20"
-              src={'./assets/images/logo.svg'}
+              src="/assets/images/logo.svg"
               alt="img"
             />
           </Link>
@@ -144,7 +143,7 @@ function Header() {
                     placement="top-end"
                     offset={[18, 19]}
                   >
-                    <Image className="ml-[10px] xl:ml-0 w-9 h-w-9 rounded-full cursor-pointer" src="" alt="img" />
+                    <img className="ml-[10px] xl:ml-0 w-9 h-w-9 rounded-full cursor-pointer" src="" alt="img" />
                   </Tippy>
                 </div>
               </div>

@@ -27,7 +27,7 @@ function Footer() {
                   img={'/assets/images/google-play.png'}
                   href={'/'}
                 />
-                <SubnavItem classNameImg="w-[140px]" img={'assets/images/app-store.svg'} href={'/'} />
+                <SubnavItem classNameImg="w-[140px]" img={'/assets/images/app-store.svg'} href={'/'} />
               </div>
             </Subnav>
           </div>

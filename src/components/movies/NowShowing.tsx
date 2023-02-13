@@ -9,7 +9,7 @@ function NowShowing() {
         <div className="w-full">
           <div className="flex items-center justify-between w-full pb-4">
             <h2 className="text-3xl text-[#fff] leading-[100%] pl-[10px] relative">
-              Phim đang chiếu <p className="underline-title"></p>
+              Phim đang chiếu <p className="underline-title top-11"></p>
             </h2>
             <Link href="/movies/coming-soon">
               <p className=" cursor-pointer text-lg text-[#c4bfbf] pr-3">Phim sắp chiếu</p>

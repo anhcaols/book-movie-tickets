@@ -1,7 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import classNames from 'classnames';
-
-import Image from '@components/shared/images/Image';
 
 interface SubnavItemProps {
   className?: any;
@@ -34,7 +33,7 @@ function SubnavItem({
       <Link href={href} className={classes}>
         {icon && <span className="mr-2">{icon}</span>}
         {title}
-        {img && <Image className={classNames({ [classNameImg]: classNameImg })} src={img} alt="app-store" />}
+        {img && <img className={classNames({ [classNameImg]: classNameImg })} src={`${img}`} alt="app-store" />}
       </Link>
     </li>
   );
