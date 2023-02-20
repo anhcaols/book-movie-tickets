@@ -21,7 +21,7 @@ function Home() {
                 Phim đang chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/now-showing">
-                <p className="underline cursor-pointer text-lg text-primary pr-3">Xem thêm</p>
+                <p className="underline cursor-pointer text-lg text-primary pr-3 opacity-[0.9]">Xem thêm</p>
               </Link>
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
@@ -42,7 +42,7 @@ function Home() {
                 Phim sắp chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/coming-soon">
-                <p className="underline cursor-pointer text-lg text-primary pr-3">Xem thêm</p>
+                <p className="underline cursor-pointer text-lg text-primary pr-3 opacity-[0.9]">Xem thêm</p>
               </Link>
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">

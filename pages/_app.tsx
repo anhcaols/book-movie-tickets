@@ -4,6 +4,7 @@ import 'tippy.js/dist/tippy.css';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
+import MainApp from '../src/App';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -17,7 +18,7 @@ interface MyAppProps extends AppProps {
 
 function MyApp({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || (page => page);
-  return getLayout(<Component {...pageProps} />);
+  return <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>;
 }
 
 export default MyApp;

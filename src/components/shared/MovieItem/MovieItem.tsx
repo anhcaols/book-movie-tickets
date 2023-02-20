@@ -21,9 +21,9 @@ function MovieItem({ data, state }: MovieItemProps) {
         />
         <div className={cx('ticket', 'flex flex-col justify-center items-center gap-2')}>
           <Link href={`/movies/${state}/slug`}>
-            <p className="text-[#fff] hover:text-primary font-normal text-[15px]">CHI TIẾT PHIM</p>
+            <p className="text-[#fff] hover:text-primary font-normal text-[15px] opacity-[0.9]">CHI TIẾT PHIM</p>
           </Link>
-          <Link href="/book-tickets/slug">
+          <Link href="/book-ticket/slug">
             <Button className="w-[150px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
               ĐẶT VÉ NGAY
             </Button>

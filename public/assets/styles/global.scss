@@ -63,7 +63,8 @@ button {
 .outline {
   min-width: 40px;
   background-color: transparent;
-  border: 1px solid;
+  border-width: 1px;
+  border-style: solid;
   outline: none;
   opacity: 0.82;
   font-weight: 500;

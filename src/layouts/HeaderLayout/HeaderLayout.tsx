@@ -149,15 +149,19 @@ function Header() {
               </div>
             ) : (
               <>
-                <Button className="hidden md:flex " primary large>
-                  Đăng nhập
-                </Button>
-                <Button
-                  className="flex md:hidden w-[40px]"
-                  icon={<LogoutIcon className="fill-[#fff] w-[22px]" />}
-                  primary
-                  small
-                ></Button>
+                <Link href="/auth/login">
+                  <Button className="hidden md:flex " primary large>
+                    Đăng nhập
+                  </Button>
+                </Link>
+                <Link href="/auth/login">
+                  <Button
+                    className="flex md:hidden w-[40px]"
+                    icon={<LogoutIcon className="fill-[#fff] w-[22px]" />}
+                    primary
+                    small
+                  ></Button>
+                </Link>
               </>
             )}
             <button
