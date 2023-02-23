@@ -17,7 +17,7 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className=" hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                className=" hover:text-white cursor-default text-white font-medium leading-8"
                 title="Download Our App"
                 href={'/'}
               />
@@ -35,7 +35,7 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
                 title="Resources"
                 href={'/'}
               />
@@ -48,7 +48,7 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
                 title="Legal"
                 href={'/'}
               />
@@ -61,7 +61,7 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
                 title="Contact"
                 href={'/'}
               />

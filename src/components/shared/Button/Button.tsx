@@ -26,7 +26,7 @@ const Button = forwardRef(
     });
     return (
       <button style={style} ref={ref} className={classes} onClick={onClick} disabled={disabled}>
-        <span className="title text-sm text-[white] tracking-[0.6px]">{children}</span>
+        <span className="title text-[white] tracking-[0.6px]">{children}</span>
         {icon && <span className="flex items-center content-center">{icon}</span>}
       </button>
     );

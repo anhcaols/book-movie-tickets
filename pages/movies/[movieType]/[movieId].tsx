@@ -69,7 +69,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                 Ngày khởi chiếu: <span className="text-text">20/1/2023</span>
               </Typography>
               <Box display="flex" pt={1}>
-                <Link href="/book-tickets/slug">
+                <Link href="/book-ticket/slug">
                   <Button style={{ height: 40, marginRight: 16 }} primary small>
                     Mua vé
                   </Button>
@@ -81,7 +81,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
             </Stack>
           </Box>
           <Box pt={4}>
-            <h2 className="text-2xl text-[#fff] leading-[100%] relative">
+            <h2 className="text-2xl text-white leading-[100%] relative">
               Nội dung phim <p className="underline-title top-10"></p>
             </h2>
             <Box mt={4} fontSize={15}>
@@ -109,7 +109,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
             <Grid container spacing={2} pt={7}>
               <Grid item md={9}>
                 <Box>
-                  <h2 className="text-2xl text-[#fff] leading-[100%] relative">
+                  <h2 className="text-2xl text-white leading-[100%] relative">
                     Xếp hạng và đánh giá phim <p className="underline-title top-10"></p>
                   </h2>
                   <Box mt={6}>
@@ -125,7 +125,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                         <Box width="100%" className="my-6">
                           <Typography color="#fff">Review của bạn (có thể để trống)</Typography>
                           <textarea
-                            className="placeholder:text-[#ffffff80] bg-bgd outline-none p-4 text-[#fff] rounded resize-none min-h-[150px] w-full mt-2"
+                            className="placeholder:text-[#ffffff80] bg-bgd outline-none p-4 text-white rounded resize-none min-h-[150px] w-full mt-2"
                             placeholder="Đánh giá của bạn về bộ phim Nhà Bà Nữ"
                           />
                         </Box>
@@ -158,7 +158,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
               </Grid>
               <Grid item md={3}>
                 <Box>
-                  <h2 className="text-2xl text-[#fff] leading-[100%] relative pl-4">
+                  <h2 className="text-2xl text-white leading-[100%] relative pl-4">
                     Phim đang chiếu<p className="underline-title top-10"></p>
                   </h2>
                   <Box>
@@ -191,14 +191,17 @@ const MovieDetailPage: NextPageWithLayout = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box className="bg-[#ffffffbf] relative">
-          <Typography className="text-center text-lg py-3 capitalize">nhà bà nữ</Typography>
+        <Box className=" relative">
+          <Typography className="text-center text-lg py-3 capitalize ">nhà bà nữ</Typography>
           <Divider />
           <Box p={2}>
             <YouTube videoId={'pg4L29p98Kw'} opts={{ height: '420px', width: '100%' }} />
           </Box>
         </Box>
-        <Close onClick={handleClose} className="absolute right-5 top-3 text-[18px] cursor-pointer hover:text-primary" />
+        <Close
+          onClick={handleClose}
+          className="absolute  right-5 top-3 text-[18px] cursor-pointer hover:text-primary"
+        />
       </Dialog>
     </>
   );

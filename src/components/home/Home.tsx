@@ -17,7 +17,7 @@ function Home() {
         <div className="container flex flex-row flex-wrap content-center items-center mx-auto">
           <div className="w-full">
             <div className="flex items-center justify-between w-full pb-4">
-              <h2 className="text-3xl text-[#fff] leading-[100%] pl-[10px] relative">
+              <h2 className="text-3xl text-white leading-[100%] pl-[10px] relative">
                 Phim đang chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/now-showing">
@@ -38,7 +38,7 @@ function Home() {
         <div className="container flex flex-row flex-wrap content-center items-center mx-auto">
           <div className={cx('content-head', 'w-full')}>
             <div className="flex items-center justify-between w-full pb-4 mt-16">
-              <h2 className="text-3xl text-[#fff] leading-[100%] pl-[10px] relative">
+              <h2 className="text-3xl text-white leading-[100%] pl-[10px] relative">
                 Phim sắp chiếu <p className="underline-title left-[13px] top-11"></p>
               </h2>
               <Link href="/movies/coming-soon">

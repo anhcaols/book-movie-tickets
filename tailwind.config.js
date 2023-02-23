@@ -17,6 +17,8 @@ module.exports = {
       primary: '#ff55a5',
       text: '#ffffffbf',
       bgd: '#2b2b31',
+      white: '#fff',
+      black: '#000',
     },
     fontFamily: {
       openSans: ['"Open Sans"'],

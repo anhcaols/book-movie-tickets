@@ -97,10 +97,10 @@ function Header() {
           <div className="actions ml-auto flex items-center">
             <Link href={'/'} onClick={handleShowSearch}>
               <SearchIcon
-                className={`${iconSearch && 'fill-[#ff55a5] '} w-[22px] h- fill-text hover:fill-[#ff55a5] `}
+                className={`${iconSearch && 'fill-[#ff55a5] '} w-[22px] h- fill-text hover:fill-[#ff55a5] mr-8 block`}
               />
             </Link>
-            <div>
+            {/* <div>
               <Tippy
                 interactive
                 delay={[200, 500]}
@@ -121,7 +121,7 @@ function Header() {
                   VN
                 </button>
               </Tippy>
-            </div>
+            </div> */}
             {userCurrent ? (
               <div className="avatar">
                 <div>
@@ -157,7 +157,7 @@ function Header() {
                 <Link href="/auth/login">
                   <Button
                     className="flex md:hidden w-[40px]"
-                    icon={<LogoutIcon className="fill-[#fff] w-[22px]" />}
+                    icon={<LogoutIcon className="fill-white w-[22px]" />}
                     primary
                     small
                   ></Button>
