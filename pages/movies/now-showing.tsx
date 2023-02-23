@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from '.././_app';
-import MainLayout from '@layouts/MainLayout';
+import MainLayout from '@layouts/MainLayout/MainLayout';
 import NowShowing from '@components/movies/NowShowing';
 
 const NowShowingPage: NextPageWithLayout = () => {

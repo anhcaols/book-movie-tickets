@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from '../_app';
-import MainLayout from '@layouts/MainLayout';
+import MainLayout from '@layouts/MainLayout/MainLayout';
 import { Box, Grid, styled, Typography } from '@mui/material';
 import Link from 'next/link';
 import CloseIcon from '@mui/icons-material/Close';

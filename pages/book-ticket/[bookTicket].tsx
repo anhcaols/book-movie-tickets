@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from '../_app';
-import MainLayout from '@layouts/MainLayout';
+import MainLayout from '@layouts/MainLayout/MainLayout';
 import { Autocomplete, Box, Button, Card, Divider, Grid, styled, TextField, Tooltip, Typography } from '@mui/material';
 import { AccessTimeOutlined } from '@mui/icons-material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';

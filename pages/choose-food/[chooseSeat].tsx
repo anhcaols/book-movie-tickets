@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPageWithLayout } from '../_app';
-import MainLayout from '@layouts/MainLayout';
+import MainLayout from '@layouts/MainLayout/MainLayout';
 import {
   Box,
   Grid,
