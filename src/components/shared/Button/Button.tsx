@@ -13,10 +13,14 @@ interface ButtonProps {
   children?: any;
   onClick?: any;
   style?: any;
+  type?: any;
 }
 
 const Button = forwardRef(
-  ({ className, children, icon, primary, outline, small, large, disabled, onClick, style }: ButtonProps, ref: any) => {
+  (
+    { className, children, icon, primary, outline, small, large, disabled, onClick, style, type }: ButtonProps,
+    ref: any
+  ) => {
     const classes = classNames('wrapper-btn', {
       [className]: className,
       primary,
@@ -25,7 +29,7 @@ const Button = forwardRef(
       large,
     });
     return (
-      <button style={style} ref={ref} className={classes} onClick={onClick} disabled={disabled}>
+      <button type={type} style={style} ref={ref} className={classes} onClick={onClick} disabled={disabled}>
         <span className="title text-[white] tracking-[0.6px]">{children}</span>
         {icon && <span className="flex items-center content-center">{icon}</span>}
       </button>

@@ -20,39 +20,92 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller, useForm } from 'react-hook-form';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+const registerFormSchema = z
+  .object({
+    fullName: z.string().min(1, 'Họ tên là bắt buộc.'),
+    email: z.string().email('Địa chỉ email không hợp lệ.'),
+    password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    confirmPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    phoneNumber: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ.'),
+    gender: z.any(),
+    dateOfBirth: z.any(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Hai mật khẩu phải trùng nhau',
+    path: ['confirmPassword'],
+  });
 
 const RegisterPage: NextPageWithLayout = () => {
   const [gender, setGender] = useState('');
-  //   const [dateOfBirth, setDateOfBirth] = useState<any>('');
 
   const handleGender = (event: any) => {
     setGender(event.target.value as string);
   };
-  //   const handleDateOfBirth = (newValue: any) => {
-  //     setDateOfBirth(newValue);
-  //   };
 
   const {
     register,
     control,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
+  });
+
+  const onSubmit = handleSubmit(data => {
+    console.log(data);
+  });
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <form className="w-full max-w-xl px-9 py-10 bg-[#28282d] shadow-xl rounded border-t-2 border-primary" action="#">
+      <form onSubmit={onSubmit} action="#">
         <Stack spacing={3}>
-          <Link className="flex justify-center items-center mb-7" href={'/'}>
-            <img className="max-w-[127px]" src={'/assets/images/logo.svg'} alt="img" />
-          </Link>
-          <TextField label=" Họ tên" variant="outlined" fullWidth />
-          <TextField label="Email" variant="outlined" fullWidth />
+          <TextField
+            {...register('fullName')}
+            error={!!errors.fullName}
+            helperText={errors.fullName?.message}
+            label=" Họ tên"
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            label="Email"
+            variant="outlined"
+            fullWidth
+          />
           <Box display="flex" gap={1}>
-            <TextField label="Mật khẩu" variant="outlined" fullWidth />
-            <TextField label="Xác nhận mật khẩu" variant="outlined" fullWidth />
+            <TextField
+              {...register('password')}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              label="Mật khẩu"
+              variant="outlined"
+              fullWidth
+            />
+            <TextField
+              {...register('confirmPassword')}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
+              label="Xác nhận mật khẩu"
+              variant="outlined"
+              fullWidth
+            />
           </Box>
           <Box display="flex" gap={1}>
-            <TextField label="Số điện thoại" variant="outlined" fullWidth />
+            <TextField
+              {...register('phoneNumber')}
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              label="Số điện thoại"
+              variant="outlined"
+              fullWidth
+            />
             <FormControl fullWidth>
               <InputLabel id="select-gender">Chọn giới tính</InputLabel>
               <Select
@@ -60,15 +113,15 @@ const RegisterPage: NextPageWithLayout = () => {
                 value={gender}
                 label="Age"
                 onChange={handleGender}
-                input={<OutlinedInput label="Chọn giới tính" />}
+                input={<OutlinedInput {...register('gender')} error={!!errors.gender} label="Chọn giới tính" />}
               >
-                <MenuItem value={10}>Male</MenuItem>
-                <MenuItem value={20}>Female</MenuItem>
+                <MenuItem value={0}>Female</MenuItem>
+                <MenuItem value={1}>Male</MenuItem>
               </Select>
             </FormControl>
           </Box>
           <Controller
-            name=""
+            name="dateOfBirth"
             control={control}
             render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
               <DesktopDatePicker
@@ -91,11 +144,9 @@ const RegisterPage: NextPageWithLayout = () => {
             Tôi đã đọc và đồng ý với <span className="text-primary opacity-[0.9]">CHÍNH SÁCH</span> của chương trình.
           </Typography>
           <Box className="form-group">
-            <Link href="/auth/register">
-              <Button className="w-full mt-3 " primary large>
-                Đăng ký
-              </Button>
-            </Link>
+            <Button type="submit" className="w-full mt-3 " primary large>
+              Đăng ký
+            </Button>
           </Box>
           <Typography className=" text-[#ffffff80] font-openSans text-[14px] text-center">
             Bạn đã có sẵn một tài khoản? {''}

@@ -9,11 +9,8 @@ import { NextPageWithLayout } from '../_app';
 const ForgetPage: NextPageWithLayout = () => {
   return (
     <>
-      <form className="w-full max-w-lg px-9 py-10 bg-[#28282d] shadow-xl rounded border-t-2 border-primary" action="#">
+      <form action="#">
         <Stack spacing={3}>
-          <Link className="flex justify-center items-center mb-8" href={'/'}>
-            <img className="max-w-[127px]" src={'/assets/images/logo.svg'} alt="img" />
-          </Link>
           <TextField label="Email" variant="outlined" fullWidth />
           <Box className="form-group">
             <Link href="/auth/register">
