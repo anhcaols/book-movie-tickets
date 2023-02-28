@@ -20,7 +20,6 @@ function Header() {
   const [iconSearch, setIconSearch] = useState(false);
   const [toggleBtn, setToggleBtn] = useState(false);
   const { pathname } = useRouter();
-  console.log(styles);
   //handle Events
   const handleShowSearch = () => {
     setIconSearch(!iconSearch);

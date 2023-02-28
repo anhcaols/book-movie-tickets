@@ -5,8 +5,20 @@ import { Box, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
+import { useEffect } from 'react';
+import { authService } from '@services/auth.service';
 
 const LoginPage: NextPageWithLayout = () => {
+  useEffect(() => {
+    const demo = async () => {
+      const res = await authService.signIn({
+        email: 'caotheanh1@gmail.com',
+        password: 'caotheanh',
+      });
+      console.log(res);
+    };
+    demo();
+  }, []);
   return (
     <>
       <form className="w-full max-w-lg px-9 py-10 bg-[#28282d] shadow-xl rounded border-t-2 border-primary" action="#">
