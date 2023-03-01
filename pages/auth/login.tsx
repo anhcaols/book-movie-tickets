@@ -9,16 +9,16 @@ import { useEffect } from 'react';
 import { authService } from '@services/auth.service';
 
 const LoginPage: NextPageWithLayout = () => {
-  useEffect(() => {
-    const demo = async () => {
-      const res = await authService.signIn({
-        email: 'caotheanh1@gmail.com',
-        password: 'caotheanh',
-      });
-      console.log(res);
-    };
-    demo();
-  }, []);
+  // useEffect(() => {
+  //   const demo = async () => {
+  //     const res = await authService.signIn({
+  //       email: 'caotheanh1@gmail.com',
+  //       password: 'caotheanh',
+  //     });
+  //     console.log(res);
+  //   };
+  //   demo();
+  // }, []);
   return (
     <>
       <form action="#">

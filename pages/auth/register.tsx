@@ -22,6 +22,11 @@ import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLa
 import { NextPageWithLayout } from '../_app';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAsync } from '@hooks/useAsync';
+import { authService } from '@services/auth.service';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
+import moment from 'moment';
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 const registerFormSchema = z
@@ -40,8 +45,9 @@ const registerFormSchema = z
   });
 
 const RegisterPage: NextPageWithLayout = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [gender, setGender] = useState('');
-
+  const router = useRouter();
   const handleGender = (event: any) => {
     setGender(event.target.value as string);
   };
@@ -50,13 +56,47 @@ const RegisterPage: NextPageWithLayout = () => {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
   });
 
+  const [executeRegister] = useAsync<{
+    full_name: string;
+    email: string;
+    phone_number: string;
+    password: string;
+    confirm_password: string;
+    gender: string;
+    date_of_birth: string | Date;
+  }>({
+    delay: 500,
+    asyncFunction: async payload => authService.signUp(payload),
+    onResolve: () => {
+      enqueueSnackbar('Register account successfully', {
+        variant: 'success',
+      });
+      router.push('/auth/login');
+    },
+    onReject: (error: any) => {
+      enqueueSnackbar('Register failed');
+      reset();
+    },
+  });
+
   const onSubmit = handleSubmit(data => {
-    console.log(data);
+    const gender = data.gender === 1 ? 'nam' : 'nữ';
+
+    executeRegister({
+      full_name: data.fullName,
+      email: data.email,
+      phone_number: data.phoneNumber,
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      gender,
+      date_of_birth: moment(data.dateOfBirth).format(),
+    });
   });
 
   return (
@@ -115,8 +155,8 @@ const RegisterPage: NextPageWithLayout = () => {
                 onChange={handleGender}
                 input={<OutlinedInput {...register('gender')} error={!!errors.gender} label="Chọn giới tính" />}
               >
-                <MenuItem value={0}>Female</MenuItem>
-                <MenuItem value={1}>Male</MenuItem>
+                <MenuItem value={0}>Nữ</MenuItem>
+                <MenuItem value={1}>Nam</MenuItem>
               </Select>
             </FormControl>
           </Box>

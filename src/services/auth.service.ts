@@ -6,7 +6,7 @@ export class AuthService extends BaseService {
     email: string;
     phone_number: string;
     password: string;
-    confirmPassword: string;
+    confirm_password: string;
     gender: string;
     date_of_birth: string | Date;
   }) {
