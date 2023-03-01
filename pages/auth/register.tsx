@@ -26,7 +26,7 @@ import { useAsync } from '@hooks/useAsync';
 import { authService } from '@services/auth.service';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 const registerFormSchema = z
@@ -36,8 +36,12 @@ const registerFormSchema = z
     password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
     confirmPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
     phoneNumber: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ.'),
-    gender: z.any(),
-    dateOfBirth: z.any(),
+    gender: z.any().refine(value => value !== '', {
+      message: 'Giới tính là bắt buộc',
+    }),
+    dateOfBirth: z.any().refine(value => value !== null, {
+      message: 'Ngày sinh là bắt buộc',
+    }),
   })
   .refine(data => data.password === data.confirmPassword, {
     message: 'Hai mật khẩu phải trùng nhau',
@@ -51,7 +55,6 @@ const RegisterPage: NextPageWithLayout = () => {
   const handleGender = (event: any) => {
     setGender(event.target.value as string);
   };
-
   const {
     register,
     control,
@@ -80,14 +83,15 @@ const RegisterPage: NextPageWithLayout = () => {
       router.push('/auth/login');
     },
     onReject: (error: any) => {
-      enqueueSnackbar('Register failed');
+      enqueueSnackbar('Register failed', {
+        variant: 'error',
+      });
       reset();
     },
   });
 
   const onSubmit = handleSubmit(data => {
     const gender = data.gender === 1 ? 'nam' : 'nữ';
-
     executeRegister({
       full_name: data.fullName,
       email: data.email,
@@ -95,7 +99,7 @@ const RegisterPage: NextPageWithLayout = () => {
       password: data.password,
       confirm_password: data.confirmPassword,
       gender,
-      date_of_birth: moment(data.dateOfBirth).format(),
+      date_of_birth: dayjs(data.dateOfBirth).format(),
     });
   });
 
@@ -124,6 +128,7 @@ const RegisterPage: NextPageWithLayout = () => {
               {...register('password')}
               error={!!errors.password}
               helperText={errors.password?.message}
+              type="password"
               label="Mật khẩu"
               variant="outlined"
               fullWidth
@@ -132,6 +137,7 @@ const RegisterPage: NextPageWithLayout = () => {
               {...register('confirmPassword')}
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword?.message}
+              type="password"
               label="Xác nhận mật khẩu"
               variant="outlined"
               fullWidth
@@ -149,11 +155,12 @@ const RegisterPage: NextPageWithLayout = () => {
             <FormControl fullWidth>
               <InputLabel id="select-gender">Chọn giới tính</InputLabel>
               <Select
+                {...register('gender')}
                 labelId="select-gender"
                 value={gender}
                 label="Age"
                 onChange={handleGender}
-                input={<OutlinedInput {...register('gender')} error={!!errors.gender} label="Chọn giới tính" />}
+                input={<OutlinedInput error={!!errors.gender} label="Chọn giới tính" />}
               >
                 <MenuItem value={0}>Nữ</MenuItem>
                 <MenuItem value={1}>Nam</MenuItem>
@@ -163,9 +170,11 @@ const RegisterPage: NextPageWithLayout = () => {
           <Controller
             name="dateOfBirth"
             control={control}
+            defaultValue={null}
             render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
               <DesktopDatePicker
                 {...field}
+                inputFormat="DD/MM/YYYY"
                 inputRef={ref}
                 label="Ngày sinh"
                 renderInput={inputProps => (

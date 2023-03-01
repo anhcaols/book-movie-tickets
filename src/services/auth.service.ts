@@ -18,6 +18,14 @@ export class AuthService extends BaseService {
     const { data } = await this.httpClient.post('/auth/login', signInPayload);
     return data;
   }
+
+  setToken(accessToken: string) {
+    this.httpClient.setCustomConfigs({
+      authentication: {
+        token: accessToken,
+      },
+    });
+  }
 }
 
 export const authService = new AuthService();

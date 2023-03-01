@@ -11,10 +11,10 @@ import Button from '@components/shared/Button/Button';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';
+import { useAppSelector } from '@hooks/useRedux';
 
 const cx = classNames.bind(styles);
 
-let userCurrent = false;
 function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const [iconSearch, setIconSearch] = useState(false);
@@ -33,6 +33,8 @@ function Header() {
   const handleToggle = () => {
     setToggleBtn(!toggleBtn);
   };
+
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
   return (
     <header className={cx('header-wrapper', 'fixed top-0 right-0 left-0 z-50 bg-bgd')}>
       <div className={cx('header-top', 'bg-bgd')}>
@@ -121,12 +123,11 @@ function Header() {
                 </button>
               </Tippy>
             </div> */}
-            {userCurrent ? (
+            {isLoggedIn ? (
               <div className="avatar">
                 <div>
                   <Tippy
                     interactive
-                    trigger="click"
                     delay={[200, 500]}
                     render={(attrs: any) => (
                       <PopperWrapper>
@@ -142,7 +143,13 @@ function Header() {
                     placement="top-end"
                     offset={[18, 19]}
                   >
-                    <img className="ml-[10px] xl:ml-0 w-9 h-w-9 rounded-full cursor-pointer" src="" alt="img" />
+                    <div className="ml-[10px] xl:ml-0 w-9 h-9">
+                      <img
+                        className="w-full h-full rounded-full cursor-pointer object-cover"
+                        src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper.png"
+                        alt="img"
+                      />
+                    </div>
                   </Tippy>
                 </div>
               </div>

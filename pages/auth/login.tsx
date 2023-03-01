@@ -5,32 +5,79 @@ import { Box, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
-import { useEffect } from 'react';
+import { date, z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { onSignIn } from '@redux/actions/auth.action';
+import { useAppDispatch } from '@hooks/useRedux';
+import { setCookie } from 'cookies-next';
 import { authService } from '@services/auth.service';
 
+const loginFormSchema = z.object({
+  email: z.string().email('Địa chỉ email không hợp lệ.'),
+  password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+});
+
 const LoginPage: NextPageWithLayout = () => {
-  // useEffect(() => {
-  //   const demo = async () => {
-  //     const res = await authService.signIn({
-  //       email: 'caotheanh1@gmail.com',
-  //       password: 'caotheanh',
-  //     });
-  //     console.log(res);
-  //   };
-  //   demo();
-  // }, []);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+  });
+
+  const onSubmit = handleSubmit(data => {
+    dispatch(onSignIn({ email: data.email, password: data.password })).then((result: any) => {
+      if (result.meta.requestStatus === 'fulfilled') {
+        const accessToken = (result.payload as any).accessToken;
+        setCookie('accessToken', accessToken);
+        authService.setToken(accessToken);
+
+        router.push('/');
+        enqueueSnackbar('Login successfully', {
+          variant: 'success',
+        });
+      } else {
+        enqueueSnackbar('Login failed', {
+          variant: 'error',
+        });
+      }
+    });
+  });
+
   return (
     <>
-      <form action="#">
+      <form onSubmit={onSubmit} action="#">
         <Stack spacing={3}>
-          <TextField label="Email" variant="outlined" fullWidth />
-          <TextField label="Mật khẩu" variant="outlined" fullWidth />
+          <TextField
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            label="Email"
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            type="password"
+            label="Mật khẩu"
+            variant="outlined"
+            fullWidth
+          />
           <Box className="form-group">
-            <Link href="/auth/register">
-              <Button className="w-full mt-3 " primary large>
-                Đăng nhập
-              </Button>
-            </Link>
+            <Button type="submit" className="w-full mt-3 " primary large>
+              Đăng nhập
+            </Button>
           </Box>
           <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
             Bạn không có một tài khoản? {''}

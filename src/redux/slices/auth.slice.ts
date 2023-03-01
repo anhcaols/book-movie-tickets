@@ -25,7 +25,12 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
-  extraReducers(builder) {},
+  extraReducers(builder) {
+    builder.addCase(onSignIn.fulfilled, (state, action) => {
+      const { account } = action.payload;
+      (state.isLoggedIn = true), (state.account = account);
+    });
+  },
 });
 
 export const {} = authSlice.actions;
