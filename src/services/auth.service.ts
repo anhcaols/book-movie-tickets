@@ -1,14 +1,16 @@
 import { BaseService } from './base.service';
 
 export class AuthService extends BaseService {
-  async signUp(signInPayload: {
-    username: string;
-    displayName: string;
+  async signUp(signUpPayload: {
+    full_name: string;
     email: string;
+    phone_number: string;
     password: string;
     confirmPassword: string;
+    gender: string;
+    date_of_birth: string | Date;
   }) {
-    const { data } = await this.httpClient.post('/auth/register', signInPayload);
+    const { data } = await this.httpClient.post('/auth/register', signUpPayload);
     return data;
   }
 

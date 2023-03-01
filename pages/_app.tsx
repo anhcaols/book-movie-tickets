@@ -5,6 +5,8 @@ import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
 import MainApp from '../src/App';
+import store from '@redux/store';
+import { Provider } from 'react-redux';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,7 +20,11 @@ interface MyAppProps extends AppProps {
 
 function MyApp({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || (page => page);
-  return <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>;
+  return (
+    <Provider store={store}>
+      <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>
+    </Provider>
+  );
 }
 
 export default MyApp;
