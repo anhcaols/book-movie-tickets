@@ -6,7 +6,7 @@ interface NavbarProps {
 }
 
 function Navbar({ className, children }: NavbarProps) {
-  const classes = classNames('navbar flex flex-row text-[text] items-center', {
+  const classes = classNames('flex flex-row text-[text] items-center', {
     [className]: className,
   });
   return <nav className={classes}>{children}</nav>;

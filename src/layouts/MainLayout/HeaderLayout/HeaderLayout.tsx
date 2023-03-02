@@ -23,7 +23,7 @@ function Header() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const { pathname } = useRouter();
-  const [toggleBtn, setToggleBtn] = useState(false);
+  const [isShowSidebar, setIsShowSidebar] = useState(false);
   //handle Events
 
   const { isLoggedIn, account } = useAppSelector(state => state.auth);
@@ -51,9 +51,9 @@ function Header() {
             />
           </Link>
           {/* Navbar */}
-          <div className={cx('navbar-header ')}>
-            <div className={cx(`overlay `)}></div>
-            <Navbar className="ml-[40px]">
+          <div className={cx('navbar-header', `${isShowSidebar ? 'active' : ''}`)}>
+            <div className={cx('overlay')}></div>
+            <Navbar className={cx('navbar', 'ml-[40px]')}>
               <NavbarItem title="Trang chủ" className={cx(pathname === '/' ? 'text-primary' : '')} href={'/'} />
               <NavbarItem
                 title="Lịch chiếu"
@@ -148,25 +148,25 @@ function Header() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button className="hidden md:flex " primary large>
+                  <Button className="hidden lg:flex" primary large>
                     Đăng nhập
                   </Button>
                 </Link>
                 <Link href="/auth/login">
                   <Button
-                    className="flex md:hidden w-[40px]"
+                    className="flex lg:hidden w-10 h-10"
                     icon={<LogoutIcon className="fill-white w-[22px]" />}
                     primary
-                    small
                   ></Button>
                 </Link>
               </>
             )}
             <button
-              onClick={() => setToggleBtn(true)}
+              onClick={() => setIsShowSidebar(!isShowSidebar)}
               className={cx(
                 'header-toggle-btn',
-                ` block xl:hidden relative ml-[20px] md:ml-[30px]  ${toggleBtn ? 'active' : ''}`
+                `${isShowSidebar ? 'active' : ''}`,
+                'xl:hidden relative ml-[20px] md:ml-[30px]'
               )}
             >
               <span></span>

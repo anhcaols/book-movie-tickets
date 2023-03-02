@@ -41,14 +41,10 @@ button {
 
 // button
 .wrapper-btn {
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 16px;
   border-radius: 4px;
-  // + .wrapper-btn {
-  //   margin-left: 10px;
-  // }
 }
 .primary {
   box-shadow: 0 0 20px 0 rgb(255 88 96 / 50%);
