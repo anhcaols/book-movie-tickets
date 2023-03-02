@@ -26,7 +26,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
     <>
       <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
         <Box className="px-4 my-16 w-full">
-          <Box display="flex" gap={4}>
+          <Box className="flex flex-col md:flex-row" gap={4}>
             <img className="block rounded w-[250px] h-[386px] object-fill" src="/assets/images/nhabanu.jpg" alt="img" />
             <Stack spacing={1} className="overflow-hidden">
               <Typography
@@ -106,8 +106,8 @@ const MovieDetailPage: NextPageWithLayout = () => {
       <Box style={{ borderTop: '2px solid #ff55a5' }} pb={8}>
         <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
           <Box className="px-4 w-full">
-            <Grid container spacing={2} pt={7}>
-              <Grid item md={9}>
+            <Grid container spacing={2} pt={7} gap={3}>
+              <Grid item xs={12} md={9}>
                 <Box>
                   <h2 className="text-2xl text-white leading-[100%] relative">
                     Xếp hạng và đánh giá phim <p className="underline-title top-10"></p>
@@ -149,27 +149,31 @@ const MovieDetailPage: NextPageWithLayout = () => {
                       <Comment />
                     </Box>
                     <Box display="flex" justifyContent="center">
-                      <Button className="mt-6 w-full" primary large>
+                      <Button className="mt-6 w-full " primary large>
                         Xem thêm
                       </Button>
                     </Box>
                   </Box>
                 </Box>
               </Grid>
-              <Grid item md={3}>
+              <Grid item xs={12} md={3}>
                 <Box>
                   <h2 className="text-2xl text-white leading-[100%] relative pl-4">
                     Phim đang chiếu<p className="underline-title top-10"></p>
                   </h2>
-                  <Box>
-                    <MovieItem state="now-showing" />
-                    <MovieItem state="now-showing" />
-                  </Box>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6} md={12}>
+                      <MovieItem state="now-showing" />
+                    </Grid>
+                    <Grid item xs={6} md={12}>
+                      <MovieItem state="now-showing" />
+                    </Grid>
+                  </Grid>
                   <Box display="flex" justifyContent="flex-end" mt={3}>
                     <Link href="/movies/now-showing">
                       <Button
                         outline
-                        className="h-10 hover:border-primary"
+                        className="h-10 hover:border-primary flex"
                         icon={<ArrowForward fontSize="small" style={{ marginLeft: 8 }} />}
                       >
                         Xem thêm
