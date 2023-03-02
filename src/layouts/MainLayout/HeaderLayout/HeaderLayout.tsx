@@ -11,37 +11,36 @@ import Button from '@components/shared/Button/Button';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';
-import { useAppSelector } from '@hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { onSignOut } from '@redux/slices/auth.slice';
+import { deleteCookie } from 'cookies-next';
+import { useSnackbar } from 'notistack';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-  const [showSearch, setShowSearch] = useState(false);
-  const [iconSearch, setIconSearch] = useState(false);
-  const [toggleBtn, setToggleBtn] = useState(false);
+  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
   const { pathname } = useRouter();
+  const [toggleBtn, setToggleBtn] = useState(false);
   //handle Events
-  const handleShowSearch = () => {
-    setIconSearch(!iconSearch);
-    setShowSearch(!showSearch);
-  };
-  const handleCloseSearch = () => {
-    setIconSearch(false);
-    setShowSearch(false);
-  };
 
-  const handleToggle = () => {
-    setToggleBtn(!toggleBtn);
+  const { isLoggedIn, account } = useAppSelector(state => state.auth);
+  const handleLogout = () => {
+    dispatch(onSignOut());
+    deleteCookie('accessToken');
+    router.push('/auth/login');
+    enqueueSnackbar('Logout successfully', {
+      variant: 'success',
+    });
   };
-
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
   return (
     <header className={cx('header-wrapper', 'fixed top-0 right-0 left-0 z-50 bg-bgd')}>
       <div className={cx('header-top', 'bg-bgd')}>
         <div className="container h-[70px] md:h-20 flex flex-row items-center mx-auto pl-[15px] pr-[15px] ">
           {/* Logo */}
           <Link
-            onClick={handleCloseSearch}
             className="logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] hover:bg-bgd"
             href={'/'}
           >
@@ -52,17 +51,11 @@ function Header() {
             />
           </Link>
           {/* Navbar */}
-          <div className={cx('navbar-header ', `${toggleBtn ? 'active' : ''}`)}>
-            <div onClick={handleToggle} className={cx(`overlay ${toggleBtn ? 'active' : ''}`)}></div>
+          <div className={cx('navbar-header ')}>
+            <div className={cx(`overlay `)}></div>
             <Navbar className="ml-[40px]">
+              <NavbarItem title="Trang chủ" className={cx(pathname === '/' ? 'text-primary' : '')} href={'/'} />
               <NavbarItem
-                onClick={handleCloseSearch}
-                title="Trang chủ"
-                className={cx(pathname === '/' ? 'text-primary' : '')}
-                href={'/'}
-              />
-              <NavbarItem
-                onClick={handleCloseSearch}
                 title="Lịch chiếu"
                 className={cx(pathname === '/showtimes' ? 'text-primary' : '')}
                 href={'/'}
@@ -96,10 +89,8 @@ function Header() {
           </div>
           {/* Action */}
           <div className="actions ml-auto flex items-center">
-            <Link href={'/'} onClick={handleShowSearch}>
-              <SearchIcon
-                className={`${iconSearch && 'fill-[#ff55a5] '} w-[22px] h- fill-text hover:fill-[#ff55a5] mr-8 block`}
-              />
+            <Link href={'/'}>
+              <SearchIcon className={` w-[22px] h- fill-text hover:fill-[#ff55a5] mr-8 block`} />
             </Link>
             {/* <div>
               <Tippy
@@ -129,13 +120,14 @@ function Header() {
                   <Tippy
                     interactive
                     delay={[200, 500]}
+                    trigger="click"
                     render={(attrs: any) => (
                       <PopperWrapper>
                         <div className="" tabIndex="-1" {...attrs}>
                           <Subnav>
                             <SubnavItem title="View Profile" href={'/'} icon={<UserIcon />} />
                             <SubnavItem title="Feedback and help" href={'/'} icon={<FeedbackIcon />} />
-                            <SubnavItem title="Logout" href={'/'} icon={<LogoutIcon />} />
+                            <SubnavItem onClick={handleLogout} title="Logout" href={'/'} icon={<LogoutIcon />} />
                           </Subnav>
                         </div>
                       </PopperWrapper>
@@ -146,7 +138,7 @@ function Header() {
                     <div className="ml-[10px] xl:ml-0 w-9 h-9">
                       <img
                         className="w-full h-full rounded-full cursor-pointer object-cover"
-                        src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper.png"
+                        src={'' || '/assets/images/avatar.jpg'}
                         alt="img"
                       />
                     </div>
@@ -171,7 +163,7 @@ function Header() {
               </>
             )}
             <button
-              onClick={handleToggle}
+              onClick={() => setToggleBtn(true)}
               className={cx(
                 'header-toggle-btn',
                 ` block xl:hidden relative ml-[20px] md:ml-[30px]  ${toggleBtn ? 'active' : ''}`

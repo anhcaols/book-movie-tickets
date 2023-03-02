@@ -21,6 +21,7 @@ function SubnavItem({
   icon = false,
   fontBase = false,
   img = false,
+  onClick,
 }: SubnavItemProps) {
   const classes = classNames(
     `text-base flex items-center leading-10 text-[#ffffffbf] ${fontBase ? '' : 'font-light'} hover:text-primary`,
@@ -29,7 +30,7 @@ function SubnavItem({
     }
   );
   return (
-    <li>
+    <li onClick={onClick}>
       <Link href={href} className={classes}>
         {icon && <span className="mr-2">{icon}</span>}
         {title}

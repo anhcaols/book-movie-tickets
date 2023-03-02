@@ -29,6 +29,10 @@ export const authSlice = createSlice({
       state.isLoggedIn = true;
       state.account = action.payload;
     },
+    onSignOut: state => {
+      state.isLoggedIn = false;
+      state.account = initialState.account;
+    },
   },
   extraReducers(builder) {
     builder.addCase(onSignIn.fulfilled, (state, action) => {
@@ -38,6 +42,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { onSignInSuccess } = authSlice.actions;
+export const { onSignInSuccess, onSignOut } = authSlice.actions;
 
 export default authSlice.reducer;
