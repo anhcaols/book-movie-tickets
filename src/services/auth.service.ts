@@ -19,6 +19,16 @@ export class AuthService extends BaseService {
     return data;
   }
 
+  async validateToken({ token }: { token: string }) {
+    const { data } = await this.httpClient.get('/accounts/info', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  }
+
   setToken(accessToken: string) {
     this.httpClient.setCustomConfigs({
       authentication: {

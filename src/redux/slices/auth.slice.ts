@@ -24,7 +24,12 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    onSignInSuccess: (state, action: PayloadAction<AuthState['account']>) => {
+      state.isLoggedIn = true;
+      state.account = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(onSignIn.fulfilled, (state, action) => {
       const { account } = action.payload;
@@ -33,6 +38,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { onSignInSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

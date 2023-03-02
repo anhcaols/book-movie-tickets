@@ -4,6 +4,7 @@ import Button from '@components/shared/Button/Button';
 import {
   Box,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -153,18 +154,27 @@ const RegisterPage: NextPageWithLayout = () => {
               fullWidth
             />
             <FormControl fullWidth>
-              <InputLabel id="select-gender">Chọn giới tính</InputLabel>
-              <Select
-                {...register('gender')}
-                labelId="select-gender"
-                value={gender}
-                label="Age"
-                onChange={handleGender}
-                input={<OutlinedInput error={!!errors.gender} label="Chọn giới tính" />}
-              >
-                <MenuItem value={0}>Nữ</MenuItem>
-                <MenuItem value={1}>Nam</MenuItem>
-              </Select>
+              <InputLabel id="select-gender" error={!!errors.gender}>
+                Chọn giới tính
+              </InputLabel>
+              <Controller
+                name="gender"
+                defaultValue={gender}
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    labelId="select-gender"
+                    {...field}
+                    input={<OutlinedInput error={!!errors.gender} label="Chọn giới tính" />}
+                  >
+                    <MenuItem value={0}>Nữ</MenuItem>
+                    <MenuItem value={1}>Nam</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText error={!!errors.gender}>
+                {errors.gender ? String(errors.gender.message) : ''}
+              </FormHelperText>
             </FormControl>
           </Box>
           <Controller

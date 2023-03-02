@@ -8,6 +8,7 @@ import MainApp from '../src/App';
 import store from '@redux/store';
 import { Provider } from 'react-redux';
 import { SnackbarProvider } from 'notistack';
+import AppAuthentication from '@components/app/AppAuthentication';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -23,14 +24,16 @@ function MyApp({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || (page => page);
   return (
     <Provider store={store}>
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-      >
-        <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>
-      </SnackbarProvider>
+      <AppAuthentication>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
+          <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>
+        </SnackbarProvider>
+      </AppAuthentication>
     </Provider>
   );
 }
