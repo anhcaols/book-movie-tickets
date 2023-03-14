@@ -9,6 +9,7 @@ import YouTube from 'react-youtube';
 import Link from 'next/link';
 import Comment from '@components/shared/Comment/Comment';
 import MovieItem from '@components/shared/MovieItem/MovieItem';
+import { useRouter } from 'next/router';
 
 const StyledRating = styled(Rating)(() => ({
   '& .css-1c99szj-MuiRating-icon': {
@@ -22,6 +23,8 @@ const MovieDetailPage: NextPageWithLayout = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const router = useRouter();
+  console.log(router);
   return (
     <>
       <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">

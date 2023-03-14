@@ -1,6 +1,7 @@
 import Button from '@components/shared/Button/Button';
 import MovieItem from '@components/shared/MovieItem/MovieItem';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function NowShowing() {
   return (
@@ -16,14 +17,14 @@ function NowShowing() {
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+            {/* <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
             <MovieItem state="now-showing" />
-            <MovieItem state="now-showing" />
-            <MovieItem state="now-showing" />
+            <MovieItem state="now-showing" /> */}
           </div>
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
             <Button className="mt-12" primary large>

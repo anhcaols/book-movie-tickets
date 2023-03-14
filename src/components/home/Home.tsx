@@ -3,10 +3,23 @@ import styles from './home.module.scss';
 import classNames from 'classnames/bind';
 import SimpleSlider from './Slider';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { onGetMovies } from '@redux/actions/movies.action';
 
 const cx = classNames.bind(styles);
 
 function Home() {
+  const dispatch = useAppDispatch();
+  const { nowShowing, comingSoon } = useAppSelector(state => state.movies);
+  const nowShowingMovies = nowShowing.movies;
+  const comingSoonMovies = comingSoon.movies;
+
+  useEffect(() => {
+    dispatch(onGetMovies());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <div className="mt-16">
@@ -25,10 +38,9 @@ function Home() {
               </Link>
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-              <MovieItem state="now-showing" />
-              <MovieItem state="now-showing" />
-              <MovieItem state="now-showing" />
-              <MovieItem state="now-showing" />
+              {nowShowingMovies?.slice(0, 4).map(nowShowingMovie => (
+                <MovieItem movie={nowShowingMovie} key={nowShowingMovie.id} state="now-showing" />
+              ))}
             </div>
           </div>
         </div>
@@ -46,10 +58,9 @@ function Home() {
               </Link>
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-              <MovieItem state="coming-soon" />
-              <MovieItem state="coming-soon" />
-              <MovieItem state="coming-soon" />
-              <MovieItem state="coming-soon" />
+              {comingSoonMovies?.slice(0, 4).map(nowShowingMovie => (
+                <MovieItem movie={nowShowingMovie} key={nowShowingMovie.id} state="now-showing" />
+              ))}
             </div>
           </div>
         </div>

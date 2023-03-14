@@ -1,3 +1,4 @@
+import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import { Http } from './http.service';
 
 export class BaseService {
@@ -6,7 +7,7 @@ export class BaseService {
   constructor() {
     const httpClient = new Http();
     httpClient.setCustomConfigs({
-      baseUrl: 'http://localhost:8080/api',
+      baseUrl: `${NEXT_APP_API_BASE_URL}/api`,
     });
     this.httpClient = httpClient;
   }
