@@ -4,15 +4,15 @@ import { moviesService } from '@services/movies.service';
 
 export const onGetMovies = createAsyncThunkWithCustomError<{
   allMovies: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
   nowShowing: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
   comingSoon: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
 }>(

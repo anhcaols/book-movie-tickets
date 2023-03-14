@@ -9,7 +9,7 @@ interface AccountEntity {
   role: string;
 }
 
-interface MoviesEntity {
+interface MovieEntity {
   id: number;
   name: string;
   description: string;
@@ -21,6 +21,7 @@ interface MoviesEntity {
   country: string;
   producer: string;
   status: number;
+  age: number;
   image: string;
   trailer: string;
   genres: string[];

@@ -3,15 +3,15 @@ import { onGetMovies } from '@redux/actions/movies.action';
 
 interface MoviesState {
   allMovies: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
   nowShowing: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
   comingSoon: {
-    movies: MoviesEntity[];
+    movies: MovieEntity[];
     moviesPagination: ApiPagination;
   };
 }

@@ -59,7 +59,7 @@ function Home() {
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
               {comingSoonMovies?.slice(0, 4).map(nowShowingMovie => (
-                <MovieItem movie={nowShowingMovie} key={nowShowingMovie.id} state="now-showing" />
+                <MovieItem movie={nowShowingMovie} key={nowShowingMovie.id} state="coming-soon" />
               ))}
             </div>
           </div>

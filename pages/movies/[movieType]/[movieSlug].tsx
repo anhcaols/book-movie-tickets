@@ -4,12 +4,17 @@ import MainLayout from '@layouts/MainLayout/MainLayout';
 import { Box, Typography, Stack, Dialog, Divider, Rating, Grid, styled } from '@mui/material';
 import { Star, AccessTimeOutlined, Close, ArrowForward } from '@mui/icons-material';
 import Button from '@components/shared/Button/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import Link from 'next/link';
 import Comment from '@components/shared/Comment/Comment';
 import MovieItem from '@components/shared/MovieItem/MovieItem';
 import { useRouter } from 'next/router';
+import { moviesService } from '@services/movies.service';
+import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
+import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { onGetMovies } from '@redux/actions/movies.action';
 
 const StyledRating = styled(Rating)(() => ({
   '& .css-1c99szj-MuiRating-icon': {
@@ -22,22 +27,59 @@ const MovieDetailPage: NextPageWithLayout = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [movie, setMovie] = useState<MovieEntity>();
 
   const router = useRouter();
-  console.log(router);
+  const slug = router.query.movieSlug;
+  const movieType = router.query.movieType;
+
+  const lastMovie = movie?.genres[movie?.genres.length - 1];
+  const genres = movie?.genres.map(genre => {
+    let spread = genre === lastMovie ? ' ' : ', ';
+    return genre + spread;
+  });
+
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const res: any = await moviesService.getMovie({ slug: `${slug}` });
+        if (res.success) {
+          setMovie(res.movie);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    if (slug !== undefined) {
+      fetchMovie();
+    }
+  }, [slug]);
+
+  const dispatch = useAppDispatch();
+  const { nowShowing } = useAppSelector(state => state.movies);
+  const nowShowingMovies = nowShowing.movies;
+
+  useEffect(() => {
+    dispatch(onGetMovies());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
         <Box className="px-4 my-16 w-full">
           <Box className="flex flex-col md:flex-row" gap={4}>
-            <img className="block rounded w-[250px] h-[386px] object-fill" src="/assets/images/nhabanu.jpg" alt="img" />
+            <img
+              className="block rounded w-[250px] h-[386px] object-fill"
+              src={`${NEXT_APP_API_BASE_URL}/static/${movie?.image}`}
+              alt="img"
+            />
             <Stack spacing={1} className="overflow-hidden">
               <Typography
                 className="overflow-hidden whitespace-nowrap text-ellipsis uppercase"
                 color="#fff"
                 fontSize={26}
               >
-                NHÀ BÀ NỮ
+                {movie?.name}
               </Typography>
               <Box display="flex" alignItems="center">
                 <Typography color="#fff" fontSize={18}>
@@ -49,37 +91,41 @@ const MovieDetailPage: NextPageWithLayout = () => {
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2} pt={1}>
-                <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">C16</span>
+                <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">C{movie?.age}</span>
                 <AccessTimeOutlined fontSize="small" />
-                <span className="text-text ml-[-10px]">120 phút</span>
+                <span className="text-text ml-[-10px]">{movie?.duration} phút</span>
               </Box>
               <Typography color="#fff">
-                Thể loại: <span className="text-text">Hài</span>
+                Thể loại: <span className="text-text"> {genres}</span>
               </Typography>
               <Typography color="#fff">
-                Nhà sản xuất: <span className="text-text">CJ HK Entertainment</span>
+                Nhà sản xuất: <span className="text-text">{movie?.producer}</span>
               </Typography>
               <Typography color="#fff">
-                Diễn viên: <span className="text-text">Lê Giang, Trấn Thành, Song Luân, Khả Như, Lê Dương Bảo Lâm</span>
+                Diễn viên: <span className="text-text">{movie?.actor}</span>
               </Typography>
               <Typography color="#fff">
-                Quốc gia: <span className="text-text">Việt Nam</span>
+                Quốc gia: <span className="text-text">{movie?.country}</span>
               </Typography>
               <Typography color="#fff">
-                Đạo diễn: <span className="text-text">Trấn Thành</span>
+                Đạo diễn: <span className="text-text">{movie?.director}</span>
               </Typography>
               <Typography color="#fff">
-                Ngày khởi chiếu: <span className="text-text">20/1/2023</span>
+                Ngày khởi chiếu: <span className="text-text"> {moment(movie?.releaseDate).format('DD/MM/YYYY')}</span>
               </Typography>
               <Box display="flex" pt={1}>
-                <Link href="/book-ticket/slug">
-                  <Button style={{ height: 40, marginRight: 16 }} primary small>
-                    Mua vé
+                {movieType === 'now-showing' ? (
+                  <Link href={`/book-ticket/${movie?.slug}`}>
+                    <Button style={{ height: 40, marginRight: 16 }} primary small>
+                      Mua vé
+                    </Button>
+                  </Link>
+                ) : null}
+                {movie?.trailer !== null ? (
+                  <Button className="hover:border-primary" onClick={handleOpen} style={{ height: 40 }} outline>
+                    Xem trailer
                   </Button>
-                </Link>
-                <Button className="hover:border-primary" onClick={handleOpen} style={{ height: 40 }} outline>
-                  Xem trailer
-                </Button>
+                ) : null}
               </Box>
             </Stack>
           </Box>
@@ -88,19 +134,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
               Nội dung phim <p className="underline-title top-10"></p>
             </h2>
             <Box mt={4} fontSize={15}>
-              <p>
-                Gia đình chữ “N” mỗi người một cá tính, một sở thích riêng nhưng tất cả đều phải chung tay vào công việc
-                bận rộn của quán bánh canh cua nức tiếng của bà Nữ. Hình ảnh các thành viên gia đình bà Nữ đều rất gần
-                gũi với hình mẫu người phụ nữ trong đời sống thường ngày: bản lĩnh, giỏi giang và thừa sức xoay trở với
-                hằng hà sa số những thử thách trong cuộc sống.
-              </p>
-              <p>
-                Nhà Bà Nữ tái hiện chân thực cuộc sống thường nhật của một gia đình lao động điển hình, sống bằng nghề
-                bán bánh canh cua. Nhà Bà Nữ do Kim Entertainment sản xuất, Trấn Thành đạo diễn. Bộ phim hội tụ những
-                tên tuổi diễn viên thân quen với khán giả Việt như: Trấn Thành, Lê Giang, NSND Ngọc Giàu, Khả Như, Huỳnh
-                Uyển Ân, Song Luân, Lê Dương Bảo Lâm, NSND Việt Anh, NSƯT Công Ninh, Ngân Quỳnh, Lý Hạo Mạnh Quỳnh,
-                Phương Lan…
-              </p>
+              <p>{movie?.description}</p>
             </Box>
           </Box>
         </Box>
@@ -109,7 +143,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
       <Box style={{ borderTop: '2px solid #ff55a5' }} pb={8}>
         <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
           <Box className="px-4 w-full">
-            <Grid container spacing={2} pt={7} gap={3}>
+            <Grid container spacing={2} pt={7}>
               <Grid item xs={12} md={9}>
                 <Box>
                   <h2 className="text-2xl text-white leading-[100%] relative">
@@ -165,12 +199,11 @@ const MovieDetailPage: NextPageWithLayout = () => {
                     Phim đang chiếu<p className="underline-title top-10"></p>
                   </h2>
                   <Grid container spacing={2}>
-                    <Grid item xs={6} md={12}>
-                      <MovieItem state="now-showing" />
-                    </Grid>
-                    <Grid item xs={6} md={12}>
-                      <MovieItem state="now-showing" />
-                    </Grid>
+                    {nowShowingMovies?.slice(0, 2).map(nowShowingMovie => (
+                      <Grid item xs={6} sm={6} md={12} key={nowShowingMovie.id}>
+                        <MovieItem movie={nowShowingMovie} state="now-showing" />
+                      </Grid>
+                    ))}
                   </Grid>
                   <Box display="flex" justifyContent="flex-end" mt={3}>
                     <Link href="/movies/now-showing">
@@ -199,10 +232,10 @@ const MovieDetailPage: NextPageWithLayout = () => {
         aria-describedby="alert-dialog-description"
       >
         <Box className=" relative">
-          <Typography className="text-center text-lg py-3 capitalize ">nhà bà nữ</Typography>
+          <Typography className="text-center text-lg py-3 capitalize ">{movie?.name}</Typography>
           <Divider />
           <Box p={2}>
-            <YouTube videoId={'pg4L29p98Kw'} opts={{ height: '420px', width: '100%' }} />
+            <YouTube videoId={movie?.trailer} opts={{ height: '420px', width: '100%' }} />
           </Box>
         </Box>
         <Close
