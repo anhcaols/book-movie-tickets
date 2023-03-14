@@ -17,7 +17,7 @@ function MovieItem({ movie, state }: MovieItemProps) {
     <div className="px-[10px] xl:px-[15px] mt-[15px] md:mt-[30px] flex flex-col">
       <div className={cx('movie-image', 'relative h-[355px]')}>
         <img
-          className="block rounded w-full h-full object-contain overflow-hidden"
+          className="block rounded w-full h-full object-cover overflow-hidden"
           src={`${NEXT_APP_API_BASE_URL}/static/${movie?.image}`}
           alt={'img'}
         />

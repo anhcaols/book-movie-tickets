@@ -198,7 +198,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                   <h2 className="text-2xl text-white leading-[100%] relative pl-4">
                     Phim đang chiếu<p className="underline-title top-10"></p>
                   </h2>
-                  <Grid container spacing={2}>
+                  <Grid container>
                     {nowShowingMovies?.slice(0, 2).map(nowShowingMovie => (
                       <Grid item xs={6} sm={6} md={12} key={nowShowingMovie.id}>
                         <MovieItem movie={nowShowingMovie} state="now-showing" />
