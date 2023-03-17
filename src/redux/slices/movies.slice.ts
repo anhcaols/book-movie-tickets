@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { onGetMovies } from '@redux/actions/movies.action';
 
 interface MoviesState {
@@ -47,14 +47,20 @@ export const movieSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(onGetMovies.fulfilled, (state, action) => {
-      state.allMovies.movies = action.payload.allMovies.movies;
-      state.allMovies.moviesPagination = action.payload.allMovies.moviesPagination;
+      if (action.payload.allMovies) {
+        state.allMovies.movies.push(...action.payload.allMovies.movies);
+        state.allMovies.moviesPagination = action.payload.allMovies.moviesPagination;
+      }
 
-      state.nowShowing.movies = action.payload.nowShowing.movies;
-      state.nowShowing.moviesPagination = action.payload.nowShowing.moviesPagination;
+      if (action.payload.nowShowing) {
+        state.nowShowing.movies = action.payload.nowShowing.movies;
+        state.nowShowing.moviesPagination = action.payload.nowShowing.moviesPagination;
+      }
 
-      state.comingSoon.movies = action.payload.comingSoon.movies;
-      state.comingSoon.moviesPagination = action.payload.comingSoon.moviesPagination;
+      if (action.payload.comingSoon) {
+        state.comingSoon.movies = action.payload.comingSoon.movies;
+        state.comingSoon.moviesPagination = action.payload.comingSoon.moviesPagination;
+      }
     });
   },
 });

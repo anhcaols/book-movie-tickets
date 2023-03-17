@@ -1,20 +1,24 @@
-import Button from '@components/shared/Button/Button';
 import MovieItem from '@components/shared/MovieItem/MovieItem';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { Pagination } from '@mui/material';
 import { onGetMovies } from '@redux/actions/movies.action';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 function NowShowing() {
   const dispatch = useAppDispatch();
-  const { nowShowing } = useAppSelector(state => state.movies);
-  const nowShowingMovies = nowShowing.movies;
+  const [page, setPage] = useState(1);
 
+  const { nowShowing } = useAppSelector(state => state.movies);
   useEffect(() => {
-    dispatch(onGetMovies());
+    dispatch(onGetMovies({ type: 'nowShowing', query: { page, limit: 8 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
+
+  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <div className="bg-bgd">
       <div className="container flex flex-row flex-wrap content-center items-center mx-auto py-16">
@@ -28,14 +32,19 @@ function NowShowing() {
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-            {nowShowingMovies?.map(nowShowingMovie => (
+            {nowShowing?.movies?.map(nowShowingMovie => (
               <MovieItem movie={nowShowingMovie} key={nowShowingMovie.id} state="now-showing" />
             ))}
           </div>
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
-            <Button className="mt-12" primary large>
-              Xem thêm
-            </Button>
+            <Pagination
+              count={nowShowing.moviesPagination.totalPages}
+              onChange={handleChangePage}
+              className="mt-12"
+              size="large"
+              variant="outlined"
+              shape="rounded"
+            />
           </div>
         </div>
       </div>

@@ -1,16 +1,8 @@
 import { BaseService } from './base.service';
 
 export class MoviesService extends BaseService {
-  async getMovies(payload?: { query: Record<string, string> }) {
-    const {
-      query = {
-        page: '1',
-        limit: '8',
-      },
-    } = payload || {};
-
-    const queryString = new URLSearchParams(query).toString();
-    const { data } = await this.httpClient.get(`/movies?${queryString}`);
+  async getMovies(query: { page: number; limit: number }) {
+    const { data } = await this.httpClient.get(`/movies?page=${query.page}&limit=${query.limit}`);
 
     return data;
   }
@@ -20,30 +12,14 @@ export class MoviesService extends BaseService {
     return data;
   }
 
-  async getNowShowingMovies(payload?: { query: Record<string, string> }) {
-    const {
-      query = {
-        page: '1',
-        limit: '8',
-      },
-    } = payload || {};
-
-    const queryString = new URLSearchParams(query).toString();
-    const { data } = await this.httpClient.get(`/movies/now-showing?${queryString}`);
+  async getNowShowingMovies(query: { page: number; limit: number }) {
+    const { data } = await this.httpClient.get(`/movies/now-showing?page=${query.page}&limit=${query.limit}`);
 
     return data;
   }
 
-  async getComingSoonMovies(payload?: { query: Record<string, string> }) {
-    const {
-      query = {
-        page: '1',
-        limit: '8',
-      },
-    } = payload || {};
-
-    const queryString = new URLSearchParams(query).toString();
-    const { data } = await this.httpClient.get(`/movies/coming-soon?${queryString}`);
+  async getComingSoonMovies(query: { page: number; limit: number }) {
+    const { data } = await this.httpClient.get(`/movies/coming-soon?page=${query.page}&limit=${query.limit}`);
 
     return data;
   }

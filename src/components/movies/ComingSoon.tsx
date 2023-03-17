@@ -1,19 +1,23 @@
-import Button from '@components/shared/Button/Button';
 import MovieItem from '@components/shared/MovieItem/MovieItem';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { Pagination } from '@mui/material';
 import { onGetMovies } from '@redux/actions/movies.action';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 function ComingSoon() {
   const dispatch = useAppDispatch();
-  const { comingSoon } = useAppSelector(state => state.movies);
-  const comingSoonMovies = comingSoon.movies;
+  const [page, setPage] = useState(1);
 
+  const { comingSoon } = useAppSelector(state => state.movies);
   useEffect(() => {
-    dispatch(onGetMovies());
+    dispatch(onGetMovies({ type: 'comingSoon', query: { page, limit: 8 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
+
+  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
+    setPage(newPage);
+  };
   return (
     <div className="bg-bgd">
       <div className="container flex flex-row flex-wrap content-center items-center mx-auto py-16">
@@ -27,14 +31,19 @@ function ComingSoon() {
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-            {comingSoonMovies?.map(comingSoonMovie => (
+            {comingSoon?.movies?.map(comingSoonMovie => (
               <MovieItem movie={comingSoonMovie} key={comingSoonMovie.id} state="coming-soon" />
             ))}
           </div>
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
-            <Button className="mt-12" primary large>
-              Xem thêm
-            </Button>
+            <Pagination
+              count={comingSoon.moviesPagination.totalPages}
+              onChange={handleChangePage}
+              className="mt-12"
+              size="large"
+              variant="outlined"
+              shape="rounded"
+            />
           </div>
         </div>
       </div>

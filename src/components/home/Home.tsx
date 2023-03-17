@@ -16,7 +16,8 @@ function Home() {
   const comingSoonMovies = comingSoon.movies;
 
   useEffect(() => {
-    dispatch(onGetMovies());
+    dispatch(onGetMovies({ type: 'nowShowing', query: { page: 1, limit: 8 } }));
+    dispatch(onGetMovies({ type: 'comingSoon', query: { page: 1, limit: 8 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
