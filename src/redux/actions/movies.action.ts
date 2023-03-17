@@ -46,21 +46,3 @@ export const onGetMovies = createAsyncThunkWithCustomError<{
     defaultErrorMessage: 'Error while fetching movies',
   }
 );
-
-export const onGetMovie = createAsyncThunkWithCustomError<
-  {
-    movie: MovieEntity;
-  },
-  GetMoviePayload
->(
-  'ratings',
-  async payload => {
-    getMoviePayloadSchema.parse(payload);
-    const { slug } = payload;
-    const movie: any = await moviesService.getMovie(slug);
-    return movie;
-  },
-  {
-    defaultErrorMessage: 'Error while fetching ratings',
-  }
-);

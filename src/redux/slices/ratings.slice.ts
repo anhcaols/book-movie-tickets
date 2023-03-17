@@ -24,10 +24,14 @@ const ratingsInitialState: RatingsState = {
 export const ratingSlice = createSlice({
   name: 'ratings',
   initialState: ratingsInitialState,
-  reducers: {},
+  reducers: {
+    onClearRatings: state => {
+      state.ratings = [];
+      state.ratingsPagination = initialPagination;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(onGetRatings.fulfilled, (state, action) => {
-      // state.ratings = action.payload.ratings;
       if (action.payload.ratings && typeof action.payload.ratings[Symbol.iterator] === 'function') {
         state.ratings.push(...action.payload.ratings);
       }
@@ -36,6 +40,6 @@ export const ratingSlice = createSlice({
   },
 });
 
-export const {} = ratingSlice.actions;
+export const { onClearRatings } = ratingSlice.actions;
 
 export default ratingSlice.reducer;

@@ -28,11 +28,12 @@ import { moviesService } from '@services/movies.service';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { onGetMovie, onGetMovies } from '@redux/actions/movies.action';
+import { onGetMovies } from '@redux/actions/movies.action';
 import { ratingsService } from '@services/rating.service';
 import { useAsync } from '@hooks/useAsync';
 import { useSnackbar } from 'notistack';
 import { onGetRatings } from '@redux/actions/ratings.action';
+import { onClearRatings } from '@redux/slices/ratings.slice';
 
 const StyledRating = styled(Rating)(() => ({
   '& .css-1c99szj-MuiRating-icon': {
@@ -49,14 +50,11 @@ const MovieDetailPage: NextPageWithLayout = () => {
   const [isCheckStar, setIsCheckStar] = useState<boolean>(false);
   const [content, setContent] = useState<string | undefined>();
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [movie, setMovie] = useState<MovieEntity>();
 
   const dispatch = useAppDispatch();
   const account = useAppSelector(state => state.auth);
-  const { nowShowing } = useAppSelector(state => state.movies);
   const { ratings, ratingsPagination } = useAppSelector(state => state.ratings);
-
-  const nowShowingMovies = nowShowing.movies;
-  const [movie, setMovie] = useState<MovieEntity>();
 
   const slug = router.query.movieSlug;
   const movieType = router.query.movieType;
@@ -67,19 +65,13 @@ const MovieDetailPage: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
-    dispatch(onGetMovies());
-    dispatch(onGetMovie({ slug: `${slug}` }));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
-
-  useEffect(() => {
-    const fetchRatings = async () => {
+    dispatch(onClearRatings());
+    setCurrentPage;
+    const fetchMovie = async () => {
       const res: any = await moviesService.getMovie(`${slug}`);
       setMovie(res.movie);
     };
-    fetchRatings();
-    // setMovie(res.movie);
+    fetchMovie();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
@@ -87,7 +79,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
     const { query, movieId } = {
       query: {
         page: currentPage,
-        limit: 2,
+        limit: 5,
       },
       movieId: movie?.id,
     };
@@ -130,14 +122,14 @@ const MovieDetailPage: NextPageWithLayout = () => {
     delay: 500,
     asyncFunction: async payload => ratingsService.createRating(payload),
     onResolve: () => {
-      enqueueSnackbar('Đánh giá phim thành công', {
+      enqueueSnackbar('Đánh giá bộ phim thành công', {
         variant: 'success',
       });
     },
     onReject: (error: any) => {
       if (!error.response.data.success) {
-        enqueueSnackbar('Bạn đã đánh giá phim này', {
-          variant: 'info',
+        enqueueSnackbar('Bạn đã đánh giá bộ phim này', {
+          variant: 'warning',
         });
       }
     },
@@ -233,7 +225,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
       <Box style={{ borderTop: '2px solid #ff55a5' }} pb={8}>
         <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
           <Box className="px-4 w-full">
-            <Grid container spacing={2} pt={7}>
+            <Grid container spacing={3} pt={7}>
               <Grid item xs={12} md={9}>
                 <Box>
                   <h2 className="text-2xl text-white leading-[100%] relative">
@@ -260,7 +252,12 @@ const MovieDetailPage: NextPageWithLayout = () => {
                           />
                         </Box>
                         <Box display="flex" justifyContent="flex-end">
-                          <Button onClick={handleSendRating} primary small>
+                          <Button
+                            disabled={router.query.movieType === 'coming-soon' ? true : false}
+                            onClick={handleSendRating}
+                            primary
+                            small
+                          >
                             Gửi
                           </Button>
                         </Box>
@@ -295,26 +292,16 @@ const MovieDetailPage: NextPageWithLayout = () => {
               <Grid item xs={12} md={3}>
                 <Box>
                   <h2 className="text-2xl text-white leading-[100%] relative pl-4">
-                    Phim đang chiếu<p className="underline-title top-10"></p>
+                    Khuyến mại mới<p className="underline-title top-10"></p>
                   </h2>
-                  <Grid container>
-                    {nowShowingMovies?.slice(0, 2).map(nowShowingMovie => (
-                      <Grid item xs={6} sm={6} md={12} key={nowShowingMovie.id}>
-                        <MovieItem movie={nowShowingMovie} state="now-showing" />
-                      </Grid>
-                    ))}
+                  <Grid container mt={3} spacing={2}>
+                    <Grid item xs={6} sm={6} md={12}>
+                      <img className=" cursor-pointer rounded-[4px]" src="/assets/images/event-1.jpg" alt="event" />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={12}>
+                      <img className=" cursor-pointer rounded-[4px]" src="/assets/images/event-2.jpg" alt="event" />
+                    </Grid>
                   </Grid>
-                  <Box display="flex" justifyContent="flex-end" mt={3}>
-                    <Link href="/movies/now-showing">
-                      <Button
-                        outline
-                        className="h-10 hover:border-primary flex"
-                        icon={<ArrowForward fontSize="small" style={{ marginLeft: 8 }} />}
-                      >
-                        Xem thêm
-                      </Button>
-                    </Link>
-                  </Box>
                 </Box>
               </Grid>
             </Grid>
