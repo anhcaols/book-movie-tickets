@@ -26,4 +26,21 @@ interface MovieEntity {
   trailer: string;
   genres: string[];
   slug: string;
+  scoreRate: number;
+}
+
+interface RatingEntity {
+  id: number;
+  rate: number;
+  movieId: number;
+  user: {
+    id: number;
+    fullName: string;
+    avatar: string;
+    email: string;
+    role: string;
+  };
+  content: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }

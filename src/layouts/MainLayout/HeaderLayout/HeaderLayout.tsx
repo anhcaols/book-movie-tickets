@@ -138,7 +138,7 @@ function Header() {
                     <div className="ml-[10px] xl:ml-0 w-9 h-9">
                       <img
                         className="w-full h-full rounded-full cursor-pointer object-cover"
-                        src={'' || '/assets/images/avatar.jpg'}
+                        src={account.avatar || '/assets/images/avatar.jpg'}
                         alt="img"
                       />
                     </div>

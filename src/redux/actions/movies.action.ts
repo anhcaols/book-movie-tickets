@@ -1,6 +1,12 @@
 import { createAsyncThunkWithCustomError } from '@redux/heplers';
 import { moviesService } from '@services/movies.service';
-// import { z } from 'zod';
+import { z } from 'zod';
+
+const getMoviePayloadSchema = z.object({
+  slug: z.string(),
+});
+
+type GetMoviePayload = z.infer<typeof getMoviePayloadSchema>;
 
 export const onGetMovies = createAsyncThunkWithCustomError<{
   allMovies: {
@@ -37,6 +43,24 @@ export const onGetMovies = createAsyncThunkWithCustomError<{
     };
   },
   {
-    defaultErrorMessage: 'Error while fetching projects',
+    defaultErrorMessage: 'Error while fetching movies',
+  }
+);
+
+export const onGetMovie = createAsyncThunkWithCustomError<
+  {
+    movie: MovieEntity;
+  },
+  GetMoviePayload
+>(
+  'ratings',
+  async payload => {
+    getMoviePayloadSchema.parse(payload);
+    const { slug } = payload;
+    const movie: any = await moviesService.getMovie(slug);
+    return movie;
+  },
+  {
+    defaultErrorMessage: 'Error while fetching ratings',
   }
 );

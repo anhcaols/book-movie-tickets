@@ -1,7 +1,21 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 import { NextPageWithLayout } from '../../_app';
 import MainLayout from '@layouts/MainLayout/MainLayout';
-import { Box, Typography, Stack, Dialog, Divider, Rating, Grid, styled } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Stack,
+  Dialog,
+  Divider,
+  Rating,
+  Grid,
+  styled,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import { Star, AccessTimeOutlined, Close, ArrowForward } from '@mui/icons-material';
 import Button from '@components/shared/Button/Button';
 import { useEffect, useState } from 'react';
@@ -14,7 +28,11 @@ import { moviesService } from '@services/movies.service';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { onGetMovies } from '@redux/actions/movies.action';
+import { onGetMovie, onGetMovies } from '@redux/actions/movies.action';
+import { ratingsService } from '@services/rating.service';
+import { useAsync } from '@hooks/useAsync';
+import { useSnackbar } from 'notistack';
+import { onGetRatings } from '@redux/actions/ratings.action';
 
 const StyledRating = styled(Rating)(() => ({
   '& .css-1c99szj-MuiRating-icon': {
@@ -23,16 +41,25 @@ const StyledRating = styled(Rating)(() => ({
 }));
 
 const MovieDetailPage: NextPageWithLayout = () => {
-  const [stars, setStars] = useState(0);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const [stars, setStars] = useState<number>(0);
+  const [isOpenTrailer, setIsOpenTrailer] = useState<boolean>(false);
+  const [isOpenLogin, setIsOpenLogin] = useState<boolean>(false);
+  const [isCheckStar, setIsCheckStar] = useState<boolean>(false);
+  const [content, setContent] = useState<string | undefined>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const dispatch = useAppDispatch();
+  const account = useAppSelector(state => state.auth);
+  const { nowShowing } = useAppSelector(state => state.movies);
+  const { ratings, ratingsPagination } = useAppSelector(state => state.ratings);
+
+  const nowShowingMovies = nowShowing.movies;
   const [movie, setMovie] = useState<MovieEntity>();
 
-  const router = useRouter();
   const slug = router.query.movieSlug;
   const movieType = router.query.movieType;
-
   const lastMovie = movie?.genres[movie?.genres.length - 1];
   const genres = movie?.genres.map(genre => {
     let spread = genre === lastMovie ? ' ' : ', ';
@@ -40,29 +67,82 @@ const MovieDetailPage: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res: any = await moviesService.getMovie({ slug: `${slug}` });
-        if (res.success) {
-          setMovie(res.movie);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    if (slug !== undefined) {
-      fetchMovie();
-    }
+    dispatch(onGetMovies());
+    dispatch(onGetMovie({ slug: `${slug}` }));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  const dispatch = useAppDispatch();
-  const { nowShowing } = useAppSelector(state => state.movies);
-  const nowShowingMovies = nowShowing.movies;
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const res: any = await moviesService.getMovie(`${slug}`);
+      setMovie(res.movie);
+    };
+    fetchRatings();
+    // setMovie(res.movie);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   useEffect(() => {
-    dispatch(onGetMovies());
+    const { query, movieId } = {
+      query: {
+        page: currentPage,
+        limit: 2,
+      },
+      movieId: movie?.id,
+    };
+
+    if (movieId !== undefined) {
+      dispatch(onGetRatings({ query, movieId }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [movie?.id, currentPage]);
+
+  useEffect(() => {
+    setIsCheckStar(false);
+  }, [stars]);
+
+  const handleSendRating = () => {
+    if (account?.isLoggedIn === false) {
+      setIsOpenLogin(true);
+      return;
+    }
+    if (stars === 0) {
+      setIsCheckStar(true);
+      return;
+    }
+    executeRating({
+      user_id: account?.account.id,
+      movie_id: Number(movie?.id),
+      rate: stars,
+      content,
+    });
+    setContent('');
+    setStars(0);
+  };
+
+  const [executeRating] = useAsync<{
+    user_id: number;
+    movie_id: number;
+    rate: number;
+    content: string | undefined;
+  }>({
+    delay: 500,
+    asyncFunction: async payload => ratingsService.createRating(payload),
+    onResolve: () => {
+      enqueueSnackbar('Đánh giá phim thành công', {
+        variant: 'success',
+      });
+    },
+    onReject: (error: any) => {
+      if (!error.response.data.success) {
+        enqueueSnackbar('Bạn đã đánh giá phim này', {
+          variant: 'info',
+        });
+      }
+    },
+  });
+
   return (
     <>
       <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
@@ -70,7 +150,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
           <Box className="flex flex-col md:flex-row" gap={4}>
             <img
               className="block rounded w-[250px] h-[386px] object-fill"
-              src={`${NEXT_APP_API_BASE_URL}/static/${movie?.image}`}
+              src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${movie?.image}` : ''}
               alt="img"
             />
             <Stack spacing={1} className="overflow-hidden">
@@ -82,13 +162,18 @@ const MovieDetailPage: NextPageWithLayout = () => {
                 {movie?.name}
               </Typography>
               <Box display="flex" alignItems="center">
-                <Typography color="#fff" fontSize={18}>
-                  Đánh giá:
-                </Typography>
-                <Star fontSize="small" style={{ color: '#ffc028', marginLeft: 10 }} />
-                <Typography color="#fff" fontSize={18}>
-                  8.2<span className="text-text mr-2">/10</span>
-                </Typography>
+                {movie?.scoreRate !== null ? (
+                  <>
+                    <Typography color="#fff" fontSize={18}>
+                      Đánh giá:
+                    </Typography>
+                    <Star fontSize="small" style={{ color: '#ffc028', marginLeft: 10 }} />
+                    <Typography color="#fff" fontSize={18}>
+                      {movie?.scoreRate}
+                      <span className="text-text mr-2">/10</span>
+                    </Typography>
+                  </>
+                ) : null}
               </Box>
               <Box display="flex" alignItems="center" gap={2} pt={1}>
                 <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">C{movie?.age}</span>
@@ -122,7 +207,12 @@ const MovieDetailPage: NextPageWithLayout = () => {
                   </Link>
                 ) : null}
                 {movie?.trailer !== null ? (
-                  <Button className="hover:border-primary" onClick={handleOpen} style={{ height: 40 }} outline>
+                  <Button
+                    className="hover:border-primary"
+                    onClick={() => setIsOpenTrailer(true)}
+                    style={{ height: 40 }}
+                    outline
+                  >
                     Xem trailer
                   </Button>
                 ) : null}
@@ -159,37 +249,46 @@ const MovieDetailPage: NextPageWithLayout = () => {
                           value={stars}
                           onChange={(event, stars: any) => setStars(stars)}
                         />
+                        {isCheckStar && <p className="text-xs text-primary mt-1 italic">Không được bỏ trống số sao</p>}
                         <Box width="100%" className="my-6">
                           <Typography color="#fff">Review của bạn (có thể để trống)</Typography>
                           <textarea
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
                             className="placeholder:text-[#ffffff80] bg-bgd outline-none p-4 text-white rounded resize-none min-h-[150px] w-full mt-2"
-                            placeholder="Đánh giá của bạn về bộ phim Nhà Bà Nữ"
+                            placeholder="Đánh giá của bạn về bộ phim"
                           />
                         </Box>
                         <Box display="flex" justifyContent="flex-end">
-                          <Button primary small>
+                          <Button onClick={handleSendRating} primary small>
                             Gửi
                           </Button>
                         </Box>
                       </Box>
                     </Box>
-                    <Box pt={2}>
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                      <Comment />
-                    </Box>
-                    <Box display="flex" justifyContent="center">
-                      <Button className="mt-6 w-full " primary large>
-                        Xem thêm
-                      </Button>
-                    </Box>
+                    {ratings?.length > 0 ? (
+                      <>
+                        <Box pt={2}>
+                          {ratings?.map(rating => (
+                            <Comment key={rating.id} rating={rating} />
+                          ))}
+                        </Box>
+                        {ratingsPagination?.hasNextPage && (
+                          <Box display="flex" justifyContent="center">
+                            <Button
+                              onClick={() => setCurrentPage(currentPage + 1)}
+                              className="mt-6 w-full "
+                              primary
+                              large
+                            >
+                              Xem thêm
+                            </Button>
+                          </Box>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-center text-[#ffffffbf] my-4 italic">Chưa có đánh giá nào</p>
+                    )}
                   </Box>
                 </Box>
               </Grid>
@@ -226,8 +325,8 @@ const MovieDetailPage: NextPageWithLayout = () => {
       <Dialog
         fullWidth
         maxWidth="md"
-        open={open}
-        onClose={handleClose}
+        open={isOpenTrailer}
+        onClose={() => setIsOpenTrailer(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -239,9 +338,29 @@ const MovieDetailPage: NextPageWithLayout = () => {
           </Box>
         </Box>
         <Close
-          onClick={handleClose}
+          onClick={() => setIsOpenTrailer(false)}
           className="absolute  right-5 top-3 text-[18px] cursor-pointer hover:text-primary"
         />
+      </Dialog>
+
+      <Dialog
+        open={isOpenLogin}
+        onClose={() => setIsOpenLogin(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Bạn đã có tài khoản chưa?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Hãy đăng nhập tài khoản với chúng tôi để có thể thực hiện đánh giá bộ phim.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsOpenLogin(false)}>Hủy</Button>
+          <Button className="h-10" primary onClick={() => router.push('/auth/login')}>
+            Đăng nhập
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );

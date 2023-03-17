@@ -15,8 +15,8 @@ export class MoviesService extends BaseService {
     return data;
   }
 
-  async getMovie(payload: { slug: string }) {
-    const { data } = await this.httpClient.get(`/movies/${payload.slug}`);
+  async getMovie(slug: string) {
+    const { data } = await this.httpClient.get(`/movies/${slug}`);
     return data;
   }
 

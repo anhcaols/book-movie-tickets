@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import Button from '../Button/Button';
 import moment from 'moment';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 interface MovieItemProps {
@@ -13,17 +14,28 @@ interface MovieItemProps {
 }
 
 function MovieItem({ movie, state }: MovieItemProps) {
+  const router = useRouter();
+
+  function handleClick() {
+    router.push({
+      pathname: `/movies/${state}/${movie?.slug}`,
+      query: { movieId: JSON.stringify(movie) },
+    });
+  }
+
   return (
     <div className="px-[10px] xl:px-[15px] mt-[15px] md:mt-[30px] flex flex-col">
       <div className={cx('movie-image', 'relative h-[355px]')}>
         <img
           className="block rounded w-full h-full object-cover overflow-hidden"
-          src={`${NEXT_APP_API_BASE_URL}/static/${movie?.image}`}
+          src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${movie?.image}` : ''}
           alt={'img'}
         />
         <div className={cx('ticket', 'flex flex-col justify-center items-center gap-2')}>
           <Link href={`/movies/${state}/${movie?.slug}`}>
-            <p className="text-white hover:text-primary font-normal text-[15px] opacity-[0.9]">CHI TIẾT PHIM</p>
+            <p onClick={handleClick} className="text-white hover:text-primary font-normal text-[15px] opacity-[0.9]">
+              CHI TIẾT PHIM
+            </p>
           </Link>
           <Link href={`/book-ticket/${movie?.slug}`}>
             <Button className="w-[150px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
