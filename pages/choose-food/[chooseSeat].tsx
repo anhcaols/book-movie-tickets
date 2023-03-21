@@ -73,10 +73,20 @@ const rows = [
 ];
 
 const ChooseFoodPage: NextPageWithLayout = () => {
-  const [countFoods, setCountFoods] = useState<number>(0);
+  const [countFoods, setCountFoods] = useState<any>();
 
   const countFoodRef = useRef<any>(null);
 
+  const handleIncreaseQuantity = (id: string) => {
+    console.log(id);
+    console.log(document.getElementById(`food-${id}`));
+
+    setCountFoods((prevCounts: any) => ({
+      ...prevCounts,
+      [id]: prevCounts[id] ? prevCounts[id] + 1 : 1,
+    }));
+  };
+  useEffect(() => {}, []);
   return (
     <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
       <Box className="px-4 py-16" width="100%">
@@ -112,16 +122,17 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                         <StyledTableCell>
                           <Box display="flex" gap={1}>
                             <RemoveCircleOutlineIcon
-                              onClick={() => {
-                                setCountFoods(count => count - 1);
-                              }}
+                            // onClick={() => {
+                            //   setCountFoods(count => count - 1);
+                            // }}
                             />
                             <input
+                              id={`food-${row.id}`}
                               type="text"
                               min={0}
                               max={10}
                               readOnly
-                              value={countFoods}
+                              value={countFoods[row.id] || 0}
                               style={{
                                 background: 'transparent',
                                 width: 20,
@@ -129,7 +140,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                                 textAlign: 'center',
                               }}
                             />
-                            <AddCircleOutlineIcon onClick={() => setCountFoods(count => count + 1)} />
+                            <AddCircleOutlineIcon onClick={() => handleIncreaseQuantity(row.id)} />
                           </Box>
                         </StyledTableCell>
                         <StyledTableCell>{row.price}</StyledTableCell>

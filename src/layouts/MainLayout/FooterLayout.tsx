@@ -95,15 +95,15 @@ function Footer() {
           )}
         >
           <h4 className="text-[#ffffff99] text-sm pb-[20px] xl:pb-0">
-            © FlixGo, 2022—2023. Create by{' '}
+            © FlixGo, 2022—2023. Tạo bởi{' '}
             <Link className="hover:underline" href={'#'}>
               Cao Anh
             </Link>
             .
           </h4>
           <div className="text-[#ffffff99] text-sm">
-            <span className="mr-[30px]">Terms of Use </span>
-            <span>Privacy Policy</span>
+            <span className="mr-[30px]">Điều khoản sử dụng </span>
+            <span>Chính sách bảo mật</span>
           </div>
         </div>
       </div>

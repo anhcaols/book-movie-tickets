@@ -104,8 +104,8 @@ const BookTicketPage: NextPageWithLayout = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={3} pt={4}>
-              <Grid item xs={12}>
+            <Grid container spacing={3} pt={6}>
+              <Grid item xs={12} md={6}>
                 <Box>
                   <StyledCinema p={2}>
                     <Box>
@@ -115,7 +115,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                       </Typography>
                     </Box>
                     <Box mt={1}>
-                      <Typography className="text-md text-white mb-2">2D Phụ đề</Typography>
+                      <Typography className="text-md text-white pb-2">2D Phụ đề</Typography>
                       <Box display="flex" flexWrap="wrap" gap={2}>
                         <Link href="/choose-seat/slug">
                           <StyledTime variant="outlined">11:20</StyledTime>
@@ -131,7 +131,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                   </StyledCinema>
                 </Box>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <Box>
                   <StyledCinema p={2}>
                     <Box>
@@ -141,7 +141,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                       </Typography>
                     </Box>
                     <Box mt={1}>
-                      <Typography className="text-md text-white mb-2">2D Phụ đề</Typography>
+                      <Typography className="text-md text-white pb-2">2D Phụ đề</Typography>
                       <Box display="flex" flexWrap="wrap" gap={2}>
                         <StyledTime variant="outlined">11:20</StyledTime>
                         <StyledTime variant="outlined">11:20</StyledTime>
@@ -153,7 +153,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                   </StyledCinema>
                 </Box>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <Box>
                   <StyledCinema p={2}>
                     <Box>
@@ -163,7 +163,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                       </Typography>
                     </Box>
                     <Box mt={1}>
-                      <Typography className="text-md text-white mb-2">2D Phụ đề</Typography>
+                      <Typography className="text-md text-white pb-2">2D Phụ đề</Typography>
                       <Box display="flex" flexWrap="wrap" gap={2}>
                         <StyledTime disabled variant="outlined">
                           11:20
