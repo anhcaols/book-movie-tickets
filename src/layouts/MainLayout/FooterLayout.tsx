@@ -17,17 +17,17 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className=" hover:text-white cursor-default text-white font-medium leading-8"
+                className=" hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
                 title="Download Our App"
-                href={'/'}
+                href={'#'}
               />
               <div className="flex items-center md:block">
                 <SubnavItem
                   classNameImg="w-[140px] my-[15px] mr-[15px] md:mr-[0]"
                   img={'/assets/images/google-play.png'}
-                  href={'/'}
+                  href={'#'}
                 />
-                <SubnavItem classNameImg="w-[140px]" img={'/assets/images/app-store.svg'} href={'/'} />
+                <SubnavItem classNameImg="w-[140px]" img={'/assets/images/app-store.svg'} href={'#'} />
               </div>
             </Subnav>
           </div>
@@ -35,49 +35,56 @@ function Footer() {
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
-                title="Resources"
-                href={'/'}
+                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                title="Góc điện ảnh"
+                href={'#'}
               />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="About Us" href={'/'} />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="Pricing Plan" href={'/'} />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="Help Center" href={'/'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Thể loại phim" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Diễn viên" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Đạo diễn" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Bình luận phim" href={'#'} />
             </Subnav>
           </div>
           <div className="legal">
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
-                title="Legal"
-                href={'/'}
+                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                title="Hỗ trợ"
+                href={'#'}
               />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="Terms of Use" href={'/'} />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="Privacy Policy" href={'/'} />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="Security" href={'/'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Góp ý" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Rạp/ giá vé" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="Tuyển dụng" href={'#'} />
             </Subnav>
           </div>
           <div className="Contact">
             <Subnav>
               <SubnavItem
                 fontBase
-                className="mb-2 hover:text-white cursor-default text-white font-medium leading-8"
-                title="Contact"
-                href={'/'}
+                className="mb-2 hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
+                title="Kết nối với chúng tôi"
+                href={'#'}
               />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="+84.395.562.788" href={'/'} />
-              <SubnavItem className="leading-8 text-[#ffffff99]" title="caotheanhls2001@gmail.com" href={'/'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="+84.395.562.788" href={'#'} />
+              <SubnavItem className="leading-8 text-[#ffffff99]" title="caotheanhls2001@gmail.com" href={'#'} />
               <div className={cx('social-media flex items-center h-[40px]')}>
                 <SubnavItem
                   icon={<FacebookIcon className="fill-[#3b5999] w-[22px] h-[22px] mr-[12px]" />}
                   href={'https://www.facebook.com/anhcao.201'}
+                  target="_blank"
                 />
                 <SubnavItem
                   icon={<InstagramIcon className="fill-[#ff55a5] w-[22px] h-[22px] mr-[12px]" />}
                   href={'https://www.instagram.com/__anhcao.201/'}
+                  target="_blank"
                 />
-                <SubnavItem icon={<TwitterIcon className="fill-[#1da1f2] w-[22px] h-[22px] mr-[12px]" />} href={'/'} />
-                <SubnavItem icon={<VkIcon className="fill-[#45668e] w-[22px] h-[22px] mr-[12px]" />} href={'/'} />
+                <SubnavItem
+                  icon={<TwitterIcon className="fill-[#1da1f2] w-[22px] h-[22px] mr-[12px]" />}
+                  href={'https://twitter.com/caoanh0410'}
+                  target="_blank"
+                />
+                <SubnavItem icon={<VkIcon className="fill-[#45668e] w-[22px] h-[22px] mr-[12px]" />} href={'#'} />
               </div>
             </Subnav>
           </div>
@@ -89,7 +96,7 @@ function Footer() {
         >
           <h4 className="text-[#ffffff99] text-sm pb-[20px] xl:pb-0">
             © FlixGo, 2022—2023. Create by{' '}
-            <Link className="hover:underline" href={'/'}>
+            <Link className="hover:underline" href={'#'}>
               Cao Anh
             </Link>
             .
