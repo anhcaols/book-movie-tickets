@@ -4,6 +4,9 @@ import { Box, Grid, styled, Typography } from '@mui/material';
 import Link from 'next/link';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@components/shared/Button/Button';
+import { useRouter } from 'next/router';
+import { Base64 } from 'js-base64';
+import { useEffect } from 'react';
 
 const SeatSelected = styled(Box)(() => ({
   background:
@@ -40,6 +43,12 @@ const SeatChecked = styled(Box)(() => ({
 }));
 
 const ChooseSeatPage: NextPageWithLayout = () => {
+  const router = useRouter();
+  const order = router.query.data;
+  if (order) {
+    const decodedOrder = JSON.parse(Base64.decode(order as string));
+    console.log(decodedOrder);
+  }
   return (
     <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
       <Box className="px-4 py-16" width="100%">

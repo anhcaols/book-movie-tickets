@@ -42,7 +42,6 @@ export const onGetMovies = createAsyncThunkWithCustomError<
     if (type === 'comingSoon') {
       comingSoonMovies = await moviesService.getComingSoonMovies(query);
     }
-    console.log(allMovies);
     return {
       ...(allMovies && {
         allMovies: {

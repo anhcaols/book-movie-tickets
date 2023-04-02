@@ -1,6 +1,7 @@
 import authReducer from '@redux/slices/auth.slice';
 import movieReducer from '@redux/slices/movies.slice';
 import ratingReducer from '@redux/slices/ratings.slice';
+import scheduleReducer from '@redux/slices/schedules.slice';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore({
@@ -8,6 +9,7 @@ const store = configureStore({
     auth: authReducer,
     movies: movieReducer,
     ratings: ratingReducer,
+    schedules: scheduleReducer,
   },
 });
 

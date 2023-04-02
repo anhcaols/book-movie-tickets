@@ -28,7 +28,6 @@ import { moviesService } from '@services/movies.service';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { onGetMovies } from '@redux/actions/movies.action';
 import { ratingsService } from '@services/rating.service';
 import { useAsync } from '@hooks/useAsync';
 import { useSnackbar } from 'notistack';
@@ -58,15 +57,15 @@ const MovieDetailPage: NextPageWithLayout = () => {
 
   const slug = router.query.movieSlug;
   const movieType = router.query.movieType;
-  const lastMovie = movie?.genres[movie?.genres.length - 1];
+
+  const lastGenre = movie?.genres[movie?.genres.length - 1];
   const genres = movie?.genres.map(genre => {
-    let spread = genre === lastMovie ? ' ' : ', ';
+    let spread = genre === lastGenre ? ' ' : ', ';
     return genre + spread;
   });
 
   useEffect(() => {
     dispatch(onClearRatings());
-    setCurrentPage;
     const fetchMovie = async () => {
       const res: any = await moviesService.getMovie(`${slug}`);
       setMovie(res.movie);
@@ -79,7 +78,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
     const { query, movieId } = {
       query: {
         page: currentPage,
-        limit: 5,
+        limit: 10,
       },
       movieId: movie?.id,
     };

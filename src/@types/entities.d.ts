@@ -44,3 +44,17 @@ interface RatingEntity {
   createdAt: Date | string;
   updatedAt: Date | string;
 }
+
+interface ScheduleEntity {
+  movieId: number;
+  room: {
+    id: number;
+    roomName: string;
+    cinemaName: string;
+    cinemaAddress: string;
+  };
+  showTimes: {
+    id: number;
+    startTime: Date | string;
+  }[];
+}

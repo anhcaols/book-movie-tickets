@@ -30,6 +30,7 @@
     "dayjs": "^1.11.7",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
+    "js-base64": "^3.7.5",
     "moment": "^2.29.4",
     "monent": "^0.0.2-security",
     "next": "13.1.6",
