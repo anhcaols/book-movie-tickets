@@ -1,5 +1,6 @@
 import { useAppDispatch } from '@hooks/useRedux';
 import { onSignInSuccess } from '@redux/slices/auth.slice';
+import { onClearInvoiceData } from '@redux/slices/invoiceData.slice';
 import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -13,6 +14,10 @@ let didInit = false;
 const AppAuthentication = ({ children }: AppAuthenticationProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  // if (router.pathname === '/choose-seat/[chooseSeat]' || router.pathname === '/choose-seat/[chooseFood]') {
+  //   dispatch(onClearInvoiceData());
+  // }
 
   function validateTokenOnAppStartup() {
     if (!didInit) {

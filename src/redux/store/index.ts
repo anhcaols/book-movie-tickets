@@ -1,8 +1,21 @@
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import authReducer from '@redux/slices/auth.slice';
 import movieReducer from '@redux/slices/movies.slice';
 import ratingReducer from '@redux/slices/ratings.slice';
 import scheduleReducer from '@redux/slices/schedules.slice';
-import { configureStore } from '@reduxjs/toolkit';
+import statusSeatReducer from '@redux/slices/statusSeats.slice';
+import invoiceDataReducer from '@redux/slices/invoiceData.slice';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['invoiceData'],
+};
+
+const persistedReducer = persistReducer(persistConfig, invoiceDataReducer);
 
 const store = configureStore({
   reducer: {
@@ -10,10 +23,14 @@ const store = configureStore({
     movies: movieReducer,
     ratings: ratingReducer,
     schedules: scheduleReducer,
+    statusSeats: statusSeatReducer,
+    invoiceData: persistedReducer,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const persistor = persistStore(store);
 
 export default store;

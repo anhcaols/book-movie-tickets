@@ -1,4 +1,4 @@
-import { onFilterSchedules, onGetSchedulesByMovie } from '@redux/actions/schedule.action';
+import { onFilterSchedules, onGetSchedulesByMovie } from '@redux/actions/schedules.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface SchedulesState {

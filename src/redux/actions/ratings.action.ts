@@ -1,5 +1,5 @@
 import { createAsyncThunkWithCustomError } from '@redux/heplers';
-import { ratingsService } from '@services/rating.service';
+import { ratingsService } from '@services/ratings.service';
 import { z } from 'zod';
 
 const getRatingsPayloadSchema = z.object({

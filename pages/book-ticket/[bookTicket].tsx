@@ -21,16 +21,16 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller, useForm } from 'react-hook-form';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { moviesService } from '@services/movies.service';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { onFilterSchedules, onGetSchedulesByMovie } from '@redux/actions/schedule.action';
+import { onFilterSchedules, onGetSchedulesByMovie } from '@redux/actions/schedules.action';
 import moment from 'moment';
 import dayjs from 'dayjs';
 import { onClearSchedules } from '@redux/slices/schedules.slice';
 import { Base64 } from 'js-base64';
+import { onClearInvoiceData, onSetInvoiceData } from '@redux/slices/invoiceData.slice';
 
 const StyledCinema = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -156,16 +156,36 @@ const BookTicketPage: NextPageWithLayout = () => {
     [currentCinema, currentCity, movie]
   );
 
-  const handleChooseSchedule = (scheduleId: number) => {
+  const handleChooseSchedule = (scheduleId: number, showTime: string | Date, room: string, cinema: string) => {
     if (!isLoggedIn) {
       router.push('/auth/login');
     } else {
-      const data = { schedule_id: scheduleId, user_id: account.id };
+      const data = {
+        schedule_id: scheduleId,
+        user_id: account.id,
+        showTime,
+        room,
+        cinema,
+        movie: {
+          id: movie?.id,
+          name: movie?.name,
+          age: movie?.age,
+        },
+      };
       const encodedData = Base64.encode(JSON.stringify(data));
       router.push({
         pathname: `/choose-seat/${slug}`,
-        query: { data: encodedData },
       });
+
+      dispatch(onSetInvoiceData(encodedData));
+
+      // setTimeout(() => {
+      //   dispatch(onClearInvoiceData());
+      //   router.push({
+      //     pathname: `/`,
+      //   });
+      //   console.log('fail');
+      // }, 20000);
     }
   };
 
@@ -288,7 +308,14 @@ const BookTicketPage: NextPageWithLayout = () => {
                           <Box display="flex" flexWrap="wrap" gap={2}>
                             {schedule.showTimes.map(showTime => (
                               <StyledTime
-                                onClick={() => handleChooseSchedule(showTime.id)}
+                                onClick={() =>
+                                  handleChooseSchedule(
+                                    showTime.id,
+                                    showTime.startTime,
+                                    schedule.room.roomName,
+                                    schedule.room.cinemaName
+                                  )
+                                }
                                 key={showTime.id}
                                 variant="outlined"
                               >

@@ -9,6 +9,8 @@ import store from '@redux/store';
 import { Provider } from 'react-redux';
 import { SnackbarProvider } from 'notistack';
 import AppAuthentication from '@components/app/AppAuthentication';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from '@redux/store';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -24,16 +26,18 @@ function MyApp({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || (page => page);
   return (
     <Provider store={store}>
-      <AppAuthentication>
-        <SnackbarProvider
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-        >
-          <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>
-        </SnackbarProvider>
-      </AppAuthentication>
+      <PersistGate persistor={persistor}>
+        <AppAuthentication>
+          <SnackbarProvider
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <MainApp>{getLayout(<Component {...pageProps} />)}</MainApp>
+          </SnackbarProvider>
+        </AppAuthentication>
+      </PersistGate>
     </Provider>
   );
 }

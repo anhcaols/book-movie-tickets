@@ -1,4 +1,4 @@
-import { schedulesService } from './../../services/schedule.service';
+import { schedulesService } from '../../services/schedules.service';
 import { createAsyncThunkWithCustomError } from '@redux/heplers';
 import { z } from 'zod';
 

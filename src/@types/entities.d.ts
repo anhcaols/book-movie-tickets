@@ -58,3 +58,25 @@ interface ScheduleEntity {
     startTime: Date | string;
   }[];
 }
+
+interface StatusSeatEntity {
+  id: number;
+  seatId: number;
+  schedule: {
+    id: number;
+    movie: {
+      id: number;
+      name: string;
+    };
+    showTime: Date | string;
+  };
+  room: {
+    id: number;
+    name: string;
+  };
+  rowPosition: number;
+  columnPosition: number;
+  status: string;
+  seatType: string;
+  price: number;
+}

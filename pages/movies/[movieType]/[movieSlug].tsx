@@ -28,7 +28,7 @@ import { moviesService } from '@services/movies.service';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { ratingsService } from '@services/rating.service';
+import { ratingsService } from '@services/ratings.service';
 import { useAsync } from '@hooks/useAsync';
 import { useSnackbar } from 'notistack';
 import { onGetRatings } from '@redux/actions/ratings.action';

@@ -132,7 +132,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                               min={0}
                               max={10}
                               readOnly
-                              value={countFoods[row.id] || 0}
+                              value={0}
                               style={{
                                 background: 'transparent',
                                 width: 20,
