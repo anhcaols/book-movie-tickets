@@ -88,3 +88,16 @@ interface FoodEntity {
   description: string;
   image: string;
 }
+
+interface OrderByUserEntity {
+  id: number;
+  user: {
+    id: number;
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    role: string;
+  };
+  orderDate: string;
+  totalMount: number;
+}

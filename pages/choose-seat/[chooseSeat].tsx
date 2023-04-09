@@ -50,6 +50,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   const [displaySeats, setDisplaySeats] = useState<
     {
       id: number;
+      seatId: number;
       alphabetOfRow: string;
       price: number;
     }[]
@@ -105,6 +106,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   for (const seat of statusSeats) {
     totalSeats.push({
       id: seat.id,
+      seatId: seat.seatId,
       column: seat.columnPosition,
       status: seat.status,
       seatType: seat.seatType,
@@ -119,11 +121,18 @@ const ChooseSeatPage: NextPageWithLayout = () => {
     newTotalSeats.push(totalSeats.slice(i, i + totalColumns));
   }
 
-  const handleChooseSeat = (seatId: number, statusSeat: string, price: number, row: number, column: number) => {
+  const handleChooseSeat = (
+    id: number,
+    seatId: number,
+    statusSeat: string,
+    price: number,
+    row: number,
+    column: number
+  ) => {
     const filterRow = alphabets.filter(item => item.row === row);
     const alphabetOfRow = `${filterRow[0].text}${column}`;
     if (statusSeat === 'available') {
-      const seatChecked = document.querySelector(`#seat-${seatId}`);
+      const seatChecked = document.querySelector(`#seat-${id}`);
       if (seatChecked) {
         seatChecked.classList.toggle(styles.active);
       }
@@ -131,7 +140,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
       let isCheckedActive = seatChecked?.classList;
       let hasRedClass = isCheckedActive?.contains(styles.active);
       if (hasRedClass) {
-        setDisplaySeats(prev => [...prev, { id: seatId, alphabetOfRow, price }]);
+        setDisplaySeats(prev => [...prev, { id, seatId, alphabetOfRow, price }]);
       } else {
         const filteredArray = displaySeats.filter(item => item.alphabetOfRow !== alphabetOfRow);
         setDisplaySeats(filteredArray);
@@ -159,7 +168,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   const handleContinue = () => {
     const seats = displaySeats?.map(seat => {
       return {
-        id: seat.id,
+        id: seat.seatId,
         alphabetOfRow: seat.alphabetOfRow,
       };
     });
@@ -250,7 +259,14 @@ const ChooseSeatPage: NextPageWithLayout = () => {
                             style={style}
                             id={`seat-${seat.id}`}
                             onClick={() =>
-                              handleChooseSeat(seat.id, seat.status, seat.price, seat.rowPosition, seat.columnPosition)
+                              handleChooseSeat(
+                                seat.id,
+                                seat.seatId,
+                                seat.status,
+                                seat.price,
+                                seat.rowPosition,
+                                seat.columnPosition
+                              )
                             }
                             key={index}
                           >

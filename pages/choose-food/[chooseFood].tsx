@@ -29,6 +29,7 @@ import { onGetFoods } from '@redux/actions/foods.action';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import getVietnameseDayOfWeek from '@utils/index';
 import { onSetInvoiceData } from '@redux/slices/invoiceData.slice';
+import { onCreateOrder } from '@redux/actions/orders.action';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -137,7 +138,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
   };
 
   const handleBook = () => {
-    const food = displayFoods?.map(food => {
+    const foods = displayFoods?.map(food => {
       return {
         id: food.id,
         quantity: food.quantity,
@@ -146,11 +147,15 @@ const ChooseFoodPage: NextPageWithLayout = () => {
     const data = {
       user_id: invoiceData.user_id,
       schedule_id: invoiceData.schedule_id,
-      seat_id: invoiceData.seats.map((seat: any) => seat.id),
-      food,
+      seats: invoiceData.seats.map((seat: any) => seat.id),
+      foods,
     };
     console.log(data);
-    // router.push(`/choose-food/${slug}`);
+    dispatch(onCreateOrder(data));
+    enqueueSnackbar('Đã đặt vé thành công', {
+      variant: 'success',
+    });
+    router.push(`/`);
   };
 
   return (
