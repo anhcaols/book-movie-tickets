@@ -10,10 +10,10 @@ import { useEffect, useState } from 'react';
 import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import styles from './ChooseSeat.module.scss';
-import { moviesService } from '@services/movies.service';
 import moment from 'moment';
 import { onSetInvoiceData } from '@redux/slices/invoiceData.slice';
 import { useSnackbar } from 'notistack';
+import getVietnameseDayOfWeek from '@utils/index';
 
 const Seat = styled(Box)(() => ({
   cursor: 'default',
@@ -25,6 +25,23 @@ const Seat = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'center',
 }));
+
+// style of seat
+const styleSeatVip = {
+  background: '#d4b15f',
+  cursor: 'pointer',
+};
+
+const styleSeatAvailable = {
+  background: '#dfdfdf',
+  cursor: 'pointer',
+};
+
+const styleSeatBooked = {
+  background:
+    'repeating-linear-gradient(45deg,hsla(0,0%,60%,.4),hsla(0,0%,60%,.4) 10px,hsla(0,0%,60%,.6) 0,hsla(0,0%,60%,.6) 20px)',
+  cursor: 'default',
+};
 
 const ChooseSeatPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -41,16 +58,14 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   const slug = router.query.chooseSeat;
 
   const { invoiceData } = useAppSelector(state => state.invoiceData);
-  let decodeData: any = invoiceData;
-  if (Object.keys(invoiceData).length === 0) {
-    router.push('/');
-  } else {
-    decodeData = JSON.parse(Base64.decode(invoiceData as string));
-    console.log(decodeData);
-  }
 
+  useEffect(() => {
+    dispatch(onGetStatusSeats({ query: { page: 1, limit: 200 }, payload: { schedule_id: invoiceData.schedule_id } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
+  // handle when remove persist
   const [storageEventHandled, setStorageEventHandled] = useState(false);
-
   useEffect(() => {
     if (!storageEventHandled) {
       window.addEventListener('storage', event => {
@@ -65,15 +80,8 @@ const ChooseSeatPage: NextPageWithLayout = () => {
     }
   }, [router, enqueueSnackbar, storageEventHandled]);
 
-  useEffect(() => {
-    if (decodeData) {
-      dispatch(onGetStatusSeats({ query: { page: 1, limit: 200 }, payload: { schedule_id: decodeData.schedule_id } }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
-
-  const { statusSeats } = useAppSelector(state => state.statusSeats);
   // get Seat by alphabets row
+  const { statusSeats } = useAppSelector(state => state.statusSeats);
   let alphabets: {
     text: string;
     row: number;
@@ -111,23 +119,6 @@ const ChooseSeatPage: NextPageWithLayout = () => {
     newTotalSeats.push(totalSeats.slice(i, i + totalColumns));
   }
 
-  // style of seat
-  const styleSeatVip = {
-    background: '#d4b15f',
-    cursor: 'pointer',
-  };
-
-  const styleSeatAvailable = {
-    background: '#dfdfdf',
-    cursor: 'pointer',
-  };
-
-  const styleSeatBooked = {
-    background:
-      'repeating-linear-gradient(45deg,hsla(0,0%,60%,.4),hsla(0,0%,60%,.4) 10px,hsla(0,0%,60%,.6) 0,hsla(0,0%,60%,.6) 20px)',
-    cursor: 'default',
-  };
-
   const handleChooseSeat = (seatId: number, statusSeat: string, price: number, row: number, column: number) => {
     const filterRow = alphabets.filter(item => item.row === row);
     const alphabetOfRow = `${filterRow[0].text}${column}`;
@@ -148,28 +139,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
     }
   };
 
-  function getVietnameseDayOfWeek(dayOfWeek: string) {
-    switch (dayOfWeek) {
-      case 'Monday':
-        return 'Thứ hai';
-      case 'Tuesday':
-        return 'Thứ ba';
-      case 'Wednesday':
-        return 'Thứ tư';
-      case 'Thursday':
-        return 'Thứ năm';
-      case 'Friday':
-        return 'Thứ sáu';
-      case 'Saturday':
-        return 'Thứ bảy';
-      case 'Sunday':
-        return 'Chủ nhật';
-      default:
-        return '';
-    }
-  }
-  const moment = require('moment');
-  const date = moment(decodeData?.showTime);
+  const date = moment(invoiceData?.showTime);
   const dayOfWeek = date.format('dddd');
   const vietnameseDayOfWeek = getVietnameseDayOfWeek(dayOfWeek);
 
@@ -187,7 +157,6 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   });
 
   const handleContinue = () => {
-    console.log(decodeData);
     const seats = displaySeats?.map(seat => {
       return {
         id: seat.id,
@@ -199,9 +168,8 @@ const ChooseSeatPage: NextPageWithLayout = () => {
         variant: 'warning',
       });
     } else {
-      const data = { ...decodeData, seats, totalAmount };
-      const encodedData = Base64.encode(JSON.stringify(data));
-      dispatch(onSetInvoiceData(encodedData));
+      const data = { ...invoiceData, seats, totalAmount };
+      dispatch(onSetInvoiceData(data));
       router.push(`/choose-food/${slug}`);
     }
   };
@@ -299,29 +267,30 @@ const ChooseSeatPage: NextPageWithLayout = () => {
           </Grid>
           <Grid item xs={12} md={4}>
             <Box className="bg-[#ffffff0d] p-4 rounded-lg gap-1 flex flex-col">
-              <p className="text-xl text-white capitalize font-semibold">{decodeData?.movie?.name}</p>
+              <p className="text-lg text-white capitalize font-semibold">{invoiceData?.movie?.name}</p>
               <Box mb={1}>
                 <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">
-                  C{decodeData?.movie?.age}
+                  C{invoiceData?.movie?.age}
                 </span>
                 <span className="text-xs mt-2 ml-2 text-primary opacity-[0.8] ">
-                  Phim chỉ dành cho khán giả từ {decodeData?.movie?.age} tuổi trở lên
+                  Phim chỉ dành cho khán giả từ {invoiceData?.movie?.age} tuổi trở lên
                 </span>
               </Box>
-              <Typography className=" text-text ">
-                Rạp: <span className="text-white capitalize font-semibold">{decodeData?.cinema}</span>
-              </Typography>
-              <Typography className=" text-text ">
-                Suất: <span className="font-semibold text-white">{moment(decodeData?.showTime).format('HH:mm')}</span> -{' '}
+              <p className=" text-[15px] text-text ">
+                Rạp: <span className="text-white capitalize font-semibold">{invoiceData?.cinema}</span>
+              </p>
+              <p className=" text-[15px] text-text ">
+                Suất: <span className="font-semibold text-white">{moment(invoiceData?.showTime).format('HH:mm')}</span>{' '}
+                -{' '}
                 <span className="font-semibold text-white">
-                  {vietnameseDayOfWeek}, {moment(decodeData?.startTime).format('DD/MM/YYYY')}
+                  {vietnameseDayOfWeek}, {moment(invoiceData?.startTime).format('DD/MM/YYYY')}
                 </span>
-              </Typography>
-              <Typography className=" text-text ">
-                Phòng chiếu: <span className="font-semibold text-white">{decodeData?.room}</span> - Ghế:{' '}
+              </p>
+              <p className=" text-[15px] text-text ">
+                Phòng chiếu: <span className="font-semibold text-white">{invoiceData?.room}</span> - Ghế:{' '}
                 <span className="font-semibold text-white">{customDisplaySeats.map(seat => seat)}</span>
-              </Typography>
-              <p className="text-[16px] text-text mt-2 ">
+              </p>
+              <p className="text-base text-[15px] text-text mt-2 ">
                 Tổng:{' '}
                 <span className="font-semibold text-white text-base">
                   {totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}

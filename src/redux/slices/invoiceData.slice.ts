@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface StatusSeatsState {
-  invoiceData: {};
+  invoiceData: any;
 }
 
 const invoiceDataInitialState: StatusSeatsState = {

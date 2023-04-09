@@ -157,7 +157,7 @@ const BookTicketPage: NextPageWithLayout = () => {
   );
 
   const handleChooseSchedule = (scheduleId: number, showTime: string | Date, room: string, cinema: string) => {
-    if (!isLoggedIn) {
+    if (isLoggedIn === false) {
       router.push('/auth/login');
     } else {
       const data = {
@@ -172,12 +172,11 @@ const BookTicketPage: NextPageWithLayout = () => {
           age: movie?.age,
         },
       };
-      const encodedData = Base64.encode(JSON.stringify(data));
       router.push({
         pathname: `/choose-seat/${slug}`,
       });
 
-      dispatch(onSetInvoiceData(encodedData));
+      dispatch(onSetInvoiceData(data));
 
       // setTimeout(() => {
       //   dispatch(onClearInvoiceData());

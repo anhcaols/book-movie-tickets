@@ -8,6 +8,7 @@ import ratingReducer from '@redux/slices/ratings.slice';
 import scheduleReducer from '@redux/slices/schedules.slice';
 import statusSeatReducer from '@redux/slices/statusSeats.slice';
 import invoiceDataReducer from '@redux/slices/invoiceData.slice';
+import foodReducer from '@redux/slices/foods.slice';
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const store = configureStore({
     schedules: scheduleReducer,
     statusSeats: statusSeatReducer,
     invoiceData: persistedReducer,
+    foods: foodReducer,
   },
 });
 

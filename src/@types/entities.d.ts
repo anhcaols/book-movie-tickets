@@ -80,3 +80,11 @@ interface StatusSeatEntity {
   seatType: string;
   price: number;
 }
+
+interface FoodEntity {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+}

@@ -16,11 +16,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Link from 'next/link';
 import Button from '@components/shared/Button/Button';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { Base64 } from 'js-base64';
+import { useSnackbar } from 'notistack';
+import moment from 'moment';
+import { onGetFoods } from '@redux/actions/foods.action';
+import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
+import getVietnameseDayOfWeek from '@utils/index';
+import { onSetInvoiceData } from '@redux/slices/invoiceData.slice';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,52 +49,110 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-const rows = [
-  {
-    id: '1',
-    image: 'https://www.galaxycine.vn/media/2023/2/1/combo1-1617790472299_1675215607802.jpg',
-    name: 'iCombo 1 Big HB Standard',
-    description: '1 bắp + 1 nước ngọt 32 Oz',
-    price: '89.000',
-  },
-  {
-    id: '2',
-    image: 'https://www.galaxycine.vn/media/2023/2/1/combo1-1617790472299_1675215607802.jpg',
-    name: 'iCombo 2 Big HB Standard',
-    description: '1 bắp + 1 nước ngọt 32 Oz',
-    price: '90.000',
-  },
-  {
-    id: '3',
-    image: 'https://www.galaxycine.vn/media/2023/2/1/combo1-1617790472299_1675215607802.jpg',
-    name: 'iCombo 3 Big HB Standard',
-    description: '1 bắp + 1 nước ngọt 32 Oz',
-    price: '100.000',
-  },
-  {
-    id: '4',
-    image: 'https://www.galaxycine.vn/media/2023/2/1/combo1-1617790472299_1675215607802.jpg',
-    name: 'iCombo 4 Big HB Standard',
-    description: '1 bắp + 1 nước ngọt 32 Oz',
-    price: '120.000',
-  },
-];
-
 const ChooseFoodPage: NextPageWithLayout = () => {
-  const [countFoods, setCountFoods] = useState<any>();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [countFoods, setCountFoods] = useState<any>({});
+  const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [displayFoods, setDisplayFoods] = useState<
+    {
+      id: number;
+      name: string;
+      quantity: number;
+    }[]
+  >([]);
 
-  const countFoodRef = useRef<any>(null);
+  const slug = router.query.chooseFood;
+  const { foods } = useAppSelector(state => state.foods);
+  const { invoiceData } = useAppSelector(state => state.invoiceData);
 
-  const handleIncreaseQuantity = (id: string) => {
-    console.log(id);
-    console.log(document.getElementById(`food-${id}`));
+  useEffect(() => {
+    dispatch(onGetFoods());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
-    setCountFoods((prevCounts: any) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] ? prevCounts[id] + 1 : 1,
-    }));
+  const date = moment(invoiceData?.showTime);
+  const dayOfWeek = date.format('dddd');
+  const vietnameseDayOfWeek = getVietnameseDayOfWeek(dayOfWeek);
+
+  useEffect(() => {
+    if (foods) {
+      let sum = 0;
+      let foodNames: any = [];
+      Object.keys(countFoods).forEach(key => {
+        const foodId = key.split('-')[1];
+        const quantity = countFoods[key];
+        const food = foods.find(food => food?.id === Number(foodId));
+        if (food) {
+          sum += food?.price * quantity;
+        }
+        if (quantity > 0) {
+          foodNames.push({
+            id: Number(foodId),
+            name: `${food?.name} (${quantity})`,
+            quantity,
+          });
+        }
+      });
+      setDisplayFoods(foodNames);
+      setTotalAmount(sum);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countFoods]);
+
+  // custom render foods
+  const lastFood = displayFoods[displayFoods.length - 1]?.name;
+  const customDisplayFoods = displayFoods?.map(food => {
+    let spread = food?.name === lastFood ? ' ' : ', ';
+    return food?.name + spread;
+  });
+
+  const handleIncreaseQuantity = (food: FoodEntity) => {
+    const currentCount = countFoods[`foodId-${food.id}`] || 0;
+    const quantity = currentCount + 1;
+    if (currentCount < 10) {
+      setCountFoods((prevCount: any) => {
+        const newCount = {
+          ...prevCount,
+          [`foodId-${food.id}`]: quantity,
+        };
+        return newCount;
+      });
+    }
   };
-  useEffect(() => {}, []);
+
+  const handleDecreaseQuantity = (food: FoodEntity) => {
+    const currentCount = countFoods[`foodId-${food.id}`] || 0;
+    const quantity = currentCount - 1;
+    if (currentCount > 0) {
+      setCountFoods((prevCountFoods: any) => {
+        const updatedCountFoods = {
+          ...prevCountFoods,
+          [`foodId-${food.id}`]: quantity,
+        };
+        return updatedCountFoods;
+      });
+    }
+  };
+
+  const handleBook = () => {
+    const food = displayFoods?.map(food => {
+      return {
+        id: food.id,
+        quantity: food.quantity,
+      };
+    });
+    const data = {
+      user_id: invoiceData.user_id,
+      schedule_id: invoiceData.schedule_id,
+      seat_id: invoiceData.seats.map((seat: any) => seat.id),
+      food,
+    };
+    console.log(data);
+    // router.push(`/choose-food/${slug}`);
+  };
+
   return (
     <Box className="container flex flex-row flex-wrap content-center items-center mx-auto">
       <Box className="px-4 py-16" width="100%">
@@ -102,37 +168,41 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>COMBO</StyledTableCell>
+                      <StyledTableCell>GIÁ TIỀN</StyledTableCell>
                       <StyledTableCell>SỐ LƯỢNG</StyledTableCell>
-                      <StyledTableCell>GIÁ(VND)</StyledTableCell>
-                      <StyledTableCell>TỔNG(VND)</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map(row => (
-                      <StyledTableRow key={row.id}>
+                    {foods.map(food => (
+                      <StyledTableRow key={food.id}>
                         <StyledTableCell>
-                          <Box display="flex" gap={2}>
-                            <img className="w-12 h-12 rounded-md" src={`${row.image}`} alt="img" />
+                          <Box display="flex" alignItems="center" gap={2}>
+                            <img
+                              className="w-12 h-12 rounded-md"
+                              src={food?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${food?.image}` : ''}
+                              alt="img"
+                            />
+
                             <Box>
-                              <Typography>{row.name}</Typography>
-                              <Typography className="text-sm text-text">{row.description}</Typography>
+                              <Typography>{food.name}</Typography>
+                              <Typography className="text-sm text-text">{food.description}</Typography>
                             </Box>
                           </Box>
                         </StyledTableCell>
+                        <StyledTableCell>{parseFloat(food.price.toString())} đ</StyledTableCell>
                         <StyledTableCell>
                           <Box display="flex" gap={1}>
                             <RemoveCircleOutlineIcon
-                            // onClick={() => {
-                            //   setCountFoods(count => count - 1);
-                            // }}
+                              className="cursor-pointer"
+                              onClick={() => handleDecreaseQuantity(food)}
                             />
                             <input
-                              id={`food-${row.id}`}
+                              id={`food-${food.id}`}
                               type="text"
                               min={0}
                               max={10}
                               readOnly
-                              value={0}
+                              value={countFoods[`foodId-${food.id}`] || 0}
                               style={{
                                 background: 'transparent',
                                 width: 20,
@@ -140,11 +210,12 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                                 textAlign: 'center',
                               }}
                             />
-                            <AddCircleOutlineIcon onClick={() => handleIncreaseQuantity(row.id)} />
+                            <AddCircleOutlineIcon
+                              className="cursor-pointer"
+                              onClick={() => handleIncreaseQuantity(food)}
+                            />
                           </Box>
                         </StyledTableCell>
-                        <StyledTableCell>{row.price}</StyledTableCell>
-                        <StyledTableCell>200.000</StyledTableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>
@@ -154,36 +225,43 @@ const ChooseFoodPage: NextPageWithLayout = () => {
           </Grid>
           <Grid item xs={12} md={4}>
             <Box className="bg-[#ffffff0d] p-4 rounded-lg gap-1 flex flex-col">
-              <Typography className="text-xl text-white capitalize font-semibold">Nhà bà nữ</Typography>
+              <p className="text-lg text-white capitalize font-semibold">{invoiceData?.movie?.name}</p>
               <Box mb={1}>
-                <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">C16</span>
+                <span className="px-1 bg-gradient-to-r from-[#ff55a5] to-[#ff5860] rounded-sm">
+                  C{invoiceData?.movie?.age}
+                </span>
                 <span className="text-xs mt-2 ml-2 text-primary opacity-[0.8] ">
-                  Phim chỉ dành cho khán giả từ 16 tuổi trở lên
+                  Phim chỉ dành cho khán giả từ {invoiceData?.movie?.age} tuổi trở lên
                 </span>
               </Box>
-              <Typography className="text-[15px] text-text ">
-                Rạp:<span className="text-white capitalize font-semibold">Cinema Nam Định</span>
-              </Typography>
-              <Typography className="text-[15px] text-text ">
-                Suất: <span className="font-semibold text-white">11:20</span> -{' '}
-                <span className="font-semibold text-white">Thứ tư, 22/02/2023</span>
-              </Typography>
-              <Typography className="text-[15px] text-text ">
-                Phòng chiếu: <span className="font-semibold text-white">PC01</span> - Ghế:{' '}
-                <span className="font-semibold text-white">A1, B1</span>
-              </Typography>
-              <Typography className="text-[15px] text-text ">
-                Combo:{' '}
+              <p className=" text-[15px] text-text ">
+                Rạp: <span className="text-white capitalize font-semibold">{invoiceData?.cinema}</span>
+              </p>
+              <p className=" text-[15px] text-text ">
+                Suất: <span className="font-semibold text-white">{moment(invoiceData?.showTime).format('HH:mm')}</span>{' '}
+                -{' '}
                 <span className="font-semibold text-white">
-                  {' '}
-                  iCombo 1 Big HB Standard(2),iCombo 2 Big HB Standard(1)
+                  {vietnameseDayOfWeek}, {moment(invoiceData?.startTime).format('DD/MM/YYYY')}
                 </span>
-              </Typography>
+              </p>
+              <p className=" text-[15px] text-text ">
+                Phòng chiếu: <span className="font-semibold text-white">{invoiceData?.room}</span> - Ghế:{' '}
+                <span className="font-semibold text-white">A1, B1</span>
+              </p>
+              <p className=" text-[15px] text-text ">
+                Combo: <span className="font-semibold text-white">{customDisplayFoods}</span>
+              </p>
 
-              <Typography className="text-[15px] text-text mt-2 ">
-                Tổng: <span className="font-semibold text-white">120.000 VND</span>
-              </Typography>
-              <Button className="mt-4 h-10 w-full" primary>
+              <p className="text-base text-[15px] text-text mt-2 ">
+                Tổng:{' '}
+                <span className="font-semibold text-white text-base">
+                  {(totalAmount + invoiceData.totalAmount).toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })}
+                </span>
+              </p>
+              <Button onClick={handleBook} className="mt-4 h-10 w-full" primary>
                 Đặt vé
               </Button>
             </Box>
