@@ -87,6 +87,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
       });
       setStorageEventHandled(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, storageEventHandled]);
 
   const date = moment(invoiceData?.showTime);

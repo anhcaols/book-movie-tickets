@@ -18,7 +18,7 @@ function Footer() {
               <SubnavItem
                 fontBase
                 className=" hover:text-[#fff] cursor-default text-[#fff] font-medium leading-8"
-                title="Download Our App"
+                title="Ứng dụng của chúng tôi"
                 href={'#'}
               />
               <div className="flex items-center md:block">

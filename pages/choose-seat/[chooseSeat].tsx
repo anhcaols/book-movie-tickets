@@ -79,6 +79,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
       });
       setStorageEventHandled(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, storageEventHandled]);
 
   // get Seat by alphabets row
