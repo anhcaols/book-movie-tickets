@@ -79,7 +79,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
       });
       setStorageEventHandled(true);
     }
-  }, [router, enqueueSnackbar, storageEventHandled]);
+  }, [router, storageEventHandled]);
 
   // get Seat by alphabets row
   const { statusSeats } = useAppSelector(state => state.statusSeats);

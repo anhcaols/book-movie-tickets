@@ -73,6 +73,22 @@ const ChooseFoodPage: NextPageWithLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
+  // handle when remove persist
+  const [storageEventHandled, setStorageEventHandled] = useState(false);
+  useEffect(() => {
+    if (!storageEventHandled) {
+      window.addEventListener('storage', event => {
+        if (event.key === 'persist:root' && event.newValue === null) {
+          router.push('/');
+          enqueueSnackbar('Thao tác thất bại', {
+            variant: 'error',
+          });
+        }
+      });
+      setStorageEventHandled(true);
+    }
+  }, [router, storageEventHandled]);
+
   const date = moment(invoiceData?.showTime);
   const dayOfWeek = date.format('dddd');
   const vietnameseDayOfWeek = getVietnameseDayOfWeek(dayOfWeek);
