@@ -41,14 +41,14 @@ function Header() {
         <div className="container h-[70px] md:h-20 flex flex-row items-center mx-auto pl-[15px] pr-[15px] ">
           {/* Logo */}
           <Link
-            className="logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] hover:bg-bgd"
+            className="logo flex justify-center items-center w-[110px] sm:w-[157px] md:w-[175px] lg:[210px] xl:w-[248px] bg-[#28282d] "
             href={'/'}
           >
-            <img
-              className="w-[80px] sm:w-[100px] md:w-[120px] h-[70px] md:h-20"
-              src="/assets/images/logo.svg"
-              alt="img"
-            />
+            <div className="w-[80px] sm:w-[100px] md:w-[120px] h-[70px] md:h-20 flex items-center justify-center">
+              <h2 className=" text-2xl lg:text-[32px] font-bold ">
+                ANH<span className="text-primary">LS</span>
+              </h2>
+            </div>
           </Link>
           {/* Navbar */}
           <div className={cx('navbar-header', `${isShowSidebar ? 'active' : ''}`)}>
