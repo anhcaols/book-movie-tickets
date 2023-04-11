@@ -7,7 +7,7 @@ import Navbar, { NavbarItem } from '@components/shared/Navbar';
 import PopperWrapper from '@components/shared/Popper';
 import Subnav from '@components/shared/Navbar/Subnav/Subnav';
 import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
-import Button from '@components/shared/Button/Button';
+import Button from '@components/shared/Button';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';

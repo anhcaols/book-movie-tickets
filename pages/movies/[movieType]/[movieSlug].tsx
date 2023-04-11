@@ -17,7 +17,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import { Star, AccessTimeOutlined, Close, ArrowForward } from '@mui/icons-material';
-import Button from '@components/shared/Button/Button';
+import Button from '@components/shared/Button';
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import Link from 'next/link';

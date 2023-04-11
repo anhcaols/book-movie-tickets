@@ -1,26 +1,25 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
-import Button from '@components/shared/Button';
-import { Box, Stack, TextField } from '@mui/material';
-import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
-import { NextPageWithLayout } from '../_app';
-import { date, z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
+import { NextPageWithLayout } from '../../_app';
 import { useSnackbar } from 'notistack';
+import { useAppDispatch } from '@hooks/useRedux';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { onSignIn } from '@redux/actions/auth.action';
-import { useAppDispatch } from '@hooks/useRedux';
 import { setCookie } from 'cookies-next';
 import { authService } from '@services/auth.service';
+import { Box, Stack, TextField } from '@mui/material';
+import Link from 'next/link';
+import { z } from 'zod';
+import Button from '@components/shared/Button';
 
 const loginFormSchema = z.object({
   email: z.string().email('Địa chỉ email không hợp lệ.'),
   password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
 });
 
-const LoginPage: NextPageWithLayout = () => {
+const AdminLoginPage: NextPageWithLayout = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -34,13 +33,14 @@ const LoginPage: NextPageWithLayout = () => {
   });
 
   const onSubmit = handleSubmit(data => {
-    dispatch(onSignIn({ email: data.email, password: data.password })).then((result: any) => {
+    console.log(data);
+    dispatch(onSignIn({ email: data.email, password: data.password, role: 'admin' })).then((result: any) => {
       if (result.meta.requestStatus === 'fulfilled') {
         const accessToken = (result.payload as any).accessToken;
         setCookie('accessToken', accessToken);
         authService.setToken(accessToken);
 
-        router.push('/');
+        router.push('/admin');
         enqueueSnackbar('Đăng nhập thành công', {
           variant: 'success',
         });
@@ -51,7 +51,6 @@ const LoginPage: NextPageWithLayout = () => {
       }
     });
   });
-
   return (
     <>
       <form onSubmit={onSubmit} action="#">
@@ -78,12 +77,12 @@ const LoginPage: NextPageWithLayout = () => {
               Đăng nhập
             </Button>
           </Box>
-          <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
+          <span className=" text-[#ffffff80] font-openSans text-[14px] text-center ">
             Bạn không có một tài khoản? {''}
-            <Link className="text-primary opacity-[0.9]" href={'/auth/register'}>
+            <Link className="text-primary opacity-[0.9]" href={'/admin/auth/register'}>
               Đăng ký!
             </Link>
-          </p>
+          </span>
           <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
             <Link className="text-primary opacity-[0.9]" href={'/auth/forget'}>
               Quên mật khẩu?
@@ -95,6 +94,6 @@ const LoginPage: NextPageWithLayout = () => {
   );
 };
 
-LoginPage.getLayout = page => <AuthenticationLayout>{page}</AuthenticationLayout>;
+AdminLoginPage.getLayout = page => <AuthenticationLayout>{page}</AuthenticationLayout>;
 
-export default LoginPage;
+export default AdminLoginPage;

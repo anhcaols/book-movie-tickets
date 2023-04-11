@@ -3,7 +3,7 @@ import MainLayout from '@layouts/MainLayout/MainLayout';
 import { Box, Grid, styled, Typography } from '@mui/material';
 import Link from 'next/link';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@components/shared/Button/Button';
+import Button from '@components/shared/Button';
 import { useRouter } from 'next/router';
 import { Base64 } from 'js-base64';
 import { useEffect, useState } from 'react';

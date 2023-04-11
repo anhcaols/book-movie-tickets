@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import styles from './movie-item.module.scss';
 import classNames from 'classnames/bind';
-import Button from '../Button/Button';
+import Button from '../Button';
 import moment from 'moment';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import { useRouter } from 'next/router';
