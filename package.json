@@ -43,6 +43,7 @@
     "react-youtube": "^10.1.0",
     "redux-persist": "^6.0.0",
     "sass": "^1.58.0",
+    "simplebar-react": "^3.2.3",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "tippy.js": "^6.3.7",

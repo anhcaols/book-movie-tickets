@@ -662,6 +662,18 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
+"@types/lodash-es@^4.17.6":
+  version "4.17.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.7.tgz#22edcae9f44aff08546e71db8925f05b33c7cc40"
+  integrity sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.192"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.192.tgz#5790406361a2852d332d41635d927f1600811285"
+  integrity sha512-km+Vyn3BYm5ytMO13k9KTp27O75rbQ0NFw+U//g+PX7VZyjCioXaRFisqSIJRECljcTv73G3i6BpglNGHgUQ5A==
+
 "@types/node@18.11.19":
   version "18.11.19"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.19.tgz"
@@ -1033,6 +1045,11 @@ camelize@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/camelize/-/camelize-1.0.1.tgz#89b7e16884056331a35d6b5ad064332c91daa6c3"
   integrity sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==
+
+can-use-dom@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/can-use-dom/-/can-use-dom-0.1.0.tgz#22cc4a34a0abc43950f42c6411024a3f6366b45a"
+  integrity sha512-ceOhN1DL7Y4O6M0j9ICgmTYziV89WMd96SvSl0REd8PMgrY0B/WBOPoed5S1KUmJqXgUXh8gzSe6E3ae27upsQ==
 
 caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001426, caniuse-lite@^1.0.30001449:
   version "1.0.30001450"
@@ -2299,6 +2316,11 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
@@ -2309,7 +2331,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.11:
+lodash@^4.17.11, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -2952,6 +2974,23 @@ side-channel@^1.0.4:
     call-bind "^1.0.0"
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
+
+simplebar-core@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/simplebar-core/-/simplebar-core-1.2.3.tgz#d270ecec9aca14850c400a7aa80503858f6f23a5"
+  integrity sha512-xWZOYLlqWMW8qDCh1vcyyPdb10FOb8KJNCgqimsBKWS/o6a/9LnATjBgR2+nTzTHUT+DGOOf+TM8yj54/Io+dw==
+  dependencies:
+    "@types/lodash-es" "^4.17.6"
+    can-use-dom "^0.1.0"
+    lodash "^4.17.21"
+    lodash-es "^4.17.21"
+
+simplebar-react@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/simplebar-react/-/simplebar-react-3.2.3.tgz#b0d1d6111ab0ef009547baf83df58977b8fec20a"
+  integrity sha512-GjbACC7KlDUlfIZSbLf7K4FQcHW4rS0OFAAs6YvJpHUsOZ5DtIzg1WD4Uv+nO8wfQLFXMyFHDVk0jm15APFRNA==
+  dependencies:
+    simplebar-core "^1.2.3"
 
 sister@^3.0.0:
   version "3.0.2"
