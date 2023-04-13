@@ -1,9 +1,8 @@
 import { NextPageWithLayout } from '../_app';
 import MainLayout from '@layouts/MainLayout/MainLayout';
-import { Box, Grid, styled, Typography } from '@mui/material';
+import { Box, Button, Grid, styled, Typography } from '@mui/material';
 import Link from 'next/link';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@components/shared/Button';
 import { useRouter } from 'next/router';
 import { Base64 } from 'js-base64';
 import { useEffect, useState } from 'react';
@@ -313,7 +312,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
                   {totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                 </span>
               </p>
-              <Button onClick={handleContinue} className="mt-4 h-10 w-full" primary>
+              <Button variant="contained" onClick={handleContinue} className="!mt-4 w-full">
                 Tiếp tục
               </Button>
             </Box>

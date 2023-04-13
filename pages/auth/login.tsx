@@ -1,11 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
-import Button from '@components/shared/Button';
-import { Box, Stack, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
-import { date, z } from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -73,18 +71,18 @@ const LoginPage: NextPageWithLayout = () => {
             variant="outlined"
             fullWidth
           />
-          <Box className="form-group">
-            <Button type="submit" className="w-full mt-3 " primary large>
+          <Box>
+            <Button type="submit" className="w-full" variant="contained" size="large">
               Đăng nhập
             </Button>
           </Box>
-          <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
+          <p className=" text-[#ffffff80] text-[14px] text-center">
             Bạn không có một tài khoản? {''}
             <Link className="text-primary opacity-[0.9]" href={'/auth/register'}>
               Đăng ký!
             </Link>
           </p>
-          <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
+          <p className=" text-[#ffffff80] text-[14px] text-center">
             <Link className="text-primary opacity-[0.9]" href={'/auth/forget'}>
               Quên mật khẩu?
             </Link>

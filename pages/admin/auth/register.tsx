@@ -1,20 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
-import Button from '@components/shared/Button';
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
-import { useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useForm } from 'react-hook-form';
@@ -89,55 +76,57 @@ const AdminRegisterPage: NextPageWithLayout = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={onSubmit} action="#">
-        <Stack spacing={3}>
-          <TextField
-            {...register('fullName')}
-            error={!!errors.fullName}
-            helperText={errors.fullName?.message}
-            label=" Họ tên"
-            variant="outlined"
-            fullWidth
-          />
-          <TextField
-            {...register('email')}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            label="Email"
-            variant="outlined"
-            fullWidth
-          />
-          <Box display="flex" gap={1}>
+        <Stack spacing={5}>
+          <Stack spacing={3}>
             <TextField
-              {...register('password')}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              type="password"
-              label="Mật khẩu"
+              {...register('fullName')}
+              error={!!errors.fullName}
+              helperText={errors.fullName?.message}
+              label=" Họ tên"
               variant="outlined"
               fullWidth
             />
             <TextField
-              {...register('confirmPassword')}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword?.message}
-              type="password"
-              label="Xác nhận mật khẩu"
+              {...register('email')}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              label="Email"
               variant="outlined"
               fullWidth
             />
-          </Box>
+            <Box display="flex" gap={1}>
+              <TextField
+                {...register('password')}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                type="password"
+                label="Mật khẩu"
+                variant="outlined"
+                fullWidth
+              />
+              <TextField
+                {...register('confirmPassword')}
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword?.message}
+                type="password"
+                label="Xác nhận mật khẩu"
+                variant="outlined"
+                fullWidth
+              />
+            </Box>
+          </Stack>
 
-          <Box className="form-group">
-            <Button type="submit" className="w-full mt-3 " primary large>
+          <Box>
+            <Button type="submit" className="w-full" variant="contained" size="large">
               Đăng ký
             </Button>
           </Box>
-          <Typography className=" text-[#ffffff80] font-openSans text-[14px] text-center">
+          <p className=" text-[#ffffff80] text-[14px] text-center">
             Bạn đã có sẵn một tài khoản? {''}
-            <Link className="text-primary opacity-[0.9]" href={'/auth/login'}>
+            <Link className="text-primary opacity-[0.9]" href={'/admin/auth/login'}>
               Đăng nhập!
             </Link>
-          </Typography>
+          </p>
         </Stack>
       </form>
     </LocalizationProvider>

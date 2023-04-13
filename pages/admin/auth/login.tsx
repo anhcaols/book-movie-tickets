@@ -9,10 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { onSignIn } from '@redux/actions/auth.action';
 import { setCookie } from 'cookies-next';
 import { authService } from '@services/auth.service';
-import { Box, Stack, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
 import { z } from 'zod';
-import Button from '@components/shared/Button';
 
 const loginFormSchema = z.object({
   email: z.string().email('Địa chỉ email không hợp lệ.'),
@@ -54,40 +53,44 @@ const AdminLoginPage: NextPageWithLayout = () => {
   return (
     <>
       <form onSubmit={onSubmit} action="#">
-        <Stack spacing={3}>
-          <TextField
-            {...register('email')}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            label="Email"
-            variant="outlined"
-            fullWidth
-          />
-          <TextField
-            {...register('password')}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            type="password"
-            label="Mật khẩu"
-            variant="outlined"
-            fullWidth
-          />
-          <Box className="form-group">
-            <Button type="submit" className="w-full mt-3 " primary large>
-              Đăng nhập
-            </Button>
-          </Box>
-          <span className=" text-[#ffffff80] font-openSans text-[14px] text-center ">
-            Bạn không có một tài khoản? {''}
-            <Link className="text-primary opacity-[0.9]" href={'/admin/auth/register'}>
-              Đăng ký!
-            </Link>
-          </span>
-          <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
-            <Link className="text-primary opacity-[0.9]" href={'/auth/forget'}>
-              Quên mật khẩu?
-            </Link>
-          </p>
+        <Stack spacing={5}>
+          <Stack spacing={3}>
+            <TextField
+              {...register('email')}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              label="Email"
+              variant="outlined"
+              fullWidth
+            />
+            <TextField
+              {...register('password')}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              type="password"
+              label="Mật khẩu"
+              variant="outlined"
+              fullWidth
+            />
+          </Stack>
+          <Stack spacing={3}>
+            <Box>
+              <Button type="submit" className="w-full" variant="contained" size="large">
+                Đăng nhập
+              </Button>
+            </Box>
+            <span className=" text-[#ffffff80] text-[14px] text-center ">
+              Bạn không có một tài khoản? {''}
+              <Link className="text-primary opacity-[0.9]" href={'/admin/auth/register'}>
+                Đăng ký!
+              </Link>
+            </span>
+            <p className=" text-[#ffffff80] text-[14px] text-center">
+              <Link className="text-primary opacity-[0.9]" href={'/auth/forget'}>
+                Quên mật khẩu?
+              </Link>
+            </p>
+          </Stack>
         </Stack>
       </form>
     </>

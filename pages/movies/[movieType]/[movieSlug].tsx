@@ -15,9 +15,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Button,
 } from '@mui/material';
 import { Star, AccessTimeOutlined, Close, ArrowForward } from '@mui/icons-material';
-import Button from '@components/shared/Button';
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import Link from 'next/link';
@@ -78,7 +78,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
     const { query, movieId } = {
       query: {
         page: currentPage,
-        limit: 10,
+        limit: 1,
       },
       movieId: movie?.id,
     };
@@ -192,18 +192,13 @@ const MovieDetailPage: NextPageWithLayout = () => {
               <Box display="flex" pt={1}>
                 {movieType === 'now-showing' ? (
                   <Link href={`/book-ticket/${movie?.slug}`}>
-                    <Button style={{ height: 40, marginRight: 16 }} primary small>
+                    <Button variant="contained" style={{ marginRight: 16 }}>
                       Mua vé
                     </Button>
                   </Link>
                 ) : null}
                 {movie?.trailer !== null ? (
-                  <Button
-                    className="hover:border-primary"
-                    onClick={() => setIsOpenTrailer(true)}
-                    style={{ height: 40 }}
-                    outline
-                  >
+                  <Button variant="contained" onClick={() => setIsOpenTrailer(true)}>
                     Xem trailer
                   </Button>
                 ) : null}
@@ -254,8 +249,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                           <Button
                             disabled={router.query.movieType === 'coming-soon' ? true : false}
                             onClick={handleSendRating}
-                            primary
-                            small
+                            variant="contained"
                           >
                             Gửi
                           </Button>
@@ -273,9 +267,9 @@ const MovieDetailPage: NextPageWithLayout = () => {
                           <Box display="flex" justifyContent="center">
                             <Button
                               onClick={() => setCurrentPage(currentPage + 1)}
-                              className="mt-6 w-full "
-                              primary
-                              large
+                              className="!mt-6"
+                              fullWidth
+                              variant="contained"
                             >
                               Xem thêm
                             </Button>
@@ -342,8 +336,10 @@ const MovieDetailPage: NextPageWithLayout = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsOpenLogin(false)}>Hủy</Button>
-          <Button className="h-10" primary onClick={() => router.push('/auth/login')}>
+          <Button variant="outlined" onClick={() => setIsOpenLogin(false)}>
+            Hủy
+          </Button>
+          <Button className="h-10" variant="contained" onClick={() => router.push('/auth/login')}>
             Đăng nhập
           </Button>
         </DialogActions>

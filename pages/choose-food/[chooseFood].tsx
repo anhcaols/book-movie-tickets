@@ -3,6 +3,7 @@ import { NextPageWithLayout } from '../_app';
 import MainLayout from '@layouts/MainLayout/MainLayout';
 import {
   Box,
+  Button,
   Grid,
   Paper,
   styled,
@@ -16,7 +17,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Button from '@components/shared/Button';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useEffect, useState } from 'react';
@@ -283,7 +283,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                   })}
                 </span>
               </p>
-              <Button onClick={handleBook} className="mt-4 h-10 w-full" primary>
+              <Button variant="contained" onClick={handleBook} className="!mt-4  w-full">
                 Đặt vé
               </Button>
             </Box>

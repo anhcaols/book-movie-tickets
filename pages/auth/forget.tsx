@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
-import Button from '@components/shared/Button';
-import { Box, Stack, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
@@ -12,16 +11,12 @@ const ForgetPage: NextPageWithLayout = () => {
       <form action="#">
         <Stack spacing={3}>
           <TextField label="Email" variant="outlined" fullWidth />
-          <Box className="form-group">
-            <Link href="/auth/register">
-              <Button className="w-full mt-3 " primary large>
-                Gửi
-              </Button>
-            </Link>
+          <Box>
+            <Button type="submit" className="w-full" variant="contained" size="large">
+              Gửi
+            </Button>
           </Box>
-          <p className=" text-[#ffffff80] font-openSans text-[14px] text-center">
-            Chúng tôi sẽ gửi mật khẩu vào Email của bạn
-          </p>
+          <p className=" text-[#ffffff80] text-[14px] text-center">Chúng tôi sẽ gửi mật khẩu vào Email của bạn</p>
         </Stack>
       </form>
     </>

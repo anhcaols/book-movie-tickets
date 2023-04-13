@@ -7,7 +7,6 @@ import Navbar, { NavbarItem } from '@components/shared/Navbar';
 import PopperWrapper from '@components/shared/Popper';
 import Subnav from '@components/shared/Navbar/Subnav/Subnav';
 import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
-import Button from '@components/shared/Button';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';
@@ -15,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onSignOut } from '@redux/slices/auth.slice';
 import { deleteCookie } from 'cookies-next';
 import { useSnackbar } from 'notistack';
+import { Box, Button } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -148,16 +148,18 @@ function Header() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button className="hidden lg:flex" primary large>
-                    Đăng nhập
-                  </Button>
+                  <Box className="!hidden lg:!block">
+                    <Button type="submit" variant="contained" size="large">
+                      Đăng nhập
+                    </Button>
+                  </Box>
                 </Link>
                 <Link href="/auth/login">
-                  <Button
-                    className="flex lg:hidden w-10 h-10"
-                    icon={<LogoutIcon className="fill-white w-[22px]" />}
-                    primary
-                  ></Button>
+                  <Box className="!block lg:!hidden">
+                    <Button type="submit" variant="contained" size="medium">
+                      <LogoutIcon className="fill-white w-[22px]" />
+                    </Button>
+                  </Box>
                 </Link>
               </>
             )}

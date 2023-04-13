@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
-import Button from '@components/shared/Button';
 import {
   Box,
+  Button,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -202,8 +201,8 @@ const RegisterPage: NextPageWithLayout = () => {
           <Typography className=" text-[#ffffff80] font-openSans text-[14px] ">
             Tôi đã đọc và đồng ý với <span className="text-primary opacity-[0.9]">CHÍNH SÁCH</span> của chương trình.
           </Typography>
-          <Box className="form-group">
-            <Button type="submit" className="w-full mt-3 " primary large>
+          <Box>
+            <Button type="submit" className="w-full" variant="contained" size="large">
               Đăng ký
             </Button>
           </Box>

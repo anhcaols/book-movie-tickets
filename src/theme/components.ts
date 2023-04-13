@@ -66,11 +66,14 @@ const components = (theme: Theme): any => {
           textTransform: 'none',
           borderRadius: '4px',
           color: 'inherit',
-          boxShadow: 'none',
           padding: '0.6rem 1.5rem',
           fontSize: 12,
-          fontWeight: 600,
           minWidth: 84,
+          opacity: 0.82,
+          transition: '0.4s ease',
+          '&:hover': {
+            opacity: 1,
+          },
           '&.Mui-disabled': {
             backgroundColor: action.disabledBackground,
             color: text.disabled,
@@ -103,6 +106,12 @@ const components = (theme: Theme): any => {
           style: { padding: '0.3rem 0.8rem' },
         },
         {
+          props: { variant: 'contained' },
+          style: {
+            backgroundImage: 'linear-gradient(90deg, #ff55a5 0%, #ff5860 100%)',
+          },
+        },
+        {
           props: { variant: 'text' },
           style: { padding: 0, '&:hover': { backgroundColor: 'transparent' } },
         },
@@ -129,6 +138,27 @@ const components = (theme: Theme): any => {
             border: `1px dashed ${divider}`,
             borderRadius: '50%',
             overflow: 'hidden',
+          },
+        },
+        {
+          props: { size: 'large' },
+          style: {
+            height: 50,
+            fontSize: 16,
+          },
+        },
+        {
+          props: { size: 'medium' },
+          style: {
+            height: 42,
+            fontSize: 14,
+          },
+        },
+        {
+          props: { size: 'small' },
+          style: {
+            height: 36,
+            fontSize: 13,
           },
         },
       ],
@@ -211,8 +241,8 @@ const components = (theme: Theme): any => {
           fontSize: 13,
           fontWeight: 500,
           borderBottom: 0,
-          '&:first-of-type': { paddingLeft: 0 },
-          '&:last-of-type': { paddingRight: 0 },
+          // '&:first-of-type': { paddingLeft: 0 },
+          // '&:last-of-type': { paddingRight: 0 },
         },
       },
     },
