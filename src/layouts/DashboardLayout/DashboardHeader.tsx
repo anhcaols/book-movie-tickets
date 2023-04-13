@@ -1,16 +1,9 @@
 import { AppBar, Box, ClickAwayListener, IconButton, styled, Theme, Toolbar, useMediaQuery } from '@mui/material';
-import { FC, Fragment, useContext, useState } from 'react';
-// import { SettingsContext } from "contexts/settingsContext";
-// import MenuLeft from "icons/MenuLeft";
-// import MenuLeftRight from "icons/MenuLeftRight";
-// import SearchIcon from "icons/SearchIcon";
-// import ThemeIcon from "icons/ThemeIcon";
-// import { themeSettingsTypes } from "theme";
-// import LanguagePopover from "./popovers/LanguagePopover";
-// import NotificationsPopover from "./popovers/NotificationsPopover";
-// import ProfilePopover from "./popovers/ProfilePopover";
-// import ServicePopover from "./popovers/ServicePopover";
+import { FC, Fragment, useState } from 'react';
 import SearchBar from './SearchBar';
+import { useRouter } from 'next/router';
+import { SearchOutlined } from '@mui/icons-material';
+import ProfilePopover from './popovers/ProfilePopover';
 
 // ------------------------------------------------
 type DashboardHeaderProps = {
@@ -26,8 +19,9 @@ const DashboardHeaderRoot = styled(AppBar)(({ theme }) => ({
   paddingTop: '1rem',
   paddingBottom: '1rem',
   backdropFilter: 'blur(6px)',
-  backgroundColor: '#222b36',
+  backgroundColor: 'transparent',
   color: theme.palette.text.primary,
+  backgroundImage: 'none',
 }));
 
 const StyledToolBar = styled(Toolbar)(() => ({
@@ -54,15 +48,15 @@ const ToggleIcon = styled(Box)<{ width?: number }>(({ theme, width }) => ({
 
 const DashboardHeader: FC<DashboardHeaderProps> = props => {
   const { setShowMobileSideBar } = props;
+  const router = useRouter();
 
   const [openSearchBar, setSearchBar] = useState(false);
-  const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down(1200));
 
   return (
     <DashboardHeaderRoot position="sticky">
       <StyledToolBar>
-        {downMd && (
+        {downMd && router.pathname !== '/getting-started' && (
           <Box sx={{ cursor: 'pointer' }} onClick={setShowMobileSideBar}>
             <ToggleIcon />
             <ToggleIcon width={18} />
@@ -70,15 +64,20 @@ const DashboardHeader: FC<DashboardHeaderProps> = props => {
           </Box>
         )}
 
-        <ClickAwayListener onClickAway={() => setSearchBar(false)}>
-          <Box>
-            {!openSearchBar && <StyledIconButton onClick={() => setSearchBar(true)}></StyledIconButton>}
-
-            <SearchBar open={openSearchBar} handleClose={() => setSearchBar(false)} />
-          </Box>
-        </ClickAwayListener>
-
+        {router.pathname !== '/getting-started' && (
+          <ClickAwayListener onClickAway={() => setSearchBar(false)}>
+            <Box>
+              {!openSearchBar && (
+                <StyledIconButton onClick={() => setSearchBar(true)}>
+                  <SearchOutlined fontSize="medium" className="text-[#455a79]" />
+                </StyledIconButton>
+              )}
+              <SearchBar open={openSearchBar} handleClose={() => setSearchBar(false)} />
+            </Box>
+          </ClickAwayListener>
+        )}
         <Box flexGrow={1} ml={1} />
+        <ProfilePopover />
       </StyledToolBar>
     </DashboardHeaderRoot>
   );

@@ -1,8 +1,9 @@
-import { alpha, Box, ButtonBase, styled, Typography } from '@mui/material';
+import { alpha, Box, ButtonBase, styled } from '@mui/material';
 import { FC } from 'react';
 import { navigations } from './navigation';
 import SidebarAccordion from './SidebarAccordion';
 import { useRouter } from 'next/router';
+import { Paragraph, Span } from '@components/shared/typography';
 
 const NavItemButton = styled(ButtonBase)<{ active: any }>(({ theme, active }) => ({
   height: 44,
@@ -21,7 +22,7 @@ const NavItemButton = styled(ButtonBase)<{ active: any }>(({ theme, active }) =>
   },
 }));
 
-const ListLabel = styled(Typography)<{ compact: any }>(({ theme, compact }) => ({
+const ListLabel = styled(Paragraph)<{ compact: any }>(({ theme, compact }) => ({
   fontWeight: 700,
   fontSize: '12px',
   marginTop: '20px',
@@ -41,7 +42,7 @@ const ExternalLink = styled('a')(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const StyledText = styled(Typography)<{ compact: any; active: any }>(({ theme, compact, active }) => ({
+const StyledText = styled(Span)<{ compact: any; active: any }>(({ theme, compact, active }) => ({
   whiteSpace: 'nowrap',
   paddingLeft: '0.8rem',
   transition: 'all 0.15s ease',

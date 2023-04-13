@@ -1,6 +1,4 @@
 import { Box, styled } from '@mui/material';
-import FlexBox from '@components/shared/flexbox/FlexBox';
-import Scrollbar from '@components/shared/scroll-bar';
 import LayoutDrawer from './LayoutDrawer';
 import { FC } from 'react';
 import MultiLevelMenu from './MultiLevelMenu';

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Button, InputAdornment, InputBase, Slide } from '@mui/material';
+import { SearchOutlined } from '@mui/icons-material';
 
 // --------------------------------------------------------
 type SearchBarProps = {
@@ -25,14 +26,18 @@ const SearchBar: FC<SearchBarProps> = ({ open, handleClose }) => {
           borderRadius: '4px',
           alignItems: 'center',
           position: 'absolute',
-          backgroundColor: 'background.paper',
+          backgroundColor: '#222b36',
         }}
       >
         <InputBase
           fullWidth
           autoFocus
           placeholder="Search..."
-          startAdornment={<InputAdornment position="start"></InputAdornment>}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchOutlined className="text-[#455a79]" fontSize="medium" />
+            </InputAdornment>
+          }
           sx={{ fontSize: 13, fontWeight: 500, flexGrow: 1 }}
         />
 

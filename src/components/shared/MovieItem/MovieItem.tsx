@@ -38,7 +38,7 @@ function MovieItem({ movie, state }: MovieItemProps) {
             </p>
           </Link>
           <Link href={`/book-ticket/${movie?.slug}`}>
-            <Button className="w-[150px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
+            <Button className="w-[154px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
               ĐẶT VÉ NGAY
             </Button>
           </Link>

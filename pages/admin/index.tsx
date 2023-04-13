@@ -1,12 +1,15 @@
 import DashboardLayout from '@layouts/DashboardLayout/DashboardLayout';
 import React from 'react';
+import { NextPageWithLayout } from '../_app';
 
-const index = () => {
+const AdminPage: NextPageWithLayout = () => {
   return (
-    <DashboardLayout>
+    <>
       <div className="h-[1400px]">a</div>
-    </DashboardLayout>
+    </>
   );
 };
 
-export default index;
+AdminPage.getLayout = page => <DashboardLayout>{page}</DashboardLayout>;
+
+export default AdminPage;

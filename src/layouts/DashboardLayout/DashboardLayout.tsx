@@ -5,10 +5,10 @@ import DashboardHeader from './DashboardHeader';
 import DashboardSidebar from './DashboardSidebar';
 
 interface DashboardLayoutProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
-const DashboardLayout: FC = ({ children }: DashboardLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [sidebarCompact, setSidebarCompact] = useState(false);
   const [showMobileSideBar, setShowMobileSideBar] = useState(false);
 
