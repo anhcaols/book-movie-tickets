@@ -1,4 +1,4 @@
-import MovieItem from '@components/shared/MovieItem/MovieItem';
+import MovieItem from '@components/shared/movie-item/MovieItem';
 import styles from './home.module.scss';
 import classNames from 'classnames/bind';
 import SimpleSlider from './Slider';

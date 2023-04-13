@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import styles from './movie-item.module.scss';
 import classNames from 'classnames/bind';
-import Button from '../Button';
 import moment from 'moment';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';
 import { useRouter } from 'next/router';
+import { Button } from '@mui/material';
 
 const cx = classNames.bind(styles);
 interface MovieItemProps {
@@ -38,7 +38,7 @@ function MovieItem({ movie, state }: MovieItemProps) {
             </p>
           </Link>
           <Link href={`/book-ticket/${movie?.slug}`}>
-            <Button className="w-[154px] h-10 mt-2 hover:bg-primary hover:border-none " outline>
+            <Button variant="outlined" className="!w-[150px]">
               ĐẶT VÉ NGAY
             </Button>
           </Link>

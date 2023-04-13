@@ -21,8 +21,7 @@ import { Star, AccessTimeOutlined, Close, ArrowForward } from '@mui/icons-materi
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import Link from 'next/link';
-import Comment from '@components/shared/Comment/Comment';
-import MovieItem from '@components/shared/MovieItem/MovieItem';
+import Comment from '@components/shared/comment';
 import { useRouter } from 'next/router';
 import { moviesService } from '@services/movies.service';
 import { NEXT_APP_API_BASE_URL } from '@configs/app.config';

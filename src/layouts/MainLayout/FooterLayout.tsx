@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FacebookIcon, InstagramIcon, TwitterIcon, VkIcon } from '@components/shared/icons';
-import Subnav from '@components/shared/Navbar/Subnav/Subnav';
-import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
+import Subnav from '@components/shared/Navbar/subnav/Subnav';
+import SubnavItem from '@components/shared/Navbar/subnav/SubnavItem';
 
 import styles from '@components/home/home.module.scss';
 import classNames from 'classnames/bind';

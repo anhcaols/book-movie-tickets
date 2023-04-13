@@ -1,4 +1,4 @@
-import MovieItem from '@components/shared/MovieItem/MovieItem';
+import MovieItem from '@components/shared/movie-item/MovieItem';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { Pagination } from '@mui/material';
 import { onGetMovies } from '@redux/actions/movies.action';
