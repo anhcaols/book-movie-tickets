@@ -11,6 +11,9 @@ import { SnackbarProvider } from 'notistack';
 import AppAuthentication from '@components/app/AppAuthentication';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from '@redux/store';
+import nProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { Router } from 'next/router';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,6 +24,13 @@ interface MyAppProps extends AppProps {
   Component: NextPageWithLayout;
   pageProps: any;
 }
+
+//Binding events.
+Router.events.on('routeChangeStart', () => nProgress.start());
+Router.events.on('routeChangeComplete', () => nProgress.done());
+Router.events.on('routeChangeError', () => nProgress.done());
+// small change
+nProgress.configure({ showSpinner: false });
 
 function MyApp({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || (page => page);
