@@ -3,11 +3,7 @@ import React from 'react';
 import { NextPageWithLayout } from '../_app';
 
 const AdminPage: NextPageWithLayout = () => {
-  return (
-    <>
-      <div>a</div>
-    </>
-  );
+  return <div>movie</div>;
 };
 
 AdminPage.getLayout = page => <DashboardLayout>{page}</DashboardLayout>;

@@ -3,6 +3,7 @@ import LayoutBodyWrapper from './LayoutBodyWrapper';
 import { FC, Fragment, useState } from 'react';
 import DashboardHeader from './DashboardHeader';
 import DashboardSidebar from './DashboardSidebar';
+import { Box } from '@mui/material';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <LayoutBodyWrapper sx={customStyle}>
         <DashboardHeader setShowSideBar={handleCompactToggle} setShowMobileSideBar={handleMobileDrawerToggle} />
 
-        {children}
+        <Box pt={3}>{children}</Box>
       </LayoutBodyWrapper>
     </div>
   );

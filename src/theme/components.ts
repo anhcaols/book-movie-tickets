@@ -214,38 +214,47 @@ const components = (theme: Theme): any => {
         root: { color: '#FFD600' },
       },
     },
-    MuiTableHead: {
+    MuiTableContainer: {
       styleOverrides: {
-        root: { borderColor: 'transparent' },
+        root: { background: 'transparent', border: '1px solid #515151', boxShadow: 'none' },
       },
     },
-    MuiTableRow: {
-      styleOverrides: {
-        root: {
-          '&.Mui-selected:hover': { backgroundColor: 'transparent' },
-        },
-      },
-    },
-    MuiTableBody: {
-      styleOverrides: {
-        root: {
-          '& .MuiTableRow-root:last-of-type': {
-            '& .MuiTableCell-root': { borderBottom: 0 },
-          },
-        },
-      },
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          fontSize: 13,
-          fontWeight: 500,
-          borderBottom: 0,
-          // '&:first-of-type': { paddingLeft: 0 },
-          // '&:last-of-type': { paddingRight: 0 },
-        },
-      },
-    },
+    // MuiTableHead: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderRadius: 4,
+    //     },
+    //   },
+    // },
+    // MuiTableRow: {
+    //   styleOverrides: {
+    //     root: {
+    //       border: '1px solid rgba(255, 255, 255, 0.12)',
+    //       borderRadius: 4,
+    //       '&.Mui-selected:hover': { backgroundColor: 'transparent' },
+    //     },
+    //   },
+    // },
+    // MuiTableBody: {
+    //   styleOverrides: {
+    //     root: {
+    //       '& .MuiTableRow-root:last-of-type': {
+    //         '& .MuiTableCell-root': { borderBottom: 0 },
+    //       },
+    //     },
+    //   },
+    // },
+    // MuiTableCell: {
+    //   styleOverrides: {
+    //     root: {
+    //       fontSize: 13,
+    //       fontWeight: 500,
+    //       borderBottom: 0,
+    //       // '&:first-of-type': { paddingLeft: 0 },
+    //       // '&:last-of-type': { paddingRight: 0 },
+    //     },
+    //   },
+    // },
     MuiTab: {
       styleOverrides: {
         root: {
