@@ -5,11 +5,12 @@ import React from 'react';
 interface SearchInputProps {
   value: string;
   onChange: any;
+  width: number | string;
 }
 
-const SearchInput = ({ value, onChange }: SearchInputProps) => {
+const SearchInput = ({ value, onChange, width }: SearchInputProps) => {
   return (
-    <Box className="flex border-[1px] border-[#ffffff1f] rounded px-2 py-1">
+    <Box className="flex border-[1px] border-[#ffffff1f] rounded p-2">
       <InputBase
         value={value}
         onChange={onChange}
@@ -21,7 +22,7 @@ const SearchInput = ({ value, onChange }: SearchInputProps) => {
             <SearchOutlined className="text-[#455a79]" fontSize="medium" />
           </InputAdornment>
         }
-        sx={{ fontSize: 13, fontWeight: 500, flexGrow: 1, width: 240 }}
+        sx={{ fontSize: 13, fontWeight: 500, flexGrow: 1, width }}
       />
     </Box>
   );

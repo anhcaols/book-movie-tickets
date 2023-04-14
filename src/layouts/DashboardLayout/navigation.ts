@@ -17,8 +17,8 @@ export const navigations = [
     icon: Dashboard,
   },
   {
-    name: 'Tài khoản',
-    path: '/admin/accounts',
+    name: 'Khách hàng',
+    path: '/admin/users',
     icon: Group,
   },
 
