@@ -201,7 +201,9 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                           <Box display="flex" alignItems="center" gap={2}>
                             <img
                               className="w-12 h-12 rounded-md"
-                              src={food?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${food?.image}` : ''}
+                              src={
+                                food?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/foods/${food?.image}` : ''
+                              }
                               alt="img"
                             />
 

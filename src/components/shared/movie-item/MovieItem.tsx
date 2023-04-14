@@ -28,7 +28,7 @@ function MovieItem({ movie, state }: MovieItemProps) {
       <div className={cx('movie-image', 'relative h-[355px]')}>
         <img
           className="block rounded w-full h-full object-cover overflow-hidden"
-          src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${movie?.image}` : ''}
+          src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/movies/${movie?.image}` : ''}
           alt={'img'}
         />
         <div className={cx('ticket', 'flex flex-col justify-center items-center gap-2')}>
