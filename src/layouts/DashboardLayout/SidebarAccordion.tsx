@@ -1,6 +1,7 @@
 import { alpha, Box, ButtonBase, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 type CollapseCompact = { collapsed: number; compact: any };
 
@@ -11,6 +12,24 @@ const NavExpandRoot = styled(Box)(() => ({
     overflow: 'hidden',
     transition: 'max-height 0.3s cubic-bezier(0, 0, 0.2, 1)',
   },
+}));
+
+const BulletIcon = styled(Box)<{ active: any }>(({ theme, active }) => ({
+  width: 4,
+  height: 4,
+  marginLeft: '10px',
+  marginRight: '8px',
+  overflow: 'hidden',
+  borderRadius: '50%',
+  background: active ? theme.palette.primary.main : theme.palette.text.disabled,
+  boxShadow: active ? `0px 0px 0px 3px ${theme.palette.primary[200]}` : 'none',
+}));
+
+const ChevronRightStyled = styled(KeyboardArrowRightIcon)<CollapseCompact>(({ collapsed, compact }) => ({
+  fontSize: 18,
+  transition: 'transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms',
+  transform: collapsed ? 'rotate(90deg)' : 'rotate(0deg)',
+  ...(compact && { opacity: 0, width: 0 }),
 }));
 
 const NavItemButton = styled(ButtonBase)<{ active: any }>(({ theme, active }) => ({
@@ -117,6 +136,7 @@ const SidebarAccordion: FC<SidebarAccordionProps> = props => {
               }}
             />
           )}
+          {iconText && <BulletIcon active={hasActive ? 1 : 0} />}
           <ItemText compact={sidebarCompact} active={hasActive ? 1 : 0}>
             {name}
           </ItemText>
@@ -127,6 +147,13 @@ const SidebarAccordion: FC<SidebarAccordionProps> = props => {
             {badge.value}
           </BadgeValue>
         )}
+
+        <ChevronRightStyled
+          color="disabled"
+          compact={sidebarCompact ? 1 : 0}
+          className="accordionArrow"
+          collapsed={collapsed ? 1 : 0}
+        />
       </NavItemButton>
 
       <div

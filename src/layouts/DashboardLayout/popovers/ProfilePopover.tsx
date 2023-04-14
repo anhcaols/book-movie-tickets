@@ -50,9 +50,9 @@ const ProfilePopover: FC = () => {
         >
           {upSm && (
             <Small mx={1} color="text.secondary">
-              Hi,{' '}
+              Xin chào,{' '}
               <Small fontWeight="600" display="inline">
-                Aaron Cooper
+                Anh Cao
               </Small>
             </Small>
           )}
@@ -72,9 +72,9 @@ const ProfilePopover: FC = () => {
             <Avatar src={'/static/avatar/001-man.svg'} sx={{ width: 35, height: 35 }} />
 
             <Box>
-              <H6>{'Aaron Cooper'}</H6>
+              <H6>{'Anh Cao'}</H6>
               <Tiny display="block" fontWeight={500} color="text.disabled">
-                {'aaron@example.com'}
+                {'anhcao@gmail.com'}
               </Tiny>
             </Box>
           </FlexBox>

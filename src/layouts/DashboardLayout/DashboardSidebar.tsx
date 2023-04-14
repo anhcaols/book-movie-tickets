@@ -23,12 +23,7 @@ const NavWrapper = styled(Box)(() => ({
   paddingLeft: 16,
   paddingRight: 16,
   height: '100%',
-}));
-
-const StyledLogo = styled(Box)(() => ({
-  paddingLeft: 8,
-  fontWeight: 700,
-  fontSize: 20,
+  marginTop: 12,
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({

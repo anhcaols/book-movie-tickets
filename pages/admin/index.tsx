@@ -5,7 +5,7 @@ import { NextPageWithLayout } from '../_app';
 const AdminPage: NextPageWithLayout = () => {
   return (
     <>
-      <div className="h-[1400px]">a</div>
+      <div>a</div>
     </>
   );
 };

@@ -33,6 +33,16 @@ const ListLabel = styled(Paragraph)<{ compact: any }>(({ theme, compact }) => ({
   color: theme.palette.text.secondary,
   ...(compact && { opacity: 0, width: 0 }),
 }));
+const BulletIcon = styled('div')<{ active: any }>(({ theme, active }) => ({
+  width: 4,
+  height: 4,
+  marginLeft: '10px',
+  marginRight: '8px',
+  overflow: 'hidden',
+  borderRadius: '50%',
+  background: active ? theme.palette.primary.main : theme.palette.text.disabled,
+  boxShadow: active ? `0px 0px 0px 3px  #ff55a533` : 'none',
+}));
 
 const ExternalLink = styled('a')(({ theme }) => ({
   overflow: 'hidden',
@@ -84,7 +94,7 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = props => {
   // handle active current page
   const activeRoute = (path: string) => (pathname === path ? 1 : 0);
   // handle navigate to another route or page
-  // const handleNavigation = (path: string) => navigate(path);
+  const handleNavigation = (path: string) => router.push(path);
 
   //   RECURSIVE FUNCTION TO RENDER MULTI LEVEL MENU
   const renderLevels = (data: any) => {
@@ -131,13 +141,12 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = props => {
               key={item.name}
               className="navItem"
               active={activeRoute(item.path)}
-              // onClick={() => handleNavigation(item.path)}
+              onClick={() => handleNavigation(item.path)}
             >
               {item?.icon ? (
                 <item.icon sx={iconStyle(activeRoute(item.path))} />
               ) : (
-                // <BulletIcon active={activeRoute(item.path)} />
-                <></>
+                <BulletIcon active={activeRoute(item.path)} />
               )}
 
               <StyledText compact={sidebarCompact} active={activeRoute(item.path)}>

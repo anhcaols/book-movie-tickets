@@ -13,6 +13,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     paddingRight: '2rem',
   },
   background: '#171c24',
+  minHeight: '100vh',
 }));
 
 const InnerWrapper = styled(Box)(({ theme }) => ({

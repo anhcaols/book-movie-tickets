@@ -1,86 +1,94 @@
+import {
+  Dashboard,
+  LiveTv,
+  Group,
+  Chair,
+  Fastfood,
+  Receipt,
+  Grade,
+  DateRange,
+  MapsHomeWork,
+} from '@mui/icons-material';
+
 export const navigations = [
   {
-    name: 'Profiles',
+    name: 'Trang chủ',
+    path: '/admin',
+    icon: Dashboard,
+  },
+  {
+    name: 'Tài khoản',
+    path: '/admin/accounts',
+    icon: Group,
+  },
+
+  {
+    name: 'Phim',
+    icon: LiveTv,
     children: [
-      { name: 'Profile 1', path: '/dashboards/profile' },
-      { name: 'Profile 2', path: '/dashboards/profile-v2' },
+      {
+        name: 'Tất cả phim',
+        path: '/admin/movies',
+      },
+      {
+        name: 'Thể loại phim',
+        path: '/admin/movies/genre',
+      },
+      {
+        name: 'Đánh giá phim',
+        path: '/admin/movies/rating',
+      },
     ],
   },
 
   {
-    name: 'Accounts',
-    children: [
-      { name: 'Account 1', path: '/dashboards/account' },
-      { name: 'Account 2', path: '/dashboards/account-v2' },
-    ],
+    name: 'Lịch trình',
+    path: '/schedules',
+    icon: DateRange,
   },
+
   {
-    name: 'User & Contact',
+    name: 'Ghế',
+    icon: Chair,
     children: [
-      { name: 'Add User', path: '/dashboards/add-user' },
-      { name: 'User List 1', path: '/dashboards/user-list' },
-      { name: 'User List 2', path: '/dashboards/user-list-v2' },
-      { name: 'User Grid 1', path: '/dashboards/user-grid' },
-      { name: 'User Grid 2', path: '/dashboards/user-grid-v2' },
-      { name: 'Contact List', path: '/dashboards/contact-list' },
-      { name: 'Contact Grid', path: '/dashboards/contact-grid' },
+      { name: 'Tất cả ghế', path: '/admin/seats' },
+      { name: 'Trạng thái ghế', path: '/admin/status-seats' },
+      { name: 'Loại ghế', path: '/admin/seat-types' },
     ],
   },
 
   {
-    name: 'Invoice',
+    name: 'Rạp',
+    icon: MapsHomeWork,
     children: [
-      { name: 'Invoice List 1', path: '/dashboards/invoice-list' },
-      { name: 'Invoice List 2', path: '/dashboards/invoice-list-v2' },
-      { name: 'Invoice Details 1', path: '/dashboards/invoice-details' },
-      { name: 'Invoice Details 2', path: '/dashboards/invoice-details-v2' },
-      { name: 'Create Invoice 1', path: '/dashboards/create-invoice' },
-      { name: 'Create Invoice 2', path: '/dashboards/create-invoice-v2' },
+      {
+        name: 'Tất cả rạp',
+        path: '/admin/cinemas',
+      },
+      {
+        name: 'Phòng chiếu',
+        path: '/admin/rooms',
+      },
     ],
   },
 
   {
-    name: 'Ecommerce',
+    name: 'Hóa đơn',
+    path: '/admin/orders',
+    icon: Receipt,
     children: [
-      { name: 'Cart', path: '/dashboards/cart' },
-      { name: 'Payment', path: '/dashboards/payment' },
-      { name: 'Billing Address', path: '/dashboards/billing-address' },
-      { name: 'Product Details', path: '/dashboards/product-details' },
-      { name: 'Shop 1', path: '/dashboards/shop' },
-      { name: 'Shop 2', path: '/dashboards/shop-v2' },
-      { name: 'Checkout 1', path: '/dashboards/checkout' },
-      { name: 'Checkout 2', path: '/dashboards/checkout-v2' },
-      { name: 'Payment Complete 1', path: '/dashboards/payment-complete' },
-      { name: 'Payment Complete 2', path: '/dashboards/payment-complete-v2' },
+      {
+        name: 'Tất cả hóa đơn',
+        path: '/admin/foods',
+      },
+      {
+        name: 'Vé phim',
+        path: '',
+      },
+      {
+        name: 'Đồ ăn',
+        path: '/admin/foods',
+      },
     ],
-  },
-
-  {
-    name: 'Admin Ecommerce',
-    children: [
-      { name: 'Product List', path: '/dashboards/product-list' },
-      { name: 'Product Grid', path: '/dashboards/product-grid' },
-      { name: 'Create Product', path: '/dashboards/create-product' },
-      { name: 'Order Management', path: '/dashboards/order-management' },
-      { name: 'Product Management', path: '/dashboards/product-management' },
-      { name: 'Customer Management', path: '/dashboards/customer-management' },
-    ],
-  },
-
-  {
-    name: 'Projects',
-    children: [
-      { name: 'Project List 1', path: '/dashboards/project-v1' },
-      { name: 'Project List 2', path: '/dashboards/project-v2' },
-      { name: 'Project List 3', path: '/dashboards/project-v3' },
-      { name: 'Team Member', path: '/dashboards/team-member' },
-      { name: 'Project Details', path: '/dashboards/project-details' },
-    ],
-  },
-
-  {
-    name: 'Data Table',
-    path: '/dashboards/data-table-v2',
-    // children: [{ name: 'Data Table', path: '/dashboards/data-table-v2' }],
   },
 ];
