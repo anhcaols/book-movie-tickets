@@ -29,6 +29,7 @@ const PopoverLayout: FC<PopoverLayoutProps> = props => {
           maxWidth: maxWidth || 375,
           width: '100%',
           padding: '0.5rem 0',
+          background: '#222b36',
         },
       }}
     >

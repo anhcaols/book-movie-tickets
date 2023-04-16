@@ -3,6 +3,11 @@ import FlexBox from '@components/shared/flexbox/FlexBox';
 import { H6, Small, Tiny } from '@components/shared/typography';
 import { FC, Fragment, useRef, useState } from 'react';
 import PopoverLayout from './PopoverLayout';
+import { deleteCookie } from 'cookies-next';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { useSnackbar } from 'notistack';
+import { onSignOut } from '@redux/slices/auth.slice';
+import { useRouter } from 'next/router';
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
@@ -24,10 +29,22 @@ const ProfilePopover: FC = () => {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
+  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const handleMenuItem = (path: string) => {};
 
-  const handleLogout = () => {};
+  const { account } = useAppSelector(state => state.auth);
+
+  const handleLogout = () => {
+    dispatch(onSignOut());
+    deleteCookie('accessToken');
+    router.push('/admin/auth/login');
+    enqueueSnackbar('Logout successfully', {
+      variant: 'success',
+    });
+  };
 
   return (
     <Fragment>
@@ -52,11 +69,11 @@ const ProfilePopover: FC = () => {
             <Small mx={1} color="text.secondary">
               Xin chào,{' '}
               <Small fontWeight="600" display="inline">
-                Anh Cao
+                {account.fullName}
               </Small>
             </Small>
           )}
-          <Avatar src={'/static/avatar/001-man.svg'} sx={{ width: 28, height: 28 }} />
+          <Avatar src={account.avatar || '/assets/images/avatar.jpg'} sx={{ width: 28, height: 28 }} />
         </Badge>
       </StyledButtonBase>
 
@@ -69,34 +86,27 @@ const ProfilePopover: FC = () => {
         popoverClose={() => setOpen(false)}
         title={
           <FlexBox alignItems="center" gap={1}>
-            <Avatar src={'/static/avatar/001-man.svg'} sx={{ width: 35, height: 35 }} />
+            <Avatar src={account.avatar || '/assets/images/avatar.jpg'} sx={{ width: 35, height: 35 }} />
 
             <Box>
-              <H6>{'Anh Cao'}</H6>
+              <H6>{account.fullName}</H6>
               <Tiny display="block" fontWeight={500} color="text.disabled">
-                {'anhcao@gmail.com'}
+                {account.email}
               </Tiny>
             </Box>
           </FlexBox>
         }
       >
         <Box pt={1}>
-          <StyledSmall onClick={() => handleMenuItem('/dashboards/profile')}>Set Status</StyledSmall>
-
-          <StyledSmall onClick={() => handleMenuItem('/dashboards/profile')}>Profile & Account</StyledSmall>
-
-          <StyledSmall onClick={() => handleMenuItem('/dashboards/account')}>Settings</StyledSmall>
-
-          <StyledSmall onClick={() => handleMenuItem('/dashboards/team-member')}>Manage Team</StyledSmall>
-
+          <StyledSmall onClick={() => handleMenuItem('/dashboards/profile')}>Trang cá nhân</StyledSmall>
+          <StyledSmall onClick={() => handleMenuItem('/dashboards/account')}>Cài đặt</StyledSmall>
           <Divider sx={{ my: 1 }} />
-
           <StyledSmall
             onClick={() => {
               handleLogout();
             }}
           >
-            Sign Out
+            Đăng xuất
           </StyledSmall>
         </Box>
       </PopoverLayout>
