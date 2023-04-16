@@ -2,7 +2,7 @@ import DashboardLayout from '@layouts/DashboardLayout/DashboardLayout';
 import React from 'react';
 import { NextPageWithLayout } from '../../_app';
 import { Box, Typography } from '@mui/material';
-import UserList from '@components/users/UserList';
+import UserList from '@components/admin/users/UserList';
 
 const AdminUser: NextPageWithLayout = () => {
   return (

@@ -32,7 +32,6 @@ const AdminLoginPage: NextPageWithLayout = () => {
   });
 
   const onSubmit = handleSubmit(data => {
-    console.log(data);
     dispatch(onSignIn({ email: data.email, password: data.password, role: 'admin' })).then((result: any) => {
       if (result.meta.requestStatus === 'fulfilled') {
         const accessToken = (result.payload as any).accessToken;

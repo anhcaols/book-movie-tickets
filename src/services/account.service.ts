@@ -4,11 +4,16 @@ const accessToken = getCookie('accessToken');
 
 export class AccountsService extends BaseService {
   async getUsers(query: { page: number; limit: number }) {
-    const { data } = await this.httpClient.get(`/accounts?page=${query.page}&limit=${query.limit}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken} `,
-      },
-    });
+    const { data } = await this.httpClient.get(
+      `/accounts?page=${query.page}&limit=${query.limit}`,
+      accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken} `,
+            },
+          }
+        : { isPrivateAPI: true }
+    );
 
     return data;
   }

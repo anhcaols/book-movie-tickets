@@ -20,18 +20,6 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetUsers } from '@redux/actions/accounts.action';
 import moment from 'moment';
 
-function createData(name: any, calories: any, fat: any, carbs: any, protein: any) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 const UserList = () => {
   const [value, setValue] = useState('');
   const [isOpenCreateUser, setIsOpenCreateUser] = useState<boolean>(false);
@@ -39,10 +27,11 @@ const UserList = () => {
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
   const [isIdUser, setIsIdUser] = useState<number>(0);
   const dispatch = useAppDispatch();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(onGetUsers({ query: { page: 1, limit: 200 } }));
-  }, []);
+    dispatch(onGetUsers({ query: { page, limit: 10 } }));
+  }, [page]);
 
   const { accounts, accountsPagination } = useAppSelector(state => state.accounts);
 
@@ -56,7 +45,6 @@ const UserList = () => {
     setIsIdUser(id);
   };
 
-  const [page, setPage] = React.useState(1);
   const handleChange = (event: any, value: number) => {
     setPage(value);
   };

@@ -77,13 +77,13 @@ const RegisterPage: NextPageWithLayout = () => {
     delay: 500,
     asyncFunction: async payload => authService.signUp(payload),
     onResolve: () => {
-      enqueueSnackbar('Register account successfully', {
+      enqueueSnackbar('Đăng ký thành công', {
         variant: 'success',
       });
       router.push('/auth/login');
     },
     onReject: (error: any) => {
-      enqueueSnackbar('Register failed', {
+      enqueueSnackbar('Đăng ký thất bại', {
         variant: 'error',
       });
       reset();

@@ -167,7 +167,6 @@ const ChooseFoodPage: NextPageWithLayout = () => {
       seats: invoiceData.seats.map((seat: any) => seat.id),
       foods,
     };
-    console.log(data);
     dispatch(onCreateOrder(data));
     enqueueSnackbar('Đã đặt vé thành công', {
       variant: 'success',

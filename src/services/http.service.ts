@@ -41,7 +41,6 @@ export class Http {
     const token = this.customConfigs.authentication.token;
 
     if (isPrivateAPI && otherConfig.headers) {
-      console.log(token);
       Object.assign(otherConfig.headers, {
         Authorization: `Bearer ${token}`,
       });
