@@ -8,10 +8,9 @@ interface UpdateUserModalOpen {
 }
 
 export const UpdateUserModal = ({ id, open, onClose }: UpdateUserModalOpen) => {
-  console.log(id);
   return (
     <AppDialog title="Demo" open={open} onClose={() => onClose(false)}>
-      <h1>dasndahscsadas[dfasf asdasd</h1>
+      <h1>{id}</h1>
     </AppDialog>
   );
 };

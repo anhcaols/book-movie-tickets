@@ -33,6 +33,7 @@ export class AuthService extends BaseService {
   }
 
   setToken(accessToken: string) {
+    console.log(accessToken);
     this.httpClient.setCustomConfigs({
       authentication: {
         token: accessToken,

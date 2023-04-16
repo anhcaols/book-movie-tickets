@@ -8,10 +8,9 @@ interface DeleteUserModalOpen {
 }
 
 export const DeleteUserModal = ({ id, open, onClose }: DeleteUserModalOpen) => {
-  console.log(id);
   return (
     <AppDialog title="Delete" open={open} onClose={() => onClose(false)}>
-      <h1>dasndahscsadas[dfasf asdasd</h1>
+      <h1>{id}</h1>
     </AppDialog>
   );
 };

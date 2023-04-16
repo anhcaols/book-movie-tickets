@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetMovies } from '@redux/actions/movies.action';
+import { onGetAccounts } from '@redux/actions/accounts.action';
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +15,10 @@ function Home() {
   const { nowShowing, comingSoon } = useAppSelector(state => state.movies);
   const nowShowingMovies = nowShowing.movies;
   const comingSoonMovies = comingSoon.movies;
+
+  useEffect(() => {
+    dispatch(onGetAccounts({ query: { page: 1, limit: 200 } }));
+  }, []);
 
   useEffect(() => {
     dispatch(onGetMovies({ type: 'nowShowing', query: { page: 1, limit: 8 } }));

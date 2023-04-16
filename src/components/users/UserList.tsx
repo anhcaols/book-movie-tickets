@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Button,
+  Pagination,
+} from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
-import SearchInput from '@components/shared/search-input';
 import { UpdateUserModal } from './UpdateUserModal';
 import { CreateUserModal } from './CreateUserModal';
 import { DeleteUserModal } from './DeleteUserModal';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { onGetUsers } from '@redux/actions/accounts.action';
+import moment from 'moment';
 
 function createData(name: any, calories: any, fat: any, carbs: any, protein: any) {
   return { name, calories, fat, carbs, protein };
@@ -24,6 +38,13 @@ const UserList = () => {
   const [isOpenUpdateUser, setIsOpenUpdateUser] = useState<boolean>(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
   const [isIdUser, setIsIdUser] = useState<number>(0);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(onGetUsers({ query: { page: 1, limit: 200 } }));
+  }, []);
+
+  const { accounts, accountsPagination } = useAppSelector(state => state.accounts);
 
   const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateUser(true);
@@ -34,10 +55,15 @@ const UserList = () => {
     setIsOpenDeleteUser(true);
     setIsIdUser(id);
   };
+
+  const [page, setPage] = React.useState(1);
+  const handleChange = (event: any, value: number) => {
+    setPage(value);
+  };
+
   return (
     <>
-      <Box className="py-6 flex justify-between flex-wrap gap-4">
-        <SearchInput width={220} value={value} onChange={(e: any) => setValue(e.target.value)} />
+      <Box className="pt-4 pb-6 flex justify-end">
         <Button onClick={() => setIsOpenCreateUser(true)} startIcon={<Add />} size="medium" variant="contained">
           Thêm
         </Button>
@@ -56,24 +82,24 @@ const UserList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {accounts?.map((account, index) => (
+              <TableRow key={account.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell align="left">{row.calories}</TableCell>
-                <TableCell align="left">{row.fat}</TableCell>
-                <TableCell align="left">{row.carbs}</TableCell>
-                <TableCell align="left">{row.protein}</TableCell>
-                <TableCell align="left">{row.protein}</TableCell>
+                <TableCell align="left">{account.fullName}</TableCell>
+                <TableCell align="left">{account.email}</TableCell>
+                <TableCell align="left">{account.phoneNumber}</TableCell>
+                <TableCell align="left">{moment(account.dateOfBirth).format('L')} </TableCell>
+                <TableCell align="left">{account.gender}</TableCell>
                 <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
                     <BorderColorOutlined
-                      onClick={() => handleShowUpdateModal(index)}
+                      onClick={() => handleShowUpdateModal(account.id)}
                       className="!text-lg hover:text-primary"
                     />
                     <DeleteOutline
-                      onClick={() => handleShowDeleteModal(index)}
+                      onClick={() => handleShowDeleteModal(account.id)}
                       className="!text-xl hover:text-primary"
                     />
                   </Box>
@@ -83,6 +109,9 @@ const UserList = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box className="flex justify-end mt-6">
+        <Pagination count={10} page={page} onChange={handleChange} />
+      </Box>
       <CreateUserModal open={isOpenCreateUser} onClose={setIsOpenCreateUser} />
       <UpdateUserModal id={isIdUser} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />
       <DeleteUserModal id={isIdUser} open={isOpenDeleteUser} onClose={setIsOpenDeleteUser} />

@@ -31,7 +31,7 @@ export class Http {
     const { handleBeforeRequestSend = this.handleBeforeRequestSend } = config || {};
 
     const instance = axios.create();
-
+    // @ts-ignore
     instance.interceptors.request.use(handleBeforeRequestSend);
     this.instance = instance;
   }
@@ -41,6 +41,7 @@ export class Http {
     const token = this.customConfigs.authentication.token;
 
     if (isPrivateAPI && otherConfig.headers) {
+      console.log(token);
       Object.assign(otherConfig.headers, {
         Authorization: `Bearer ${token}`,
       });
@@ -51,6 +52,7 @@ export class Http {
 
   async get<T>(url: string, config?: IHttpRequestConfig) {
     const { instance } = this;
+    // @ts-ignore
     instance.interceptors.request.use(this.handleBeforeRequestSend);
     const response = await instance.get<T>(url, config);
     return response;
