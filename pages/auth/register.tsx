@@ -28,7 +28,9 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 
-const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+const phoneRegex =
+  /^(086|096|097|098|032|033|034|035|036|037|038|039|089|090|093|070|079|077|076|078|084|091|094|088|083|082|085|081|092|056|058|099|059)\d{7}$/;
+
 const registerFormSchema = z
   .object({
     fullName: z.string().min(1, 'Họ tên là bắt buộc.'),
