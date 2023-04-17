@@ -1,4 +1,4 @@
-import { onCreateUser, onGetUsers, onUpdateUser } from '@redux/actions/accounts.action';
+import { onCreateUser, onDeleteUser, onGetUsers, onUpdateUser } from '@redux/actions/accounts.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface AccountsState {
@@ -39,6 +39,11 @@ export const accountSlice = createSlice({
       const userIndex = state.accounts.findIndex(item => item.id === userId);
       if (userIndex === -1) return;
       state.accounts[userIndex] = { ...state.accounts[userIndex], ...action.payload.updateValues };
+    });
+    builder.addCase(onDeleteUser.fulfilled, (state, action) => {
+      const { userId } = action.payload;
+      state.accounts = state.accounts.filter(item => item.id !== userId);
+      state.accountsPagination.totalDocs -= 1;
     });
   },
 });

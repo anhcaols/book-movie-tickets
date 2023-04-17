@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
+  Button,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -180,8 +181,11 @@ export const UpdateUserModal = ({ open, onClose, id }: UpdateUserModalOpen) => {
                 />
               )}
             />
-            <Box>
-              <LoadingButton type="submit" className="w-full" variant="contained" size="large" loading={isLoading}>
+            <Box className="w-full flex justify-end gap-2">
+              <Button variant="outlined" size="medium" onClick={() => onClose(false)}>
+                Hủy
+              </Button>
+              <LoadingButton type="submit" variant="contained" size="medium" loading={isLoading}>
                 Cập nhật
               </LoadingButton>
             </Box>

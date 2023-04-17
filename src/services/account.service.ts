@@ -26,7 +26,7 @@ export class AccountsService extends BaseService {
     return data;
   }
 
-  async deleteUser(userId: { userId: number }) {
+  async deleteUser(userId: number) {
     const { data } = await this.httpClient.delete(`/accounts/${userId}`, {
       isPrivateAPI: true,
     });

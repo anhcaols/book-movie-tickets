@@ -28,9 +28,14 @@ const updateUserPayloadSchema = z.object({
   userId: z.number(),
 });
 
+const deleteUserPayloadSchema = z.object({
+  userId: z.number(),
+});
+
 type GetUsersPayload = z.infer<typeof getUsersPayloadSchema>;
 type CreateUsersPayload = z.infer<typeof createUserPayloadSchema>;
 type UpdateUsersPayload = z.infer<typeof updateUserPayloadSchema>;
+type DeleteUsersPayload = z.infer<typeof deleteUserPayloadSchema>;
 
 export const onGetUsers = createAsyncThunkWithCustomError<
   {
@@ -83,13 +88,26 @@ export const onUpdateUser = createAsyncThunkWithCustomError<
   async payload => {
     updateUserPayloadSchema.parse(payload);
     const { dataValues, userId } = payload;
-    console.log(payload);
     const response: any = await accountsService.updateUser(dataValues, userId);
     return {
       updateValues: response.account,
     };
   },
   {
-    defaultErrorMessage: 'Error while create user',
+    defaultErrorMessage: 'Error while update user',
+  }
+);
+
+export const onDeleteUser = createAsyncThunkWithCustomError<{ userId: number }, DeleteUsersPayload>(
+  'account/delete',
+  async payload => {
+    deleteUserPayloadSchema.parse(payload);
+    await accountsService.deleteUser(payload.userId);
+    return {
+      userId: payload.userId,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while delete user',
   }
 );
