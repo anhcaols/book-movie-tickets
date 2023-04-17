@@ -78,7 +78,7 @@ const UserList = () => {
                 <TableCell align="left">{account.fullName}</TableCell>
                 <TableCell align="left">{account.email}</TableCell>
                 <TableCell align="left">{account.phoneNumber}</TableCell>
-                <TableCell align="left">{moment(account.dateOfBirth).format('L')} </TableCell>
+                <TableCell align="left">{moment(account.dateOfBirth).format('DD/MM/YYYY')} </TableCell>
                 <TableCell align="left">{account.gender}</TableCell>
                 <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">

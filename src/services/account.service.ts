@@ -18,6 +18,14 @@ export class AccountsService extends BaseService {
     return data;
   }
 
+  async getUser(userId: number) {
+    const { data } = await this.httpClient.get(`/accounts/${userId}`, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
+
   async deleteUser(userId: { userId: number }) {
     const { data } = await this.httpClient.delete(`/accounts/${userId}`, {
       isPrivateAPI: true,
@@ -29,11 +37,12 @@ export class AccountsService extends BaseService {
   async updateUser(
     payload: {
       full_name: string;
+      email: string;
       phone_number: string;
       gender: string;
       date_of_birth: string | Date;
     },
-    userId: { userId: number }
+    userId: number
   ) {
     const { data } = await this.httpClient.patch(`/accounts/${userId}`, payload, {
       isPrivateAPI: true,

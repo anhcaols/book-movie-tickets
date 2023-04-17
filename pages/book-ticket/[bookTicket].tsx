@@ -266,6 +266,7 @@ const BookTicketPage: NextPageWithLayout = () => {
                   render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
                     <DesktopDatePicker
                       {...field}
+                      inputFormat="DD/MM/YYYY"
                       inputRef={ref}
                       label="Ngày"
                       renderInput={inputProps => (

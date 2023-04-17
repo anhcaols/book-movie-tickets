@@ -140,7 +140,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
           <Box className="flex flex-col md:flex-row" gap={4}>
             <img
               className="block rounded w-[250px] h-[386px] object-fill"
-              src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/${movie?.image}` : ''}
+              src={movie?.image !== undefined ? ` ${NEXT_APP_API_BASE_URL}/static/movies/${movie?.image}` : ''}
               alt="img"
             />
             <Stack spacing={1} className="overflow-hidden">

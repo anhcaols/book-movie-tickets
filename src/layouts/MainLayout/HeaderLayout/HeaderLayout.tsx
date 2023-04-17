@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onSignOut } from '@redux/slices/auth.slice';
 import { deleteCookie } from 'cookies-next';
 import { useSnackbar } from 'notistack';
-import { Box, Button } from '@mui/material';
+import { Avatar, Box, Button } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -136,7 +136,7 @@ function Header() {
                     offset={[18, 19]}
                   >
                     <div className="ml-[10px] xl:ml-0 w-9 h-9">
-                      <img
+                      <Avatar
                         className="w-full h-full rounded-full cursor-pointer object-cover"
                         src={account.avatar || '/assets/images/avatar.jpg'}
                         alt="img"
