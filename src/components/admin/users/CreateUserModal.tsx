@@ -98,13 +98,13 @@ export const CreateUserModal = ({ open, onClose }: CreateUserModalOpen) => {
       setIsLoading(false);
       reset();
       onClose(false);
-      enqueueSnackbar('Đăng ký thành công', {
+      enqueueSnackbar('Thêm thành công', {
         variant: 'success',
       });
     },
     onReject: (error: any) => {
       setIsLoading(false);
-      enqueueSnackbar('Đăng ký thất bại', {
+      enqueueSnackbar('Thêm thất bại', {
         variant: 'error',
       });
     },
@@ -208,7 +208,7 @@ export const CreateUserModal = ({ open, onClose }: CreateUserModalOpen) => {
             />
             <Box>
               <LoadingButton type="submit" className="w-full" variant="contained" size="large" loading={isLoading}>
-                Đăng ký
+                Thêm
               </LoadingButton>
             </Box>
           </Stack>

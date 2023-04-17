@@ -31,9 +31,21 @@ export const accountSlice = createSlice({
       state.accountsPagination = action.payload.accountsPagination;
     });
     builder.addCase(onCreateUser.fulfilled, (state, action) => {
-      state.accounts = [...state.accounts, action.payload.newAccount];
-      state.accountsPagination = initialPagination;
+      const { newAccount } = action.payload;
+      const isCurrentPageFull = state.accounts.length === state.accountsPagination.limit;
+      if (isCurrentPageFull) {
+        state.accounts = [...state.accounts, newAccount];
+        state.accountsPagination.totalDocs += 1;
+        state.accountsPagination.totalPages = Math.ceil(
+          state.accountsPagination.totalDocs / state.accountsPagination.limit
+        );
+      } else {
+        state.accounts = [...state.accounts, newAccount];
+        state.accountsPagination.totalDocs += 1;
+      }
+      state.accountsPagination.page = Math.ceil(state.accountsPagination.totalDocs / state.accountsPagination.limit);
     });
+
     builder.addCase(onUpdateUser.fulfilled, (state, action) => {
       const userId = action.payload.updateValues.id;
       const userIndex = state.accounts.findIndex(item => item.id === userId);
@@ -44,6 +56,9 @@ export const accountSlice = createSlice({
       const { userId } = action.payload;
       state.accounts = state.accounts.filter(item => item.id !== userId);
       state.accountsPagination.totalDocs -= 1;
+      state.accountsPagination.totalPages = Math.ceil(
+        state.accountsPagination.totalDocs / state.accountsPagination.limit
+      );
     });
   },
 });

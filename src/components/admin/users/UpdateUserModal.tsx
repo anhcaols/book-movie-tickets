@@ -24,6 +24,7 @@ import { useSnackbar } from 'notistack';
 import { useAppDispatch } from '@hooks/useRedux';
 import { onCreateUser, onUpdateUser } from '@redux/actions/accounts.action';
 import { accountsService } from '@services/account.service';
+import { useAsync } from '@hooks/useAsync';
 
 interface UpdateUserModalOpen {
   id: number;
@@ -72,7 +73,6 @@ export const UpdateUserModal = ({ open, onClose, id }: UpdateUserModalOpen) => {
       setValue('dateOfBirth', response.account.dateOfBirth);
       const gender = response.account.gender === 'nam' ? 1 : 0;
       setValue('gender', gender);
-      // console.log(response.account);
     };
     if (id !== 0) {
       fetchUser();
@@ -91,20 +91,32 @@ export const UpdateUserModal = ({ open, onClose, id }: UpdateUserModalOpen) => {
       date_of_birth: dayjs(data.dateOfBirth).format(),
     };
 
-    dispatch(onUpdateUser({ dataValues, userId: id })).then(resultAction => {
-      if (onUpdateUser.fulfilled.match(resultAction)) {
-        setIsLoading(false);
-        reset();
-        onClose(false);
-        enqueueSnackbar('Cập nhật thành công', { variant: 'success' });
-      }
+    executeUpdate(dataValues);
+  });
 
-      if (onUpdateUser.rejected.match(resultAction)) {
-        setIsLoading(false);
-        // reset();
-        enqueueSnackbar('Thao tác thất bại', { variant: 'error' });
-      }
-    });
+  const [executeUpdate] = useAsync<{
+    full_name: string;
+    email: string;
+    phone_number: string;
+    gender: string;
+    date_of_birth: string;
+  }>({
+    delay: 500,
+    asyncFunction: async payload => dispatch(onUpdateUser({ dataValues: payload, userId: id })),
+    onResolve: () => {
+      setIsLoading(false);
+      reset();
+      onClose(false);
+      enqueueSnackbar('Cập nhập thành công', {
+        variant: 'success',
+      });
+    },
+    onReject: (error: any) => {
+      setIsLoading(false);
+      enqueueSnackbar('Cập nhật thất bại', {
+        variant: 'error',
+      });
+    },
   });
 
   return (

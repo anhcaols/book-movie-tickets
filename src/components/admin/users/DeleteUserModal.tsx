@@ -29,8 +29,8 @@ export const DeleteUserModal = ({ id, open, onClose }: DeleteUserModalOpen) => {
     delay: 500,
     asyncFunction: async payload => dispatch(onDeleteUser(payload)),
     onResolve: () => {
-      setIsLoading(false);
       onClose(false);
+      setIsLoading(false);
       enqueueSnackbar('Xóa thành công', { variant: 'success' });
     },
     onReject: (error: any) => {

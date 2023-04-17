@@ -98,7 +98,7 @@ const UserList = () => {
         </Table>
       </TableContainer>
       <Box className="flex justify-end mt-6">
-        <Pagination count={10} page={page} onChange={handleChange} />
+        <Pagination count={accountsPagination.totalPages} page={page} onChange={handleChange} />
       </Box>
       <CreateUserModal open={isOpenCreateUser} onClose={setIsOpenCreateUser} />
       <UpdateUserModal id={isIdUser} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />

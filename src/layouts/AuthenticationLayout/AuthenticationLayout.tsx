@@ -13,11 +13,9 @@ const AuthenticationLayout = ({ children }: PropsWithChildren) => {
         <Box className="flex justify-center items-center w-full min-h-[100vh] py-[40px] ">
           <Box className="w-full max-w-lg px-9 py-10 bg-[#28282d] shadow-xl rounded border-t-2 border-primary ">
             <Box className="flex justify-center items-center mb-12">
-              <Link href={'/'}>
-                <h2 className=" text-2xl lg:text-[32px] font-bold ">
-                  ANH<span className="text-primary">LS</span>
-                </h2>
-              </Link>
+              <h2 className=" text-2xl lg:text-[32px] font-bold ">
+                ANH<span className="text-primary">LS</span>
+              </h2>
             </Box>
             {children}
           </Box>
