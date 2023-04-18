@@ -4,7 +4,7 @@ import { NextPageWithLayout } from '../../_app';
 import { Box, Typography } from '@mui/material';
 import UserList from '@components/admin/users/UserList';
 
-const AdminUser: NextPageWithLayout = () => {
+const AdminUsers: NextPageWithLayout = () => {
   return (
     <Box className="bg-[#222b36] p-6 rounded-lg">
       <Typography className="!text-xl !font-medium ">Khách hàng</Typography>
@@ -13,6 +13,6 @@ const AdminUser: NextPageWithLayout = () => {
   );
 };
 
-AdminUser.getLayout = page => <DashboardLayout>{page}</DashboardLayout>;
+AdminUsers.getLayout = page => <DashboardLayout>{page}</DashboardLayout>;
 
-export default AdminUser;
+export default AdminUsers;

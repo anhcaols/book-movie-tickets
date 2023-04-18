@@ -101,3 +101,17 @@ interface OrderByUserEntity {
   orderDate: string;
   totalMount: number;
 }
+
+interface CinemaEntity {
+  id: number;
+  name: string;
+  address: string;
+}
+
+interface RoomEntity {
+  id: number;
+  name: string;
+  rowNumber: number;
+  columnNumber: number;
+  cinema: Pick<CinemaEntity>;
+}

@@ -10,6 +10,7 @@ import statusSeatReducer from '@redux/slices/statusSeats.slice';
 import invoiceDataReducer from '@redux/slices/invoiceData.slice';
 import foodReducer from '@redux/slices/foods.slice';
 import accountReducer from '@redux/slices/accounts.slice';
+import cinemaReducer from '@redux/slices/cinemas.slice';
 
 const persistConfig = {
   key: 'root',
@@ -29,6 +30,7 @@ const store = configureStore({
     invoiceData: persistedReducer,
     foods: foodReducer,
     accounts: accountReducer,
+    cinemas: cinemaReducer,
   },
 });
 
