@@ -3,31 +3,31 @@ import { useAsync } from '@hooks/useAsync';
 import { useAppDispatch } from '@hooks/useRedux';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button } from '@mui/material';
-import { onDeleteUser } from '@redux/actions/accounts.action';
+import { onDeleteCinema } from '@redux/actions/cinemas.action';
 import { useSnackbar } from 'notistack';
 import React, { useState } from 'react';
 
-interface DeleteUserModalOpen {
+interface DeleteCinemaModalOpen {
   id: number;
   open: boolean;
   onClose: any;
 }
 
-export const DeleteUserModal = ({ id, open, onClose }: DeleteUserModalOpen) => {
+export const DeleteCinemaModal = ({ id, open, onClose }: DeleteCinemaModalOpen) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = () => {
     setIsLoading(true);
-    executeDelete({ userId: id });
+    executeDelete({ cinemaId: id });
   };
 
   const [executeDelete] = useAsync<{
-    userId: number;
+    cinemaId: number;
   }>({
     delay: 500,
-    asyncFunction: async payload => dispatch(onDeleteUser(payload)),
+    asyncFunction: async payload => dispatch(onDeleteCinema(payload)),
     onResolve: () => {
       onClose(false);
       setIsLoading(false);
@@ -40,7 +40,7 @@ export const DeleteUserModal = ({ id, open, onClose }: DeleteUserModalOpen) => {
   });
 
   return (
-    <AppDialog title="Xóa khách hàng" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Xóa rạp phim" open={open} onClose={() => onClose(false)}>
       <h1>Bạn có chắc chắn muốn xóa không?</h1>
       <Box className="w-full flex justify-end gap-2">
         <Button variant="outlined" size="medium" onClick={() => onClose(false)}>

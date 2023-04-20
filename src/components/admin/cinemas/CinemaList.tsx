@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetCinemas } from '@redux/actions/cinemas.action';
 import { CreateCinemaModal } from './CreateCinemaModal';
 import { UpdateCinemaModal } from './UpdateCinemaModal';
+import { DeleteCinemaModal } from './DeleteUserModal';
 
 const CinemaList = () => {
   const [isOpenCreateCinema, setIsOpenCreateCinema] = useState<boolean>(false);
@@ -101,7 +102,7 @@ const CinemaList = () => {
       </Box>
       <CreateCinemaModal open={isOpenCreateCinema} onClose={setIsOpenCreateCinema} />
       <UpdateCinemaModal id={isIdCinema} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />
-      {/* <DeleteCinemaModal id={isIdCinema} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} /> */}
+      <DeleteCinemaModal id={isIdCinema} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} />
     </>
   );
 };
