@@ -1,50 +1,56 @@
 import AppDialog from '@components/shared/app-dialog';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useAppDispatch } from '@hooks/useRedux';
-import { onCreateCinema } from '@redux/actions/cinemas.action';
 import { useAsync } from '@hooks/useAsync';
+import { onUpdateCinema } from '@redux/actions/cinemas.action';
+import { cinemasService } from '@services/cinemas.service';
 
-interface CreateCinemaModalOpen {
+interface UpdateCinemaModalOpen {
+  id: number;
   open: boolean;
   onClose: any;
 }
 
-const registerFormSchema = z.object({
+const updateFormSchema = z.object({
   name: z.string().min(1, 'Tên rạp là bắt buộc.'),
   address: z.string().min(1, 'Đia chỉ rạp là bắt buộc.'),
 });
 
-export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
+export const UpdateCinemaModal = ({ open, onClose, id }: UpdateCinemaModalOpen) => {
   const { enqueueSnackbar } = useSnackbar();
+  const [gender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const {
     register,
+    control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+  } = useForm<z.infer<typeof updateFormSchema>>({
+    resolver: zodResolver(updateFormSchema),
   });
+
+  useEffect(() => {
+    const fetchCinema = async () => {
+      const response: any = await cinemasService.getCinema(id);
+      setValue('name', response.cinema.name);
+      setValue('address', response.cinema.address);
+    };
+    if (id !== 0) {
+      fetchCinema();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, open]);
 
   const onSubmit = handleSubmit(data => {
     setIsLoading(true);
@@ -53,34 +59,33 @@ export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
       address: data.address,
     };
 
-    setIsLoading(true);
-    executeCreate(dataValues);
+    executeUpdate(dataValues);
   });
 
-  const [executeCreate] = useAsync<{
+  const [executeUpdate] = useAsync<{
     name: string;
     address: string;
   }>({
     delay: 500,
-    asyncFunction: async payload => dispatch(onCreateCinema(payload)),
+    asyncFunction: async payload => dispatch(onUpdateCinema({ dataValues: payload, cinemaId: id })),
     onResolve: () => {
-      onClose(false);
       setIsLoading(false);
       reset();
-      enqueueSnackbar('Thêm thành công', {
+      onClose(false);
+      enqueueSnackbar('Cập nhập thành công', {
         variant: 'success',
       });
     },
     onReject: (error: any) => {
       setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
+      enqueueSnackbar('Cập nhật thất bại', {
         variant: 'error',
       });
     },
   });
 
   return (
-    <AppDialog title="Thêm rạp phim" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Cập nhật rạp phim" open={open} onClose={() => onClose(false)}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <form onSubmit={onSubmit} action="#">
           <Stack spacing={3}>
@@ -103,7 +108,7 @@ export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
 
             <Box>
               <LoadingButton type="submit" className="w-full" variant="contained" size="large" loading={isLoading}>
-                Thêm
+                Cập nhật
               </LoadingButton>
             </Box>
           </Stack>

@@ -17,7 +17,8 @@ import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 // import { DeleteCinemaModal } from './DeleteCinemaModal';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetCinemas } from '@redux/actions/cinemas.action';
-import { CreateCinemaModal } from './CreateUserModal';
+import { CreateCinemaModal } from './CreateCinemaModal';
+import { UpdateCinemaModal } from './UpdateCinemaModal';
 
 const CinemaList = () => {
   const [isOpenCreateCinema, setIsOpenCreateCinema] = useState<boolean>(false);
@@ -25,13 +26,19 @@ const CinemaList = () => {
   const [isOpenDeleteCinema, setIsOpenDeleteCinema] = useState<boolean>(false);
   const [isIdCinema, setIsIdCinema] = useState<number>(0);
   const dispatch = useAppDispatch();
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pageSize = 10;
 
   useEffect(() => {
-    dispatch(onGetCinemas({ query: { page, limit: 10 } }));
-  }, [page]);
+    dispatch(onGetCinemas({ query: { page: currentPage, limit: pageSize } }));
+  }, [currentPage]);
 
   const { cinemas, cinemasPagination } = useAppSelector(state => state.cinemas);
+
+  const calculateRowIndex = (index: number) => {
+    return (currentPage - 1) * pageSize + index + 1;
+  };
 
   const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateCinema(true);
@@ -44,7 +51,7 @@ const CinemaList = () => {
   };
 
   const handleChange = (event: any, value: number) => {
-    setPage(value);
+    setCurrentPage(value);
   };
 
   return (
@@ -68,7 +75,7 @@ const CinemaList = () => {
             {cinemas?.map((cinema, index) => (
               <TableRow key={cinema.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {index + 1}
+                  {calculateRowIndex(index)}
                 </TableCell>
                 <TableCell align="left">{cinema.name}</TableCell>
                 <TableCell align="left">{cinema.address}</TableCell>
@@ -90,11 +97,11 @@ const CinemaList = () => {
         </Table>
       </TableContainer>
       <Box className="flex justify-end mt-6">
-        <Pagination count={cinemasPagination.totalPages} page={page} onChange={handleChange} />
+        <Pagination count={cinemasPagination.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateCinemaModal open={isOpenCreateCinema} onClose={setIsOpenCreateCinema} />
-      {/* <UpdateCinemaModal id={isIdCinema} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />
-      <DeleteCinemaModal id={isIdCinema} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} /> */}
+      <UpdateCinemaModal id={isIdCinema} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />
+      {/* <DeleteCinemaModal id={isIdCinema} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} /> */}
     </>
   );
 };
