@@ -23,7 +23,7 @@ const CinemaList = () => {
   const [isOpenCreateCinema, setIsOpenCreateCinema] = useState<boolean>(false);
   const [isOpenUpdateCinema, setIsOpenUpdateCinema] = useState<boolean>(false);
   const [isOpenDeleteCinema, setIsOpenDeleteCinema] = useState<boolean>(false);
-  const [isIdCinema, setIsIdCinema] = useState<number>(0);
+  const [isCinemaId, setCinemaId] = useState<number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -41,12 +41,12 @@ const CinemaList = () => {
 
   const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateCinema(true);
-    setIsIdCinema(id);
+    setCinemaId(id);
   };
 
   const handleShowDeleteModal = (id: number) => {
     setIsOpenDeleteCinema(true);
-    setIsIdCinema(id);
+    setCinemaId(id);
   };
 
   const handleChange = (event: any, value: number) => {
@@ -99,8 +99,8 @@ const CinemaList = () => {
         <Pagination count={cinemasPagination.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateCinemaModal open={isOpenCreateCinema} onClose={setIsOpenCreateCinema} />
-      <UpdateCinemaModal id={isIdCinema} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />
-      <DeleteCinemaModal id={isIdCinema} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} />
+      <UpdateCinemaModal id={isCinemaId} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />
+      <DeleteCinemaModal id={isCinemaId} open={isOpenDeleteCinema} onClose={setIsOpenDeleteCinema} />
     </>
   );
 };

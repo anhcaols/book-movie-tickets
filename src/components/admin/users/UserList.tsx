@@ -21,11 +21,10 @@ import { onGetUsers } from '@redux/actions/accounts.action';
 import moment from 'moment';
 
 const UserList = () => {
-  const [value, setValue] = useState('');
   const [isOpenCreateUser, setIsOpenCreateUser] = useState<boolean>(false);
   const [isOpenUpdateUser, setIsOpenUpdateUser] = useState<boolean>(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
-  const [isIdUser, setIsIdUser] = useState<number>(0);
+  const [isUserId, setUserId] = useState<number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
 
@@ -41,12 +40,12 @@ const UserList = () => {
 
   const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateUser(true);
-    setIsIdUser(id);
+    setUserId(id);
   };
 
   const handleShowDeleteModal = (id: number) => {
     setIsOpenDeleteUser(true);
-    setIsIdUser(id);
+    setUserId(id);
   };
 
   const handleChange = (event: any, value: number) => {
@@ -105,8 +104,8 @@ const UserList = () => {
         <Pagination count={accountsPagination.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateUserModal open={isOpenCreateUser} onClose={setIsOpenCreateUser} />
-      <UpdateUserModal id={isIdUser} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />
-      <DeleteUserModal id={isIdUser} open={isOpenDeleteUser} onClose={setIsOpenDeleteUser} />
+      <UpdateUserModal id={isUserId} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />
+      <DeleteUserModal id={isUserId} open={isOpenDeleteUser} onClose={setIsOpenDeleteUser} />
     </>
   );
 };
