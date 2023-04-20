@@ -67,7 +67,7 @@ export const navigations = [
       },
       {
         name: 'Phòng chiếu',
-        path: '/admin/rooms',
+        path: '/admin/cinemas/rooms',
       },
     ],
   },

@@ -32,18 +32,16 @@ export const accountSlice = createSlice({
     });
     builder.addCase(onCreateUser.fulfilled, (state, action) => {
       const { newAccount } = action.payload;
-      const isCurrentPageFull = state.accounts.length === state.accountsPagination.limit;
-      if (isCurrentPageFull) {
-        state.accounts = [...state.accounts, newAccount];
-        state.accountsPagination.totalDocs += 1;
-        state.accountsPagination.totalPages = Math.ceil(
-          state.accountsPagination.totalDocs / state.accountsPagination.limit
-        );
-      } else {
-        state.accounts = [...state.accounts, newAccount];
-        state.accountsPagination.totalDocs += 1;
-      }
-      state.accountsPagination.page = Math.ceil(state.accountsPagination.totalDocs / state.accountsPagination.limit);
+      state.accounts = [newAccount, ...state.accounts];
+      state.accountsPagination = {
+        totalDocs: state.accountsPagination.totalDocs + 1,
+        offset: 0,
+        limit: state.accountsPagination.limit,
+        page: Math.ceil((state.accountsPagination.totalDocs + 1) / state.accountsPagination.limit),
+        totalPages: Math.ceil(state.accountsPagination.totalDocs / state.accountsPagination.limit),
+        hasPrevPage: state.accountsPagination.page > 1,
+        hasNextPage: state.accountsPagination.page < state.accountsPagination.totalPages,
+      };
     });
 
     builder.addCase(onUpdateUser.fulfilled, (state, action) => {

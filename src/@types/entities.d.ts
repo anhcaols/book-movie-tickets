@@ -113,5 +113,9 @@ interface RoomEntity {
   name: string;
   rowNumber: number;
   columnNumber: number;
-  cinema: Pick<CinemaEntity>;
+  cinema: {
+    id: number;
+    name: string;
+    address: string;
+  };
 }

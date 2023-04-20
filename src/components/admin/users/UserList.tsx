@@ -27,13 +27,17 @@ const UserList = () => {
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
   const [isIdUser, setIsIdUser] = useState<number>(0);
   const dispatch = useAppDispatch();
-  const [page, setPage] = useState(1);
+  const [currentPage, setPage] = useState(1);
 
+  const pageSize = 10;
   useEffect(() => {
-    dispatch(onGetUsers({ query: { page, limit: 10 } }));
-  }, [page]);
-
+    dispatch(onGetUsers({ query: { page: currentPage, limit: pageSize } }));
+  }, [currentPage]);
   const { accounts, accountsPagination } = useAppSelector(state => state.accounts);
+
+  const calculateRowIndex = (index: number) => {
+    return (currentPage - 1) * pageSize + index + 1;
+  };
 
   const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateUser(true);
@@ -98,7 +102,7 @@ const UserList = () => {
         </Table>
       </TableContainer>
       <Box className="flex justify-end mt-6">
-        <Pagination count={accountsPagination.totalPages} page={page} onChange={handleChange} />
+        <Pagination count={accountsPagination.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateUserModal open={isOpenCreateUser} onClose={setIsOpenCreateUser} />
       <UpdateUserModal id={isIdUser} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />

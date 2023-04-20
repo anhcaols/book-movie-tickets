@@ -32,18 +32,16 @@ export const cinemaSlice = createSlice({
     });
     builder.addCase(onCreateCinema.fulfilled, (state, action) => {
       const { newCinema } = action.payload;
-      const isCurrentPageFull = state.cinemas.length === state.cinemasPagination.limit;
-      if (isCurrentPageFull) {
-        state.cinemas = [...state.cinemas, newCinema];
-        state.cinemasPagination.totalDocs += 1;
-        state.cinemasPagination.totalPages = Math.ceil(
-          state.cinemasPagination.totalDocs / state.cinemasPagination.limit
-        );
-      } else {
-        state.cinemas = [...state.cinemas, newCinema];
-        state.cinemasPagination.totalDocs += 1;
-      }
-      state.cinemasPagination.page = Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit);
+      state.cinemas = [newCinema, ...state.cinemas];
+      state.cinemasPagination = {
+        totalDocs: state.cinemasPagination.totalDocs + 1,
+        offset: 0,
+        limit: state.cinemasPagination.limit,
+        page: Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit),
+        totalPages: Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit),
+        hasPrevPage: state.cinemasPagination.page > 1,
+        hasNextPage: state.cinemasPagination.page < state.cinemasPagination.totalPages,
+      };
     });
 
     builder.addCase(onUpdateCinema.fulfilled, (state, action) => {
