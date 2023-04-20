@@ -13,13 +13,11 @@ import {
   Pagination,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
-// import { UpdateCinemaModal } from './UpdateCinemaModal';
-// import { DeleteCinemaModal } from './DeleteCinemaModal';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetCinemas } from '@redux/actions/cinemas.action';
 import { CreateCinemaModal } from './CreateCinemaModal';
 import { UpdateCinemaModal } from './UpdateCinemaModal';
-import { DeleteCinemaModal } from './DeleteUserModal';
+import { DeleteCinemaModal } from './DeleteCinemaModal';
 
 const CinemaList = () => {
   const [isOpenCreateCinema, setIsOpenCreateCinema] = useState<boolean>(false);
@@ -67,7 +65,7 @@ const CinemaList = () => {
           <TableHead>
             <TableRow>
               <TableCell>STT</TableCell>
-              <TableCell align="left">Tên</TableCell>
+              <TableCell align="left">Tên rạp</TableCell>
               <TableCell align="left">Dịa chỉ</TableCell>
               <TableCell align="left">Thao tác</TableCell>
             </TableRow>
