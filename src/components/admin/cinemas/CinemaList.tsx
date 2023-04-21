@@ -95,7 +95,7 @@ const CinemaList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box className="flex justify-end mt-6">
+      <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateCinemaModal open={isOpenCreateCinema} onClose={setIsOpenCreateCinema} />

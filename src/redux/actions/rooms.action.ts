@@ -24,7 +24,7 @@ type DeleteRoomsPayload = z.infer<typeof deleteRoomPayloadSchema>;
 export const onGetRooms = createAsyncThunkWithCustomError<
   {
     rooms: RoomEntity[];
-    roomsPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   },
   GetRoomsPayload
 >(
@@ -35,7 +35,7 @@ export const onGetRooms = createAsyncThunkWithCustomError<
     const response: any = await roomsService.getRooms(query);
     return {
       rooms: response.rooms,
-      roomsPagination: response.paginationOptions,
+      paginationOptions: response.paginationOptions,
     };
   },
   {

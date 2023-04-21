@@ -33,7 +33,7 @@ const RoomList = () => {
     dispatch(onGetRooms({ query: { page: currentPage, limit: pageSize } }));
   }, [currentPage]);
 
-  const { rooms, roomsPagination } = useAppSelector(state => state.rooms);
+  const { rooms, paginationOptions } = useAppSelector(state => state.rooms);
 
   const calculateRowIndex = (index: number) => {
     return (currentPage - 1) * pageSize + index + 1;
@@ -94,8 +94,8 @@ const RoomList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box className="flex justify-end mt-6">
-        <Pagination count={roomsPagination.totalPages} page={currentPage} onChange={handleChange} />
+      <Box className="flex justify-center mt-6">
+        <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateRoomModal open={isOpenCreateRoom} onClose={setIsOpenCreateRoom} />
       <DeleteRoomModal id={isRoomId} open={isOpenDeleteRoom} onClose={setIsOpenDeleteRoom} />
