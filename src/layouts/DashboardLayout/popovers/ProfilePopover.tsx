@@ -40,7 +40,7 @@ const ProfilePopover: FC = () => {
   const handleLogout = () => {
     dispatch(onSignOut());
     deleteCookie('accessToken');
-    router.push('/admin/auth/login');
+    router.push('/auth/login');
     enqueueSnackbar('Logout successfully', {
       variant: 'success',
     });

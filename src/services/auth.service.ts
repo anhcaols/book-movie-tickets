@@ -14,11 +14,8 @@ export class AuthService extends BaseService {
     return data;
   }
 
-  async signIn(signInPayload: { email: string; password: string; role?: string }) {
-    const { data } = await this.httpClient.post(
-      signInPayload.role === 'admin' ? '/admin/auth/login' : '/auth/login',
-      signInPayload
-    );
+  async signIn(signInPayload: { email: string; password: string }) {
+    const { data } = await this.httpClient.post('/auth/login', signInPayload);
     return data;
   }
 

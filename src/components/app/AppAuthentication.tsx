@@ -15,7 +15,7 @@ let didInit = false;
 const AppAuthentication = ({ children }: AppAuthenticationProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [isValidatingToken, setIsValidatingToken] = useState(true);
+  const [isValidatingToken, setIsValidatingToken] = useState(false);
   // if (router.pathname === '/choose-seat/[chooseSeat]' || router.pathname === '/choose-seat/[chooseFood]') {
   //   dispatch(onClearInvoiceData());
   // }
@@ -24,7 +24,6 @@ const AppAuthentication = ({ children }: AppAuthenticationProps) => {
     if (!didInit) {
       didInit = true;
       const accessToken = getCookie('accessToken');
-      setIsValidatingToken(false);
 
       if (accessToken) {
         authService
@@ -32,8 +31,9 @@ const AppAuthentication = ({ children }: AppAuthenticationProps) => {
             token: accessToken as string,
           })
           .then(async (res: any) => {
-            if (router.pathname === '/admin' && res.account.role !== 'admin') {
-              router.push('/admin/auth/login').then(() => {
+            setIsValidatingToken(true);
+            if (router.pathname.startsWith('/admin') && res.account.role !== 'admin') {
+              await router.push('/').then(() => {
                 setIsValidatingToken(false);
               });
             }
@@ -59,8 +59,9 @@ const AppAuthentication = ({ children }: AppAuthenticationProps) => {
             setIsValidatingToken(false);
           });
       } else {
-        if (router.pathname === '/admin') {
-          router.push('/admin/auth/login').then(() => {
+        if (router.pathname.startsWith('/admin')) {
+          setIsValidatingToken(true);
+          router.push('/auth/login').then(() => {
             setIsValidatingToken(false);
           });
         }
