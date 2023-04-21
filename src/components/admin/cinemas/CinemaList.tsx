@@ -33,7 +33,7 @@ const CinemaList = () => {
     dispatch(onGetCinemas({ query: { page: currentPage, limit: pageSize } }));
   }, [currentPage]);
 
-  const { cinemas, cinemasPagination } = useAppSelector(state => state.cinemas);
+  const { cinemas, paginationOptions } = useAppSelector(state => state.cinemas);
 
   const calculateRowIndex = (index: number) => {
     return (currentPage - 1) * pageSize + index + 1;
@@ -96,7 +96,7 @@ const CinemaList = () => {
         </Table>
       </TableContainer>
       <Box className="flex justify-end mt-6">
-        <Pagination count={cinemasPagination.totalPages} page={currentPage} onChange={handleChange} />
+        <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateCinemaModal open={isOpenCreateCinema} onClose={setIsOpenCreateCinema} />
       <UpdateCinemaModal id={isCinemaId} open={isOpenUpdateCinema} onClose={setIsOpenUpdateCinema} />

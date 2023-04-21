@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface cinemasState {
   cinemas: CinemaEntity[];
-  cinemasPagination: ApiPagination;
+  paginationOptions: ApiPagination;
 }
 
 const initialPagination = {
@@ -18,7 +18,7 @@ const initialPagination = {
 
 const cinemasInitialState: cinemasState = {
   cinemas: [],
-  cinemasPagination: initialPagination,
+  paginationOptions: initialPagination,
 };
 
 export const cinemaSlice = createSlice({
@@ -28,19 +28,19 @@ export const cinemaSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(onGetCinemas.fulfilled, (state, action) => {
       state.cinemas = action.payload.cinemas;
-      state.cinemasPagination = action.payload.cinemasPagination;
+      state.paginationOptions = action.payload.paginationOptions;
     });
     builder.addCase(onCreateCinema.fulfilled, (state, action) => {
       const { newCinema } = action.payload;
       state.cinemas = [newCinema, ...state.cinemas];
-      state.cinemasPagination = {
-        totalDocs: state.cinemasPagination.totalDocs + 1,
+      state.paginationOptions = {
+        totalDocs: state.paginationOptions.totalDocs + 1,
         offset: 0,
-        limit: state.cinemasPagination.limit,
-        page: Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit),
-        totalPages: Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit),
-        hasPrevPage: state.cinemasPagination.page > 1,
-        hasNextPage: state.cinemasPagination.page < state.cinemasPagination.totalPages,
+        limit: state.paginationOptions.limit,
+        page: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        totalPages: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        hasPrevPage: state.paginationOptions.page > 1,
+        hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
       };
     });
 
@@ -53,8 +53,8 @@ export const cinemaSlice = createSlice({
     builder.addCase(onDeleteCinema.fulfilled, (state, action) => {
       const { cinemaId } = action.payload;
       state.cinemas = state.cinemas.filter(item => item.id !== cinemaId);
-      state.cinemasPagination.totalDocs -= 1;
-      state.cinemasPagination.totalPages = Math.ceil(state.cinemasPagination.totalDocs / state.cinemasPagination.limit);
+      state.paginationOptions.totalDocs -= 1;
+      state.paginationOptions.totalPages = Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit);
     });
   },
 });

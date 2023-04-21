@@ -31,7 +31,7 @@ type DeleteCinemasPayload = z.infer<typeof deleteCinemaPayloadSchema>;
 export const onGetCinemas = createAsyncThunkWithCustomError<
   {
     cinemas: CinemaEntity[];
-    cinemasPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   },
   GetCinemasPayload
 >(
@@ -42,7 +42,7 @@ export const onGetCinemas = createAsyncThunkWithCustomError<
     const response: any = await cinemasService.getCinemas(query);
     return {
       cinemas: response.cinemas,
-      cinemasPagination: response.paginationOptions,
+      paginationOptions: response.paginationOptions,
     };
   },
   {
