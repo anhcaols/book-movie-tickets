@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface AccountsState {
   accounts: AccountEntity[];
-  accountsPagination: ApiPagination;
+  paginationOptions: ApiPagination;
 }
 
 const initialPagination = {
@@ -18,7 +18,7 @@ const initialPagination = {
 
 const accountsInitialState: AccountsState = {
   accounts: [],
-  accountsPagination: initialPagination,
+  paginationOptions: initialPagination,
 };
 
 export const accountSlice = createSlice({
@@ -28,19 +28,19 @@ export const accountSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(onGetUsers.fulfilled, (state, action) => {
       state.accounts = action.payload.accounts;
-      state.accountsPagination = action.payload.accountsPagination;
+      state.paginationOptions = action.payload.paginationOptions;
     });
     builder.addCase(onCreateUser.fulfilled, (state, action) => {
       const { newAccount } = action.payload;
       state.accounts = [newAccount, ...state.accounts];
-      state.accountsPagination = {
-        totalDocs: state.accountsPagination.totalDocs + 1,
+      state.paginationOptions = {
+        totalDocs: state.paginationOptions.totalDocs + 1,
         offset: 0,
-        limit: state.accountsPagination.limit,
-        page: Math.ceil((state.accountsPagination.totalDocs + 1) / state.accountsPagination.limit),
-        totalPages: Math.ceil(state.accountsPagination.totalDocs / state.accountsPagination.limit),
-        hasPrevPage: state.accountsPagination.page > 1,
-        hasNextPage: state.accountsPagination.page < state.accountsPagination.totalPages,
+        limit: state.paginationOptions.limit,
+        page: Math.ceil((state.paginationOptions.totalDocs + 1) / state.paginationOptions.limit),
+        totalPages: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        hasPrevPage: state.paginationOptions.page > 1,
+        hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
       };
     });
 
@@ -53,10 +53,8 @@ export const accountSlice = createSlice({
     builder.addCase(onDeleteUser.fulfilled, (state, action) => {
       const { userId } = action.payload;
       state.accounts = state.accounts.filter(item => item.id !== userId);
-      state.accountsPagination.totalDocs -= 1;
-      state.accountsPagination.totalPages = Math.ceil(
-        state.accountsPagination.totalDocs / state.accountsPagination.limit
-      );
+      state.paginationOptions.totalDocs -= 1;
+      state.paginationOptions.totalPages = Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit);
     });
   },
 });

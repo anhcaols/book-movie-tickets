@@ -40,7 +40,7 @@ type DeleteUsersPayload = z.infer<typeof deleteUserPayloadSchema>;
 export const onGetUsers = createAsyncThunkWithCustomError<
   {
     accounts: AccountEntity[];
-    accountsPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   },
   GetUsersPayload
 >(
@@ -51,7 +51,7 @@ export const onGetUsers = createAsyncThunkWithCustomError<
     const response: any = await accountsService.getUsers(query);
     return {
       accounts: response.accounts,
-      accountsPagination: response.paginationOptions,
+      paginationOptions: response.paginationOptions,
     };
   },
   {

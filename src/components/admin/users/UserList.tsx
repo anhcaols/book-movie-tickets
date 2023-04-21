@@ -32,7 +32,7 @@ const UserList = () => {
   useEffect(() => {
     dispatch(onGetUsers({ query: { page: currentPage, limit: pageSize } }));
   }, [currentPage]);
-  const { accounts, accountsPagination } = useAppSelector(state => state.accounts);
+  const { accounts, paginationOptions } = useAppSelector(state => state.accounts);
 
   const calculateRowIndex = (index: number) => {
     return (currentPage - 1) * pageSize + index + 1;
@@ -101,7 +101,7 @@ const UserList = () => {
         </Table>
       </TableContainer>
       <Box className="flex justify-end mt-6">
-        <Pagination count={accountsPagination.totalPages} page={currentPage} onChange={handleChange} />
+        <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateUserModal open={isOpenCreateUser} onClose={setIsOpenCreateUser} />
       <UpdateUserModal id={isUserId} open={isOpenUpdateUser} onClose={setIsOpenUpdateUser} />

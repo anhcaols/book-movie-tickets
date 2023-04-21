@@ -36,13 +36,13 @@ const createFormSchema = z.object({
   rowNumber: z
     .string()
     .min(1, 'Số hàng là bắt buộc')
-    .refine(value => Number(value) > 0 && Number(value) < 10, {
+    .refine(value => Number(value) > 0 && Number(value) < 15, {
       message: 'Số hàng phải lớn hơn 0 và nhỏ hơn 15',
     }),
   columnNumber: z
     .string()
     .min(1, 'Số cột là bắt buộc')
-    .refine(value => Number(value) > 0 && Number(value) < 10, {
+    .refine(value => Number(value) > 0 && Number(value) < 15, {
       message: 'Số cột phải lớn hơn 0 và nhỏ hơn 15',
     }),
 });
