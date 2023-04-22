@@ -84,7 +84,7 @@ const RoomList = () => {
                       className="!text-lg hover:text-primary"
                     /> */}
                     <DeleteOutline
-                      onClick={() => handleShowDeleteModal(room.id)}
+                      // onClick={() => handleShowDeleteModal(room.id)}
                       className="!text-xl hover:text-primary"
                     />
                   </Box>

@@ -31,6 +31,7 @@ interface CreateCinemaModalOpen {
 const createFormSchema = z.object({
   name: z.string().min(1, 'Tên rạp là bắt buộc.'),
   address: z.string().min(1, 'Đia chỉ rạp là bắt buộc.'),
+  city: z.string().refine(value => value.length > 0, { message: 'Thành phố là bắt buộc.' }),
 });
 
 export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
@@ -41,6 +42,7 @@ export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<z.infer<typeof createFormSchema>>({
     resolver: zodResolver(createFormSchema),
@@ -50,10 +52,9 @@ export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
     setIsLoading(true);
     const dataValues = {
       name: data.name,
-      address: data.address,
+      address: `${data.address}, TP ${data.city}`,
     };
 
-    setIsLoading(true);
     executeCreate(dataValues);
   });
 
@@ -92,6 +93,42 @@ export const CreateCinemaModal = ({ open, onClose }: CreateCinemaModalOpen) => {
               variant="outlined"
               fullWidth
             />
+            {/* <TextField
+              {...register('cinema')}
+              error={!!errors.cinema}
+              helperText={errors.cinema?.message}
+              label="Thành phố"
+              variant="outlined"
+              fullWidth
+            /> */}
+            <FormControl fullWidth>
+              <InputLabel id="select-city" error={!!errors.city}>
+                Chọn thành phố
+              </InputLabel>
+              <Controller
+                name="city"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    labelId="select-city"
+                    {...field}
+                    value={field.value || ''}
+                    input={<OutlinedInput error={!!errors.city} label="Chọn thành phố" />}
+                  >
+                    <MenuItem key={1} value={'Hà Nội'}>
+                      Hà Nội
+                    </MenuItem>
+                    <MenuItem key={2} value={'Hồ Chí Minh'}>
+                      Hồ Chí Minh
+                    </MenuItem>
+                    <MenuItem key={3} value={'Nam Định'}>
+                      Nam Định
+                    </MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText error={!!errors.city}>{errors.city ? 'Thành phố là bắt buộc.' : ''}</FormHelperText>
+            </FormControl>
             <TextField
               {...register('address')}
               error={!!errors.address}
