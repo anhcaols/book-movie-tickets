@@ -119,3 +119,21 @@ interface RoomEntity {
     address: string;
   };
 }
+
+interface SeatEntity {
+  id: number;
+  seatType: {
+    id: number;
+    type: string;
+  };
+  room: {
+    id: number;
+    name: string;
+    cinema: {
+      id: number;
+      name: string;
+    };
+  };
+  rowPosition: number;
+  columnPosition: number;
+}

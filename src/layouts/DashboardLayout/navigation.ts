@@ -48,16 +48,6 @@ export const navigations = [
   },
 
   {
-    name: 'Ghế',
-    icon: Chair,
-    children: [
-      { name: 'Tất cả ghế', path: '/admin/seats' },
-      { name: 'Trạng thái ghế', path: '/admin/status-seats' },
-      { name: 'Loại ghế', path: '/admin/seat-types' },
-    ],
-  },
-
-  {
     name: 'Rạp',
     icon: MapsHomeWork,
     children: [
@@ -69,6 +59,16 @@ export const navigations = [
         name: 'Phòng chiếu',
         path: '/admin/cinemas/rooms',
       },
+    ],
+  },
+
+  {
+    name: 'Ghế',
+    icon: Chair,
+    children: [
+      { name: 'Tất cả ghế', path: '/admin/seats' },
+      { name: 'Trạng thái ghế', path: '/admin/seats/status' },
+      { name: 'Loại ghế', path: '/admin/seats/types' },
     ],
   },
 
