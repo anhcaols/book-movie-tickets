@@ -21,7 +21,8 @@ import {
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onGetSeats } from '@redux/actions/seats.action';
-import { onGetRooms } from '@redux/actions/rooms.action';
+import { getRoomsCreatedSeats, onGetRooms } from '@redux/actions/rooms.action';
+import { CreateSeatsModal } from './CreateSeatsModal';
 // import { CreateSeatModal } from './CreateSeatModal';
 
 const StyledSelect = styled(Select)({
@@ -35,15 +36,16 @@ const StyledMenuItem = styled(MenuItem)({
 });
 
 const SeatList = () => {
-  const [isOpenCreateSeat, setIsOpenCreateSeat] = useState<boolean>(false);
+  const [isOpenCreateSeats, setIsOpenCreateSeats] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRoom, setSelectedRoom] = useState<number>(0);
 
   const pageSize = 10;
   useEffect(() => {
-    dispatch(onGetRooms({ query: { page: currentPage, limit: Infinity } })).then((res: any) => {
-      const firstRoom = res.payload.rooms[0];
+    dispatch(getRoomsCreatedSeats()).then((res: any) => {
+      console.log(res);
+      const firstRoom = res.payload.roomCreatedSeats[0];
       setSelectedRoom(firstRoom.id);
     });
   }, []);
@@ -53,7 +55,7 @@ const SeatList = () => {
   }, [currentPage, selectedRoom]);
 
   const { seats, paginationOptions } = useAppSelector(state => state.seats);
-  const { rooms } = useAppSelector(state => state.rooms);
+  const { roomCreatedSeats } = useAppSelector(state => state.rooms);
 
   const calculateRowIndex = (index: number) => {
     return (currentPage - 1) * pageSize + index + 1;
@@ -69,24 +71,27 @@ const SeatList = () => {
 
   return (
     <>
-      <Box className="py-6 flex items-start justify-between">
+      <Box className="py-6 flex items-center justify-between">
         <FormControl size="small" style={{ width: 250 }}>
           <InputLabel id="select-room">Chọn phòng</InputLabel>
           <StyledSelect
+            MenuProps={{
+              disableScrollLock: true,
+            }}
             onChange={handleChangeRoom}
             size="small"
             labelId="select-room"
             value={selectedRoom}
             input={<OutlinedInput label="Chọn phòng" />}
           >
-            {rooms.map((room, index) => (
+            {roomCreatedSeats.map((room, index) => (
               <StyledMenuItem key={index} value={room.id}>
                 {room.name}, {room.cinema.name}
               </StyledMenuItem>
             ))}
           </StyledSelect>
         </FormControl>
-        <Button onClick={() => setIsOpenCreateSeat(true)} startIcon={<Add />} size="medium" variant="contained">
+        <Button onClick={() => setIsOpenCreateSeats(true)} startIcon={<Add />} size="medium" variant="contained">
           Thêm
         </Button>
       </Box>
@@ -121,7 +126,7 @@ const SeatList = () => {
       <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
-      {/* <CreateSeatModal open={isOpenCreateSeat} onClose={setIsOpenCreateSeat} /> */}
+      <CreateSeatsModal open={isOpenCreateSeats} onClose={setIsOpenCreateSeats} />
     </>
   );
 };

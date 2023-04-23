@@ -1,4 +1,4 @@
-import { onCreateSeat, onGetSeats } from '@redux/actions/seats.action';
+import { onCreateSeats, onGetSeats } from '@redux/actions/seats.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface seatsState {
@@ -30,9 +30,9 @@ export const seatSlice = createSlice({
       state.seats = action.payload.seats;
       state.paginationOptions = action.payload.paginationOptions;
     });
-    builder.addCase(onCreateSeat.fulfilled, (state, action) => {
-      const { newSeat } = action.payload;
-      state.seats = [newSeat, ...state.seats];
+    builder.addCase(onCreateSeats.fulfilled, (state, action) => {
+      const { newSeats } = action.payload;
+      state.seats = [...newSeats, ...state.seats];
       state.paginationOptions = {
         totalDocs: state.paginationOptions.totalDocs + 1,
         offset: 0,

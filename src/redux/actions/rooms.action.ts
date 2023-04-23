@@ -75,3 +75,20 @@ export const onDeleteRoom = createAsyncThunkWithCustomError<{ roomId: number }, 
     defaultErrorMessage: 'Error while delete room',
   }
 );
+
+export const getRoomsCreatedSeats = createAsyncThunkWithCustomError<{
+  roomCreatedSeats: RoomEntity[];
+  roomHasNotCreatedSeats: RoomEntity[];
+}>(
+  'rooms/created-seats',
+  async () => {
+    const response: any = await roomsService.getRoomsCreatedSeats();
+    return {
+      roomCreatedSeats: response.data.roomCreatedSeats,
+      roomHasNotCreatedSeats: response.data.roomHasNotCreatedSeats,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while fetching rooms',
+  }
+);

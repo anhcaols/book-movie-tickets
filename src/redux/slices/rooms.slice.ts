@@ -1,9 +1,11 @@
-import { onCreateRoom, onDeleteRoom, onGetRooms } from '@redux/actions/rooms.action';
+import { getRoomsCreatedSeats, onCreateRoom, onDeleteRoom, onGetRooms } from '@redux/actions/rooms.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface roomsState {
   rooms: RoomEntity[];
   paginationOptions: ApiPagination;
+  roomCreatedSeats: RoomEntity[];
+  roomHasNotCreatedSeats: RoomEntity[];
 }
 
 const initialPagination = {
@@ -19,6 +21,8 @@ const initialPagination = {
 const roomsInitialState: roomsState = {
   rooms: [],
   paginationOptions: initialPagination,
+  roomCreatedSeats: [],
+  roomHasNotCreatedSeats: [],
 };
 
 export const roomSlice = createSlice({
@@ -49,6 +53,11 @@ export const roomSlice = createSlice({
       state.rooms = state.rooms.filter(item => item.id !== roomId);
       state.paginationOptions.totalDocs -= 1;
       state.paginationOptions.totalPages = Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit);
+    });
+
+    builder.addCase(getRoomsCreatedSeats.fulfilled, (state, action) => {
+      state.roomCreatedSeats = action.payload.roomCreatedSeats;
+      state.roomHasNotCreatedSeats = action.payload.roomHasNotCreatedSeats;
     });
   },
 });

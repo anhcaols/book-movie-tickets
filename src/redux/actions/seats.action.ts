@@ -37,9 +37,9 @@ export const onGetSeats = createAsyncThunkWithCustomError<
   }
 );
 
-export const onCreateSeat = createAsyncThunkWithCustomError<
+export const onCreateSeats = createAsyncThunkWithCustomError<
   {
-    newSeat: SeatEntity;
+    newSeats: SeatEntity[];
   },
   CreateSeatsPayload
 >(
@@ -48,10 +48,10 @@ export const onCreateSeat = createAsyncThunkWithCustomError<
     createSeatPayloadSchema.parse(payload);
     const response: any = await seatsService.createSeat(payload);
     return {
-      newSeat: response.seat,
+      newSeats: response.seats,
     };
   },
   {
-    defaultErrorMessage: 'Error while create seat',
+    defaultErrorMessage: 'Error while create seats',
   }
 );

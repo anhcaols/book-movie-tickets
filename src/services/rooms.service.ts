@@ -18,6 +18,21 @@ export class RoomsService extends BaseService {
     return data;
   }
 
+  async getRoomsCreatedSeats() {
+    const { data } = await this.httpClient.get(
+      `/rooms-created-seats`,
+      accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken} `,
+            },
+          }
+        : { isPrivateAPI: true }
+    );
+
+    return data;
+  }
+
   async getRoom(roomId: number) {
     const { data } = await this.httpClient.get(`/rooms/${roomId}`, {
       isPrivateAPI: true,
