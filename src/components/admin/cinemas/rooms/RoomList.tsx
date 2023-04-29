@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   Pagination,
+  Tooltip,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 
@@ -83,10 +84,12 @@ const RoomList = () => {
                       onClick={() => handleShowUpdateModal(room.id)}
                       className="!text-lg hover:text-primary"
                     /> */}
-                    <DeleteOutline
-                      // onClick={() => handleShowDeleteModal(room.id)}
-                      className="!text-xl hover:text-primary"
-                    />
+                    <Tooltip title="Không khả dụng" placement="top">
+                      <DeleteOutline
+                        // onClick={() => handleShowDeleteModal(room.id)}
+                        className="!text-xl text-[#888] cursor-default"
+                      />
+                    </Tooltip>
                   </Box>
                 </TableCell>
               </TableRow>

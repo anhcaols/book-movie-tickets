@@ -137,3 +137,9 @@ interface SeatEntity {
   rowPosition: number;
   columnPosition: number;
 }
+
+interface SeatTypeEntity {
+  id: number;
+  type: string;
+  price: string;
+}

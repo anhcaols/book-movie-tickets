@@ -34,6 +34,14 @@ export class SeatTypesService extends BaseService {
     return data;
   }
 
+  async deleteSeatType(seatTypeId: number) {
+    const { data } = await this.httpClient.delete(`/seat-types/${seatTypeId}`, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
+
   async updateSeatType(
     payload: {
       price: string;
