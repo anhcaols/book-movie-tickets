@@ -1,5 +1,4 @@
-import { onUpdateCinema } from '@redux/actions/cinemas.action';
-import { onCreateSeatType, onDeleteSeatType, onGetSeatTypes } from '@redux/actions/seatTypes.action';
+import { onCreateSeatType, onDeleteSeatType, onGetSeatTypes, onUpdateSeatType } from '@redux/actions/seatTypes.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface seatTypesState {
@@ -44,7 +43,7 @@ export const seatTypeSlice = createSlice({
         hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
       };
     });
-    builder.addCase(onUpdateCinema.fulfilled, (state, action) => {
+    builder.addCase(onUpdateSeatType.fulfilled, (state, action) => {
       const seatTypeId = action.payload.updateValues.id;
       const seatTypeIndex = state.seatTypes.findIndex(item => item.id === seatTypeId);
       if (seatTypeIndex === -1) return;

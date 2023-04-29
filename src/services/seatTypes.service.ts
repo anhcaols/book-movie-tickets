@@ -48,7 +48,7 @@ export class SeatTypesService extends BaseService {
     },
     seatTypeId: number
   ) {
-    const { data } = await this.httpClient.patch(`/seat-types${seatTypeId}`, payload, {
+    const { data } = await this.httpClient.patch(`/seat-types/${seatTypeId}`, payload, {
       isPrivateAPI: true,
     });
 

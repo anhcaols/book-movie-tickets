@@ -1,85 +1,90 @@
 import AppDialog from '@components/shared/app-dialog';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useAppDispatch } from '@hooks/useRedux';
 import { useAsync } from '@hooks/useAsync';
-import { onCreateSeatType } from '@redux/actions/seatTypes.action';
+import { onUpdateCinema } from '@redux/actions/cinemas.action';
+import { cinemasService } from '@services/cinemas.service';
+import { seatTypesService } from '@services/seatTypes.service';
+import { onUpdateSeatType } from '@redux/actions/seatTypes.action';
 
-interface CreateSeatTypeModalOpen {
+interface UpdateSeatTypeModalOpen {
+  id: number;
   open: boolean;
   onClose: any;
 }
 
-const createFormSchema = z.object({
-  type: z.string().min(1, 'Tên vé là bắt buộc.'),
+const updateFormSchema = z.object({
   price: z.string().min(1, 'Giá vé là bắt buộc.'),
+  type: z.string().min(1, 'Tên vé là bắt buộc.'),
 });
 
-export const CreateSeatTypeModal = ({ open, onClose }: CreateSeatTypeModalOpen) => {
+export const UpdateSeatTypeModal = ({ open, onClose, id }: UpdateSeatTypeModalOpen) => {
   const { enqueueSnackbar } = useSnackbar();
+  const [gender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<z.infer<typeof createFormSchema>>({
-    resolver: zodResolver(createFormSchema),
+  } = useForm<z.infer<typeof updateFormSchema>>({
+    resolver: zodResolver(updateFormSchema),
   });
+
+  useEffect(() => {
+    const fetchSeatType = async () => {
+      const response: any = await seatTypesService.getSeatType(id);
+      setValue('type', response.seatType.type);
+      setValue('price', String(parseFloat(response.seatType.price.toString())));
+    };
+    if (id !== 0) {
+      fetchSeatType();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, open]);
 
   const onSubmit = handleSubmit(data => {
     setIsLoading(true);
     const dataValues = {
-      type: data.type,
       price: data.price,
     };
 
-    executeCreate(dataValues);
+    executeUpdate(dataValues);
   });
 
-  const [executeCreate] = useAsync<{
-    type: string;
+  const [executeUpdate] = useAsync<{
     price: string;
   }>({
     delay: 500,
-    asyncFunction: async payload => dispatch(onCreateSeatType(payload)),
+    asyncFunction: async payload => dispatch(onUpdateSeatType({ seatTypeId: id, dataValues: payload })),
     onResolve: () => {
-      onClose(false);
       setIsLoading(false);
       reset();
-      enqueueSnackbar('Thêm thành công', {
+      onClose(false);
+      enqueueSnackbar('Cập nhập thành công', {
         variant: 'success',
       });
     },
     onReject: (error: any) => {
       setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
+      enqueueSnackbar('Cập nhật thất bại', {
         variant: 'error',
       });
     },
   });
 
   return (
-    <AppDialog title="Thêm Loại vé" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Cập nhật loại ghế" open={open} onClose={() => onClose(false)}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <form onSubmit={onSubmit} action="#">
           <Stack spacing={3}>
@@ -90,19 +95,20 @@ export const CreateSeatTypeModal = ({ open, onClose }: CreateSeatTypeModalOpen) 
               label="Tên loại ghế"
               variant="outlined"
               fullWidth
+              disabled
             />
             <TextField
               {...register('price')}
               error={!!errors.price}
               helperText={errors.price?.message}
-              label=" Giá loại ghế"
+              label="Giá loại ghế"
               variant="outlined"
               fullWidth
               type="number"
             />
             <Box>
               <LoadingButton type="submit" className="w-full" variant="contained" size="large" loading={isLoading}>
-                Thêm
+                Cập nhật
               </LoadingButton>
             </Box>
           </Stack>

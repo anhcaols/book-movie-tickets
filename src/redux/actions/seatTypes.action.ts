@@ -17,7 +17,7 @@ const deleteSeatTypePayloadSchema = z.object({
 
 const updateSeatTypePayloadSchema = z.object({
   seatTypeId: z.number(),
-  updateValues: z.object({ price: z.string() }),
+  dataValues: z.object({ price: z.string() }),
 });
 
 type GetSeatTypesPayload = z.infer<typeof getSeatTypesPayloadSchema>;
@@ -81,15 +81,15 @@ export const onDeleteSeatType = createAsyncThunkWithCustomError<{ seatTypeId: nu
 
 export const onUpdateSeatType = createAsyncThunkWithCustomError<
   {
-    updateValues: SeatTypeEntity[];
+    updateValues: SeatTypeEntity;
   },
   UpdateSeatTypePayload
 >(
   'seat-types/update',
   async payload => {
     updateSeatTypePayloadSchema.parse(payload);
-    const { updateValues, seatTypeId } = payload;
-    const response: any = await seatTypesService.updateSeatType(updateValues, seatTypeId);
+    const { dataValues, seatTypeId } = payload;
+    const response: any = await seatTypesService.updateSeatType(dataValues, seatTypeId);
     return {
       updateValues: response.newSeatType,
     };
