@@ -3,7 +3,7 @@ import { useAsync } from '@hooks/useAsync';
 import { useAppDispatch } from '@hooks/useRedux';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button } from '@mui/material';
-import { onDeleteCinema } from '@redux/actions/cinemas.action';
+import { onDeleteSeatType } from '@redux/actions/seatTypes.action';
 import { useSnackbar } from 'notistack';
 import React, { useState } from 'react';
 
@@ -20,14 +20,14 @@ export const DeleteSeatTypeModal = ({ id, open, onClose }: DeleteSeatTypeModalOp
 
   const handleDelete = () => {
     setIsLoading(true);
-    executeDelete({ cinemaId: id });
+    executeDelete({ seatTypeId: id });
   };
 
   const [executeDelete] = useAsync<{
-    cinemaId: number;
+    seatTypeId: number;
   }>({
     delay: 500,
-    asyncFunction: async payload => dispatch(onDeleteCinema(payload)),
+    asyncFunction: async payload => dispatch(onDeleteSeatType(payload)),
     onResolve: () => {
       onClose(false);
       setIsLoading(false);
@@ -40,7 +40,7 @@ export const DeleteSeatTypeModal = ({ id, open, onClose }: DeleteSeatTypeModalOp
   });
 
   return (
-    <AppDialog title="Xóa rạp phim" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Xóa loại ghế" open={open} onClose={() => onClose(false)}>
       <h1>Bạn có chắc chắn muốn xóa không?</h1>
       <Box className="w-full flex justify-end gap-2">
         <Button variant="outlined" size="medium" onClick={() => onClose(false)}>

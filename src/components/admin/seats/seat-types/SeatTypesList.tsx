@@ -103,7 +103,7 @@ const SeatTypesList = () => {
                       className="!text-lg hover:text-primary"
                     />
                     <DeleteOutline
-                      onClick={() => handleShowDeleteModal(seatType.id)}
+                      // onClick={() => handleShowDeleteModal(seatType.id)}
                       className="!text-xl hover:text-primary"
                     />
                   </Box>
