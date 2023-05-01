@@ -44,7 +44,6 @@ const SeatList = () => {
   const pageSize = 10;
   useEffect(() => {
     dispatch(getRoomsCreatedSeats()).then((res: any) => {
-      console.log(res);
       const firstRoom = res.payload.roomCreatedSeats[0];
       setSelectedRoom(firstRoom.id);
     });

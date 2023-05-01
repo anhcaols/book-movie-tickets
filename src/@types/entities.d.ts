@@ -45,7 +45,7 @@ interface RatingEntity {
   updatedAt: Date | string;
 }
 
-interface ScheduleEntity {
+interface ScheduleEntityByMovie {
   movieId: number;
   room: {
     id: number;
@@ -57,6 +57,22 @@ interface ScheduleEntity {
     id: number;
     startTime: Date | string;
   }[];
+}
+interface ScheduleEntity {
+  id: number;
+  movie: {
+    id: number;
+    name: string;
+  };
+  room: {
+    id: number;
+    roomName: string;
+    cinemaName: string;
+    cinemaAddress: string;
+  };
+  startTime: Date | string;
+  endTime: Date | string;
+  releaseDate: Date | string;
 }
 
 interface StatusSeatEntity {

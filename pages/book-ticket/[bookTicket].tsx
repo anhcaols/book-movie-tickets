@@ -92,12 +92,12 @@ const BookTicketPage: NextPageWithLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateTime]);
 
-  const { schedules, filterSchedules } = useAppSelector(state => state.schedules);
+  const { schedulesByMovie, filterSchedulesByMovie } = useAppSelector(state => state.schedules);
   const { isLoggedIn, account } = useAppSelector(state => state.auth);
 
   // get cities
   let cities: string[] = [];
-  const cinemaAddress = schedules.map(schedule => schedule.room.cinemaAddress);
+  const cinemaAddress = schedulesByMovie.map(schedule => schedule.room.cinemaAddress);
   cinemaAddress.map(city => {
     const newCity = city.split(',');
     cities.push(newCity[newCity.length - 1].replace('TP', '').trim());
@@ -105,7 +105,7 @@ const BookTicketPage: NextPageWithLayout = () => {
   let uniqueCities: string[] = Array.from(new Set(cities));
 
   // get cinemas
-  const cinemas = schedules.map(schedule => {
+  const cinemas = schedulesByMovie.map(schedule => {
     return {
       cinemaName: schedule.room.cinemaName,
       cinemaAddress: schedule.room.cinemaAddress,
@@ -138,7 +138,7 @@ const BookTicketPage: NextPageWithLayout = () => {
   );
 
   useEffect(
-    function filterSchedules() {
+    function filterSchedulesByMovie() {
       if (movie && currentCinema !== '' && currentCity !== '') {
         dispatch(
           onFilterSchedules({
@@ -290,8 +290,8 @@ const BookTicketPage: NextPageWithLayout = () => {
               </Grid>
             </Grid>
             <Grid container spacing={3} pt={6}>
-              {filterSchedules.length > 0 ? (
-                filterSchedules.map((schedule, index) => (
+              {filterSchedulesByMovie.length > 0 ? (
+                filterSchedulesByMovie.map((schedule, index) => (
                   <Grid key={index} item xs={12} md={6}>
                     <Box>
                       <StyledCinema p={2}>

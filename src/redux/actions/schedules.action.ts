@@ -2,8 +2,12 @@ import { schedulesService } from '../../services/schedules.service';
 import { createAsyncThunkWithCustomError } from '@redux/heplers';
 import { z } from 'zod';
 
-const getSchedulesPayloadSchema = z.object({
+const getSchedulesByMoviePayloadSchema = z.object({
   payload: z.object({ movie_id: z.number(), date_time: z.string() }),
+});
+
+const getSchedulesPayloadSchema = z.object({
+  query: z.object({ page: z.number(), limit: z.number() }),
 });
 
 const filterSchedulesPayloadSchema = z.object({
@@ -11,21 +15,24 @@ const filterSchedulesPayloadSchema = z.object({
 });
 
 type GetSchedulesPayload = z.infer<typeof getSchedulesPayloadSchema>;
+type GetSchedulesByMoviePayload = z.infer<typeof getSchedulesByMoviePayloadSchema>;
 type FilterSchedulesPayload = z.infer<typeof filterSchedulesPayloadSchema>;
 
-export const onGetSchedulesByMovie = createAsyncThunkWithCustomError<
+export const onGetSchedules = createAsyncThunkWithCustomError<
   {
     schedules: ScheduleEntity[];
+    paginationOptions: ApiPagination;
   },
   GetSchedulesPayload
 >(
   'schedules',
-  async request => {
-    getSchedulesPayloadSchema.parse(request);
-    const { payload } = request;
-    const schedules: any = await schedulesService.getSchedules(payload);
+  async payload => {
+    getSchedulesPayloadSchema.parse(payload);
+    const { query } = payload;
+    const response: any = await schedulesService.getSchedules(query);
     return {
-      schedules: schedules.schedules,
+      schedules: response.schedules,
+      paginationOptions: response.paginationOptions,
     };
   },
   {
@@ -33,22 +40,42 @@ export const onGetSchedulesByMovie = createAsyncThunkWithCustomError<
   }
 );
 
-export const onFilterSchedules = createAsyncThunkWithCustomError<
+export const onGetSchedulesByMovie = createAsyncThunkWithCustomError<
   {
-    filterSchedules: ScheduleEntity[];
+    schedulesByMovie: ScheduleEntityByMovie[];
   },
-  FilterSchedulesPayload
+  GetSchedulesByMoviePayload
 >(
-  'schedules/filters',
+  'schedules-by-movie',
   async request => {
-    getSchedulesPayloadSchema.parse(request);
+    getSchedulesByMoviePayloadSchema.parse(request);
     const { payload } = request;
-    const schedules: any = await schedulesService.getSchedules(payload);
+    const schedules: any = await schedulesService.getSchedulesByMovie(payload);
     return {
-      filterSchedules: schedules.filterSchedules,
+      schedulesByMovie: schedules.schedules,
     };
   },
   {
-    defaultErrorMessage: 'Error while fetching schedules',
+    defaultErrorMessage: 'Error while fetching schedules by movies',
+  }
+);
+
+export const onFilterSchedules = createAsyncThunkWithCustomError<
+  {
+    filterSchedulesByMovie: ScheduleEntityByMovie[];
+  },
+  FilterSchedulesPayload
+>(
+  'schedules-by-movie/filters',
+  async request => {
+    getSchedulesPayloadSchema.parse(request);
+    const { payload } = request;
+    const schedules: any = await schedulesService.getSchedulesByMovie(payload);
+    return {
+      filterSchedulesByMovie: schedules.filterSchedules,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while fetching schedules by Movies',
   }
 );
