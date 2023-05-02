@@ -12,7 +12,7 @@ type GetStatusSeatsPayload = z.infer<typeof getStatusSeatsPayloadSchema>;
 export const onGetStatusSeats = createAsyncThunkWithCustomError<
   {
     statusSeats: StatusSeatEntity[];
-    statusSeatsPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   },
   GetStatusSeatsPayload
 >(
@@ -23,7 +23,7 @@ export const onGetStatusSeats = createAsyncThunkWithCustomError<
     const statusSeats: any = await statusSeatsService.getStatusSeats(query, payload);
     return {
       statusSeats: statusSeats.statusSeats,
-      statusSeatsPagination: statusSeats.paginationOptions,
+      paginationOptions: statusSeats.paginationOptions,
     };
   },
   {

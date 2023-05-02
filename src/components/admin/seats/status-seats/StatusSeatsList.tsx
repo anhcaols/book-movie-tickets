@@ -15,13 +15,14 @@ import {
   Autocomplete,
   TextField,
 } from '@mui/material';
-import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
+// import { BorderColorOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { animateScroll as scroll } from 'react-scroll';
 import { onGetSeatTypes } from '@redux/actions/seatTypes.action';
 import { onGetSchedules } from '@redux/actions/schedules.action';
 import moment from 'moment';
 import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
+// import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
 const StyledAutocomplete = styled(Autocomplete)({
   '&  .MuiOutlinedInput-root': { fontSize: 14 },
@@ -31,12 +32,13 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const StatusSeatList = () => {
-  const [isOpenCreateSeatType, setIsOpenCreateSeatType] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [isOpenUpdateSeatType, setIsOpenUpdateSeatType] = useState<boolean>(false);
-  const [isOpenDeleteSeatType, setIsOpenDeleteSeatType] = useState<boolean>(false);
-  const [isSeatTypeId, setSeatTypeId] = useState<number>(0);
+  const [isOpenUpdateStatusSeat, setIsOpenUpdateStatusSeat] = useState<boolean>(false);
+  const [isStatusSeatId, setStatusSeatId] = useState<{
+    seatId: number;
+    scheduleId: number;
+  }>({ seatId: 0, scheduleId: 0 });
 
   const pageSize = 10;
 
@@ -48,9 +50,7 @@ const StatusSeatList = () => {
     dispatch(onGetSeatTypes({ query: { page: currentPage, limit: pageSize } }));
   }, [currentPage]);
 
-  const { seatTypes, paginationOptions } = useAppSelector(state => state.seatTypes);
   const { schedules } = useAppSelector(state => state.schedules);
-
   const newSchedules = schedules?.map(schedule => {
     return {
       label: `${schedule.movie.name}, ${schedule.room.roomName}, ${moment(schedule.startTime).format('HH:mm')}`,
@@ -62,10 +62,12 @@ const StatusSeatList = () => {
   const [inputValue, setInputValue] = React.useState<string>('');
 
   useEffect(() => {
-    dispatch(onGetStatusSeats({ query: { page: 1, limit: 200 }, payload: { schedule_id: schedule?.id } }));
-  }, [schedule]);
+    dispatch(
+      onGetStatusSeats({ query: { page: currentPage, limit: pageSize }, payload: { schedule_id: schedule?.id } })
+    );
+  }, [schedule, currentPage]);
 
-  const { statusSeats } = useAppSelector(state => state.statusSeats);
+  const { statusSeats, paginationOptions } = useAppSelector(state => state.statusSeats);
 
   // handle events
   const calculateRowIndex = (index: number) => {
@@ -77,15 +79,10 @@ const StatusSeatList = () => {
     setCurrentPage(value);
   };
 
-  const handleShowDeleteModal = (id: number) => {
-    setIsOpenDeleteSeatType(true);
-    setSeatTypeId(id);
-  };
-
-  const handleShowUpdateModal = (id: number) => {
-    setIsOpenUpdateSeatType(true);
-    setSeatTypeId(id);
-  };
+  // const handleShowUpdateModal = (seatId: number, scheduleId: number) => {
+  //   setIsOpenUpdateStatusSeat(true);
+  //   setStatusSeatId({ seatId, scheduleId });
+  // };
 
   return (
     <>
@@ -108,9 +105,6 @@ const StatusSeatList = () => {
           sx={{ width: 250 }}
           renderInput={params => <TextField {...params} label="Lịch trình" />}
         />
-        <Button onClick={() => setIsOpenCreateSeatType(true)} startIcon={<Add />} size="medium" variant="contained">
-          Thêm
-        </Button>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -120,7 +114,7 @@ const StatusSeatList = () => {
               <TableCell align="left">Mã ghế</TableCell>
               <TableCell align="left">Lịch trình</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
-              <TableCell align="left">Thao tác</TableCell>
+              {/* <TableCell align="left">Thao tác</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -136,14 +130,14 @@ const StatusSeatList = () => {
                   {','} {moment(statusSeat.schedule.showTime).format('HH:mm')}
                 </TableCell>
                 <TableCell align="left">{statusSeat.status}</TableCell>
-                <TableCell align="left">
+                {/* <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
                     <BorderColorOutlined
-                      onClick={() => handleShowUpdateModal(statusSeat.id)}
+                      onClick={() => handleShowUpdateModal(statusSeat.seatId, statusSeat.schedule.id)}
                       className="!text-lg hover:text-primary"
                     />
                   </Box>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
@@ -152,9 +146,11 @@ const StatusSeatList = () => {
       <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
-      {/* <CreateSeatTypeModal open={isOpenCreateSeatType} onClose={setIsOpenCreateSeatType} />
-      <UpdateSeatTypeModal id={isSeatTypeId} open={isOpenUpdateSeatType} onClose={setIsOpenUpdateSeatType} />
-      <DeleteSeatTypeModal id={isSeatTypeId} open={isOpenDeleteSeatType} onClose={setIsOpenDeleteSeatType} /> */}
+      {/* <UpdateStatusSeatTypeModal
+        id={isStatusSeatId}
+        open={isOpenUpdateStatusSeat}
+        onClose={setIsOpenUpdateStatusSeat}
+      /> */}
     </>
   );
 };

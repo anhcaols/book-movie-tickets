@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface StatusSeatsState {
   statusSeats: StatusSeatEntity[];
-  seatSeatsPagination: ApiPagination;
+  paginationOptions: ApiPagination;
 }
 
 const initialPagination = {
@@ -18,7 +18,7 @@ const initialPagination = {
 
 const statusSeatInitialState: StatusSeatsState = {
   statusSeats: [],
-  seatSeatsPagination: initialPagination,
+  paginationOptions: initialPagination,
 };
 
 export const statusSeatSlice = createSlice({
@@ -33,7 +33,7 @@ export const statusSeatSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(onGetStatusSeats.fulfilled, (state, action) => {
       state.statusSeats = action.payload.statusSeats;
-      state.seatSeatsPagination = action.payload.statusSeatsPagination;
+      state.paginationOptions = action.payload.paginationOptions;
     });
   },
 });
