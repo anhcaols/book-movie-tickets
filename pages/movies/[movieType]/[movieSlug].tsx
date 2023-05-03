@@ -102,7 +102,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
       return;
     }
     executeRating({
-      user_id: account?.account.id,
+      user_id: Number(account?.account.id),
       movie_id: Number(movie?.id),
       rate: stars,
       content,
