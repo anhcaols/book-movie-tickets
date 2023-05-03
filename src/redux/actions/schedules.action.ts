@@ -68,7 +68,7 @@ export const onFilterSchedules = createAsyncThunkWithCustomError<
 >(
   'schedules-by-movie/filters',
   async request => {
-    getSchedulesPayloadSchema.parse(request);
+    filterSchedulesPayloadSchema.parse(request);
     const { payload } = request;
     const schedules: any = await schedulesService.getSchedulesByMovie(payload);
     console.log(schedules);

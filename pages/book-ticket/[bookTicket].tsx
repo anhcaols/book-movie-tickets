@@ -138,8 +138,8 @@ const BookTicketPage: NextPageWithLayout = () => {
   );
 
   useEffect(
-    function filterSchedulesByMovie() {
-      if (movie && currentCinema !== '' && currentCity !== '') {
+    () => {
+      if (movie) {
         dispatch(
           onFilterSchedules({
             payload: {
