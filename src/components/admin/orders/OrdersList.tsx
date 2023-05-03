@@ -19,22 +19,24 @@ import {
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { animateScroll as scroll } from 'react-scroll';
 import { onGetSeatTypes } from '@redux/actions/seatTypes.action';
-import { onGetSchedules } from '@redux/actions/schedules.action';
 import moment from 'moment';
 import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
+import { onGetUsers } from '@redux/actions/accounts.action';
+import { onGetOrders } from '@redux/actions/orders.action';
+import { BorderColorOutlined } from '@mui/icons-material';
 // import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
 const StyledAutocomplete = styled(Autocomplete)({
   '& .MuiOutlinedInput-root': { fontSize: 14 },
   '& .MuiAutocomplete-listbox .MuiAutocomplete-option': {
-    fontSize: 13,
+    fontSize: 14,
   },
   '& .MuiInputLabel-outlined': {
     fontSize: 13,
   },
 });
 
-const StatusSeatList = () => {
+const InvoiceList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenUpdateStatusSeat, setIsOpenUpdateStatusSeat] = useState<boolean>(false);
@@ -46,33 +48,32 @@ const StatusSeatList = () => {
   const pageSize = 10;
 
   useEffect(() => {
-    dispatch(onGetSchedules({ query: { page: 1, limit: 1000 } }));
+    dispatch(onGetUsers({ query: { page: 1, limit: Infinity } }));
   }, []);
 
   useEffect(() => {
     dispatch(onGetSeatTypes({ query: { page: currentPage, limit: pageSize } }));
   }, [currentPage]);
 
-  const { schedules } = useAppSelector(state => state.schedules);
-  const newSchedules = schedules?.map(schedule => {
+  const { accounts } = useAppSelector(state => state.accounts);
+  const users = accounts?.map(account => {
     return {
-      label: `${schedule.movie.name}, ${schedule.room.roomName}, ${moment(schedule.startTime).format(
-        'HH:mm, DD/MM/YYYY'
-      )}`,
-      id: schedule.id,
+      label: account.fullName,
+      id: account.id,
     };
   });
 
-  const [schedule, setSchedule] = React.useState<any>(newSchedules[0]);
+  const [user, setUser] = React.useState<any>(users[0]);
   const [inputValue, setInputValue] = React.useState<string>('');
 
   useEffect(() => {
-    dispatch(
-      onGetStatusSeats({ query: { page: currentPage, limit: pageSize }, payload: { schedule_id: schedule?.id } })
-    );
-  }, [schedule, currentPage]);
+    if (user === undefined || user === null) {
+      dispatch(onGetOrders({ userId: 'all', query: { page: currentPage, limit: pageSize } }));
+    }
+    dispatch(onGetOrders({ userId: user?.id, query: { page: currentPage, limit: pageSize } }));
+  }, [user, currentPage]);
 
-  const { statusSeats, paginationOptions } = useAppSelector(state => state.statusSeats);
+  const { orders, paginationOptions } = useAppSelector(state => state.orders);
 
   // handle events
   const calculateRowIndex = (index: number) => {
@@ -84,10 +85,10 @@ const StatusSeatList = () => {
     setCurrentPage(value);
   };
 
-  // const handleShowUpdateModal = (seatId: number, scheduleId: number) => {
-  //   setIsOpenUpdateStatusSeat(true);
-  //   setStatusSeatId({ seatId, scheduleId });
-  // };
+  const handleShowUpdateModal = (seatId: number, scheduleId: number) => {
+    setIsOpenUpdateStatusSeat(true);
+    setStatusSeatId({ seatId, scheduleId });
+  };
 
   return (
     <>
@@ -96,19 +97,19 @@ const StatusSeatList = () => {
           size="small"
           disablePortal
           id="combo-box-demo"
-          value={schedule}
-          defaultValue={schedule}
+          value={user}
+          defaultValue={user}
           onChange={(event: any, newValue: any) => {
-            setSchedule(newValue);
+            setUser(newValue);
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
             setInputValue(newInputValue);
           }}
           // defaultValue={newSchedules[0]}
-          options={newSchedules}
+          options={users}
           sx={{ width: 250 }}
-          renderInput={params => <TextField {...params} label="Lịch trình" />}
+          renderInput={params => <TextField {...params} label="Khách hàng" />}
         />
       </Box>
       <TableContainer component={Paper}>
@@ -116,33 +117,36 @@ const StatusSeatList = () => {
           <TableHead>
             <TableRow>
               <TableCell>STT</TableCell>
-              <TableCell align="left">Mã ghế</TableCell>
+              <TableCell align="left">Khách hàng</TableCell>
+              <TableCell align="left">Ghế</TableCell>
               <TableCell align="left">Lịch trình</TableCell>
-              <TableCell align="left">Trạng thái</TableCell>
-              {/* <TableCell align="left">Thao tác</TableCell> */}
+              <TableCell align="left">Đồ ăn</TableCell>
+              <TableCell align="left">Ngày lập</TableCell>
+              <TableCell align="left">Tổng tiền</TableCell>
+              <TableCell align="left">Thao tác</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {statusSeats?.map((statusSeat, index) => (
-              <TableRow key={statusSeat.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {orders?.map((order, index) => (
+              <TableRow key={order.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {calculateRowIndex(index)}
                 </TableCell>
-                <TableCell align="left">{statusSeat.seatId}</TableCell>
+                <TableCell align="left">{order.user?.fullName}</TableCell>
+                <TableCell align="left">{order.user?.fullName}</TableCell>
                 <TableCell align="left">
-                  {statusSeat.schedule.movie.name}
-                  {','} {statusSeat.room.name}
-                  {','} {moment(statusSeat.schedule.showTime).format('HH:mm')}
+                  {order.schedule?.movieName}
+                  {','} {moment(order.schedule?.startTime).format('HH:mm')}
                 </TableCell>
-                <TableCell align="left">{statusSeat.status}</TableCell>
-                {/* <TableCell align="left">
+                <TableCell align="left">{order.totalAmount}</TableCell>
+                <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
+                <TableCell align="left">{order.totalAmount} đ</TableCell>
+
+                <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
-                    <BorderColorOutlined
-                      onClick={() => handleShowUpdateModal(statusSeat.seatId, statusSeat.schedule.id)}
-                      className="!text-lg hover:text-primary"
-                    />
+                    <BorderColorOutlined onClick={() => {}} className="!text-lg hover:text-primary" />
                   </Box>
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -160,4 +164,4 @@ const StatusSeatList = () => {
   );
 };
 
-export default StatusSeatList;
+export default InvoiceList;

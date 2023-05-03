@@ -1,9 +1,9 @@
-import { onCreateOrder } from '@redux/actions/orders.action';
+import { onCreateOrder, onGetOrders } from '@redux/actions/orders.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface OrdersState {
   orders: OrderByUserEntity[];
-  // ordersPagination: ApiPagination;
+  paginationOptions: ApiPagination;
 }
 
 const initialPagination = {
@@ -18,7 +18,7 @@ const initialPagination = {
 
 const ordersInitialState: OrdersState = {
   orders: [],
-  // ordersPagination: initialPagination,
+  paginationOptions: initialPagination,
 };
 
 export const ratingSlice = createSlice({
@@ -26,8 +26,21 @@ export const ratingSlice = createSlice({
   initialState: ordersInitialState,
   reducers: {},
   extraReducers(builder) {
+    builder.addCase(onGetOrders.fulfilled, (state, action) => {
+      state.orders = action.payload.orders;
+      state.paginationOptions = action.payload.paginationOptions;
+    });
     builder.addCase(onCreateOrder.fulfilled, (state, action) => {
-      state.orders = [action.payload.newOrder, ...state.orders];
+      state.orders = [...state.orders, action.payload.newOrder];
+      state.paginationOptions = {
+        totalDocs: state.paginationOptions.totalDocs + 1,
+        offset: 0,
+        limit: state.paginationOptions.limit,
+        page: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        totalPages: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        hasPrevPage: state.paginationOptions.page > 1,
+        hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
+      };
     });
   },
 });

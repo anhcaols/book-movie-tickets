@@ -79,15 +79,15 @@ export const navigations = [
     children: [
       {
         name: 'Tất cả hóa đơn',
-        path: '/admin/foods',
+        path: '/admin/orders',
       },
       {
         name: 'Vé phim',
-        path: '',
+        path: '/admin/orders/tickets',
       },
       {
         name: 'Đồ ăn',
-        path: '/admin/foods',
+        path: '/admin/orders/foods',
       },
     ],
   },

@@ -107,6 +107,9 @@ interface FoodEntity {
 
 interface OrderByUserEntity {
   id: number;
+  seats?: { id: number; rowPosition: number; columnPosition: number }[];
+  schedule: { movieName: string; cinemaName: string; startTime: string | Date };
+  foods: { id: number; name: string }[];
   user: {
     id: number;
     fullName: string;
@@ -115,7 +118,7 @@ interface OrderByUserEntity {
     role: string;
   };
   orderDate: string;
-  totalMount: number;
+  totalAmount: number;
 }
 
 interface CinemaEntity {
