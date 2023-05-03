@@ -24,6 +24,7 @@ import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
 import { onGetUsers } from '@redux/actions/accounts.action';
 import { onGetOrders } from '@redux/actions/orders.action';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
+import { DeleteOrderModal } from './DeleteOrderModal';
 // import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
 const StyledAutocomplete = styled(Autocomplete)({
@@ -39,11 +40,9 @@ const StyledAutocomplete = styled(Autocomplete)({
 const InvoiceList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [isOpenUpdateStatusSeat, setIsOpenUpdateStatusSeat] = useState<boolean>(false);
-  const [isStatusSeatId, setStatusSeatId] = useState<{
-    seatId: number;
-    scheduleId: number;
-  }>({ seatId: 0, scheduleId: 0 });
+  const [isOpenDeleteOrder, setIsOpenDeleteOrder] = useState<boolean>(false);
+  const [isOpenUpdateOrder, setIsOpenUpdateOrder] = useState<boolean>(false);
+  const [isOrderId, setOrderId] = useState<number>(0);
 
   const pageSize = 10;
 
@@ -88,11 +87,6 @@ const InvoiceList = () => {
   const handleChange = (event: any, value: number) => {
     scroll.scrollToTop({ duration: 500, delay: 10 });
     setCurrentPage(value);
-  };
-
-  const handleShowDeleteModal = (seatId: number, scheduleId: number) => {
-    setIsOpenUpdateStatusSeat(true);
-    setStatusSeatId({ seatId, scheduleId });
   };
 
   return (
@@ -145,7 +139,13 @@ const InvoiceList = () => {
 
                   <TableCell align="left">
                     <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
-                      <DeleteOutlineOutlined onClick={() => {}} className="!text-lg hover:text-primary" />
+                      <DeleteOutlineOutlined
+                        onClick={() => {
+                          setOrderId(order.id);
+                          setIsOpenDeleteOrder(true);
+                        }}
+                        className="!text-lg hover:text-primary"
+                      />
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -159,6 +159,7 @@ const InvoiceList = () => {
       <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
+      <DeleteOrderModal id={isOrderId} open={isOpenDeleteOrder} onClose={setIsOpenDeleteOrder} />
       {/* <UpdateStatusSeatTypeModal
         id={isStatusSeatId}
         open={isOpenUpdateStatusSeat}

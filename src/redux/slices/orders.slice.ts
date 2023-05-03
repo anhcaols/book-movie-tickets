@@ -42,6 +42,12 @@ export const ratingSlice = createSlice({
         hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
       };
     });
+    builder.addCase(onDeleteOrder.fulfilled, (state, action) => {
+      const { orderId } = action.payload;
+      state.orders = state.orders.filter(item => item.id !== orderId);
+      state.paginationOptions.totalDocs -= 1;
+      state.paginationOptions.totalPages = Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit);
+    });
   },
 });
 
