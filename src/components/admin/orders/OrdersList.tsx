@@ -23,7 +23,7 @@ import moment from 'moment';
 import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
 import { onGetUsers } from '@redux/actions/accounts.action';
 import { onGetOrders } from '@redux/actions/orders.action';
-import { DeleteOutlineOutlined } from '@mui/icons-material';
+import { DeleteOutlineOutlined, RemoveRedEye } from '@mui/icons-material';
 import { DeleteOrderModal } from './DeleteOrderModal';
 // import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
@@ -67,6 +67,7 @@ const InvoiceList = () => {
     id: 'all',
   });
 
+  // handle select
   const [user, setUser] = React.useState<any>(users[0]);
   const [inputValue, setInputValue] = React.useState<string>('');
 
@@ -88,6 +89,16 @@ const InvoiceList = () => {
     scroll.scrollToTop({ duration: 500, delay: 10 });
     setCurrentPage(value);
   };
+
+  // handle get seats
+  function getSeatName(row: number, col: number) {
+    const rowNames = [];
+    for (let i = 65; i <= 90; i++) {
+      rowNames.push(String.fromCharCode(i));
+    }
+    const rowName = rowNames[row - 1];
+    return `${rowName}${col}, `;
+  }
 
   return (
     <>
@@ -118,6 +129,8 @@ const InvoiceList = () => {
               <TableRow>
                 <TableCell>STT</TableCell>
                 <TableCell align="left">Khách hàng</TableCell>
+                <TableCell align="left">Lịch trình</TableCell>
+                <TableCell align="left">Ghế</TableCell>
                 <TableCell align="left">Ngày lập</TableCell>
                 <TableCell align="left">Tổng tiền</TableCell>
                 <TableCell align="left">Thao tác</TableCell>
@@ -130,10 +143,15 @@ const InvoiceList = () => {
                     {calculateRowIndex(index)}
                   </TableCell>
                   <TableCell align="left">{order.user?.fullName}</TableCell>
-                  {/* <TableCell align="left">
-                  {order.schedule?.movieName}
-                  {','} {moment(order.schedule?.startTime).format('HH:mm')}
-                </TableCell> */}
+                  <TableCell align="left">
+                    {order.schedule?.movieName}
+                    {','} {moment(order.schedule?.startTime).format('HH:mm')}
+                    {','} {order.schedule?.roomName}
+                    {','} {order.schedule?.cinemaName}
+                  </TableCell>
+                  <TableCell align="left">
+                    {order.seats?.map(seat => getSeatName(seat.rowPosition, seat.columnPosition))}
+                  </TableCell>
                   <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
                   <TableCell align="left">{order.totalAmount} đ</TableCell>
 
