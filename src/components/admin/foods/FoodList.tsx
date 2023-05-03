@@ -18,6 +18,7 @@ import moment from 'moment';
 import { onGetFoods } from '@redux/actions/foods.action';
 import { CreateFoodModal } from './CreateFoodModal';
 import { UpdateFoodModal } from './UpdateFoodModal';
+import { DeleteFoodModal } from './DeleteFoodModal';
 
 const FoodList = () => {
   const [isOpenCreateFood, setIsOpenCreateFood] = useState<boolean>(false);
@@ -86,7 +87,7 @@ const FoodList = () => {
                       className="!text-lg hover:text-primary"
                     />
                     <DeleteOutline
-                      // onClick={() => handleShowDeleteModal(food.id)}
+                      onClick={() => handleShowDeleteModal(food.id)}
                       className="!text-xl hover:text-primary"
                     />
                   </Box>
@@ -101,7 +102,7 @@ const FoodList = () => {
       </Box>
       <CreateFoodModal open={isOpenCreateFood} onClose={setIsOpenCreateFood} />
       <UpdateFoodModal id={isFoodId} open={isOpenUpdateFood} onClose={setIsOpenUpdateFood} />
-      {/*<DeleteFoodModal id={isFoodId} open={isOpenDeleteFood} onClose={setIsOpenDeleteFood} /> */}
+      <DeleteFoodModal id={isFoodId} open={isOpenDeleteFood} onClose={setIsOpenDeleteFood} />
     </>
   );
 };

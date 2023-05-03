@@ -3,7 +3,7 @@ import { useAsync } from '@hooks/useAsync';
 import { useAppDispatch } from '@hooks/useRedux';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button } from '@mui/material';
-import { onDeleteUser } from '@redux/actions/accounts.action';
+import { onDeleteFood } from '@redux/actions/foods.action';
 import { useSnackbar } from 'notistack';
 import React, { useState } from 'react';
 
@@ -20,14 +20,14 @@ export const DeleteFoodModal = ({ id, open, onClose }: DeleteFoodModalOpen) => {
 
   const handleDelete = () => {
     setIsLoading(true);
-    executeDelete({ userId: id });
+    executeDelete({ foodId: id });
   };
 
   const [executeDelete] = useAsync<{
-    userId: number;
+    foodId: number;
   }>({
     delay: 500,
-    asyncFunction: async payload => dispatch(onDeleteUser(payload)),
+    asyncFunction: async payload => dispatch(onDeleteFood(payload)),
     onResolve: () => {
       onClose(false);
       setIsLoading(false);
