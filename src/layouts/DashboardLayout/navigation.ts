@@ -76,15 +76,11 @@ export const navigations = [
     name: 'Hóa đơn',
     path: '/admin/orders',
     icon: Receipt,
-    children: [
-      {
-        name: 'Tất cả hóa đơn',
-        path: '/admin/orders',
-      },
-      {
-        name: 'Đồ ăn',
-        path: '/admin/orders/foods',
-      },
-    ],
+  },
+
+  {
+    name: 'Đồ ăn',
+    path: '/admin/foods',
+    icon: Fastfood,
   },
 ];

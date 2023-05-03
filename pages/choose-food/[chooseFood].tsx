@@ -69,7 +69,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
   const { invoiceData } = useAppSelector(state => state.invoiceData);
 
   useEffect(() => {
-    dispatch(onGetFoods());
+    dispatch(onGetFoods({ query: { page: 1, limit: 10 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
