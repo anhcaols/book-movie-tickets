@@ -1,5 +1,5 @@
 interface AccountEntity {
-  id: number;
+  id: number | string;
   fullName: string;
   email: string;
   phoneNumber: string;

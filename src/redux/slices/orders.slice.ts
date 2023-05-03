@@ -1,4 +1,4 @@
-import { onCreateOrder, onGetOrders } from '@redux/actions/orders.action';
+import { onCreateOrder, onGetOrders, onDeleteOrder } from '@redux/actions/orders.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface OrdersState {

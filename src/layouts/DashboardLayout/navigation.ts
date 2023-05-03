@@ -82,10 +82,6 @@ export const navigations = [
         path: '/admin/orders',
       },
       {
-        name: 'Vé phim',
-        path: '/admin/orders/tickets',
-      },
-      {
         name: 'Đồ ăn',
         path: '/admin/orders/foods',
       },

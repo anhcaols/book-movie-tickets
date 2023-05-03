@@ -14,8 +14,8 @@ import {
   styled,
   Autocomplete,
   TextField,
+  Typography,
 } from '@mui/material';
-// import { BorderColorOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { animateScroll as scroll } from 'react-scroll';
 import { onGetSeatTypes } from '@redux/actions/seatTypes.action';
@@ -23,7 +23,7 @@ import moment from 'moment';
 import { onGetStatusSeats } from '@redux/actions/statusSeats.action';
 import { onGetUsers } from '@redux/actions/accounts.action';
 import { onGetOrders } from '@redux/actions/orders.action';
-import { BorderColorOutlined } from '@mui/icons-material';
+import { DeleteOutlineOutlined } from '@mui/icons-material';
 // import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
 const StyledAutocomplete = styled(Autocomplete)({
@@ -63,6 +63,11 @@ const InvoiceList = () => {
     };
   });
 
+  users.unshift({
+    label: 'Tất cả',
+    id: 'all',
+  });
+
   const [user, setUser] = React.useState<any>(users[0]);
   const [inputValue, setInputValue] = React.useState<string>('');
 
@@ -85,7 +90,7 @@ const InvoiceList = () => {
     setCurrentPage(value);
   };
 
-  const handleShowUpdateModal = (seatId: number, scheduleId: number) => {
+  const handleShowDeleteModal = (seatId: number, scheduleId: number) => {
     setIsOpenUpdateStatusSeat(true);
     setStatusSeatId({ seatId, scheduleId });
   };
@@ -112,46 +117,45 @@ const InvoiceList = () => {
           renderInput={params => <TextField {...params} label="Khách hàng" />}
         />
       </Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>STT</TableCell>
-              <TableCell align="left">Khách hàng</TableCell>
-              <TableCell align="left">Ghế</TableCell>
-              <TableCell align="left">Lịch trình</TableCell>
-              <TableCell align="left">Đồ ăn</TableCell>
-              <TableCell align="left">Ngày lập</TableCell>
-              <TableCell align="left">Tổng tiền</TableCell>
-              <TableCell align="left">Thao tác</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders?.map((order, index) => (
-              <TableRow key={order.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
-                  {calculateRowIndex(index)}
-                </TableCell>
-                <TableCell align="left">{order.user?.fullName}</TableCell>
-                <TableCell align="left">{order.user?.fullName}</TableCell>
-                <TableCell align="left">
+      {orders.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>STT</TableCell>
+                <TableCell align="left">Khách hàng</TableCell>
+                <TableCell align="left">Ngày lập</TableCell>
+                <TableCell align="left">Tổng tiền</TableCell>
+                <TableCell align="left">Thao tác</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orders?.map((order, index) => (
+                <TableRow key={order.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    {calculateRowIndex(index)}
+                  </TableCell>
+                  <TableCell align="left">{order.user?.fullName}</TableCell>
+                  {/* <TableCell align="left">
                   {order.schedule?.movieName}
                   {','} {moment(order.schedule?.startTime).format('HH:mm')}
-                </TableCell>
-                <TableCell align="left">{order.totalAmount}</TableCell>
-                <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
-                <TableCell align="left">{order.totalAmount} đ</TableCell>
+                </TableCell> */}
+                  <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
+                  <TableCell align="left">{order.totalAmount} đ</TableCell>
 
-                <TableCell align="left">
-                  <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
-                    <BorderColorOutlined onClick={() => {}} className="!text-lg hover:text-primary" />
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <TableCell align="left">
+                    <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
+                      <DeleteOutlineOutlined onClick={() => {}} className="!text-lg hover:text-primary" />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography className="text-center text-text !text-sm">Không có dữ liệu</Typography>
+      )}
       <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
