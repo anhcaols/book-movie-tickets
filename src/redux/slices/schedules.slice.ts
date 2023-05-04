@@ -1,4 +1,10 @@
-import { onFilterSchedules, onGetSchedules, onGetSchedulesByMovie } from '@redux/actions/schedules.action';
+import {
+  onCreateSchedule,
+  onFilterSchedules,
+  onGetSchedules,
+  onGetSchedulesByMovie,
+  onUpdateSchedule,
+} from '@redux/actions/schedules.action';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface SchedulesState {
@@ -49,6 +55,27 @@ export const scheduleSlice = createSlice({
     });
     builder.addCase(onFilterSchedules.fulfilled, (state, action) => {
       state.filterSchedulesByMovie = action.payload.filterSchedulesByMovie;
+    });
+
+    builder.addCase(onCreateSchedule.fulfilled, (state, action) => {
+      const { newSchedule } = action.payload;
+      state.schedules = [newSchedule, ...state.schedules];
+      state.paginationOptions = {
+        totalDocs: state.paginationOptions.totalDocs + 1,
+        offset: 0,
+        limit: state.paginationOptions.limit,
+        page: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        totalPages: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        hasPrevPage: state.paginationOptions.page > 1,
+        hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
+      };
+    });
+
+    builder.addCase(onUpdateSchedule.fulfilled, (state, action) => {
+      const scheduleId = action.payload.updateValues.id;
+      const scheduleIndex = state.schedules.findIndex(item => item.id === scheduleId);
+      if (scheduleIndex === -1) return;
+      state.schedules[scheduleIndex] = { ...state.schedules[scheduleIndex], ...action.payload.updateValues };
     });
   },
 });

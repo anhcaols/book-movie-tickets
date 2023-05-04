@@ -43,7 +43,7 @@ export const navigations = [
 
   {
     name: 'Lịch trình',
-    path: '/schedules',
+    path: '/admin/schedules',
     icon: DateRange,
   },
 

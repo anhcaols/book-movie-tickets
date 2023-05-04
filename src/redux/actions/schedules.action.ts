@@ -14,9 +14,26 @@ const filterSchedulesPayloadSchema = z.object({
   payload: z.object({ movie_id: z.number(), date_time: z.string(), cinema_name: z.string(), city: z.string() }),
 });
 
+const createSchedulePayloadSchema = z.object({
+  movie_id: z.number(),
+  room_id: z.number(),
+  start_time: z.string(),
+  end_time: z.string(),
+});
+
+const updateSchedulePayloadSchema = z.object({
+  dataValues: z.object({
+    start_time: z.string(),
+    end_time: z.string(),
+  }),
+  scheduleId: z.number(),
+});
+
 type GetSchedulesPayload = z.infer<typeof getSchedulesPayloadSchema>;
 type GetSchedulesByMoviePayload = z.infer<typeof getSchedulesByMoviePayloadSchema>;
 type FilterSchedulesPayload = z.infer<typeof filterSchedulesPayloadSchema>;
+type CreateSchedulesPayload = z.infer<typeof createSchedulePayloadSchema>;
+type UpdateSchedulesPayload = z.infer<typeof updateSchedulePayloadSchema>;
 
 export const onGetSchedules = createAsyncThunkWithCustomError<
   {
@@ -78,5 +95,44 @@ export const onFilterSchedules = createAsyncThunkWithCustomError<
   },
   {
     defaultErrorMessage: 'Error while fetching schedules by Movies',
+  }
+);
+
+export const onCreateSchedule = createAsyncThunkWithCustomError<
+  {
+    newSchedule: ScheduleEntity;
+  },
+  CreateSchedulesPayload
+>(
+  'cinemas/add',
+  async payload => {
+    createSchedulePayloadSchema.parse(payload);
+    const response: any = await schedulesService.createSchedule(payload);
+    return {
+      newSchedule: response.cinema,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while create cinema',
+  }
+);
+
+export const onUpdateSchedule = createAsyncThunkWithCustomError<
+  {
+    updateValues: ScheduleEntity;
+  },
+  UpdateSchedulesPayload
+>(
+  'cinemas/update',
+  async payload => {
+    updateSchedulePayloadSchema.parse(payload);
+    const { dataValues, scheduleId } = payload;
+    const response: any = await schedulesService.updateSchedule(dataValues, scheduleId);
+    return {
+      updateValues: response.cinema,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while update cinema',
   }
 );
