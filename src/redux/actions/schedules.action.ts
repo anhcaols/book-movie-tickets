@@ -104,16 +104,16 @@ export const onCreateSchedule = createAsyncThunkWithCustomError<
   },
   CreateSchedulesPayload
 >(
-  'cinemas/add',
+  'schedules/add',
   async payload => {
     createSchedulePayloadSchema.parse(payload);
     const response: any = await schedulesService.createSchedule(payload);
     return {
-      newSchedule: response.cinema,
+      newSchedule: response.schedule,
     };
   },
   {
-    defaultErrorMessage: 'Error while create cinema',
+    defaultErrorMessage: 'Error while create schedule',
   }
 );
 
@@ -123,16 +123,16 @@ export const onUpdateSchedule = createAsyncThunkWithCustomError<
   },
   UpdateSchedulesPayload
 >(
-  'cinemas/update',
+  'schedules/update',
   async payload => {
     updateSchedulePayloadSchema.parse(payload);
     const { dataValues, scheduleId } = payload;
     const response: any = await schedulesService.updateSchedule(dataValues, scheduleId);
     return {
-      updateValues: response.cinema,
+      updateValues: response.schedule,
     };
   },
   {
-    defaultErrorMessage: 'Error while update cinema',
+    defaultErrorMessage: 'Error while update schedule',
   }
 );

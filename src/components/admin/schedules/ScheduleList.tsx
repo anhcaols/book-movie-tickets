@@ -11,14 +11,14 @@ import {
   Box,
   Button,
   Pagination,
+  Tooltip,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import moment from 'moment';
 import { onGetSchedules } from '@redux/actions/schedules.action';
-// import { CreateScheduleModal } from './CreateScheduleModal';
-// import { UpdateScheduleModal } from './UpdateScheduleModal';
-// import { DeleteScheduleModal } from './DeleteScheduleModal';
+import { CreateScheduleModal } from './CreateScheduleModal';
+import { UpdateScheduleModal } from './UpdateScheduleModal';
 
 const ScheduleList = () => {
   const [isOpenCreateSchedule, setIsOpenCreateSchedule] = useState<boolean>(false);
@@ -77,10 +77,10 @@ const ScheduleList = () => {
                 <TableCell component="th" scope="row">
                   {calculateRowIndex(index)}
                 </TableCell>
-                <TableCell align="left">{schedule.movie.name}</TableCell>
+                <TableCell align="left">{schedule?.movie?.name}</TableCell>
                 <TableCell align="left">
-                  {schedule.room.roomName}
-                  {','} {schedule.room.cinemaName}
+                  {schedule?.room.roomName}
+                  {','} {schedule?.room.cinemaName}
                 </TableCell>
                 <TableCell align="left">{moment(schedule.startTime).format('HH:mm, DD/MM/YYYY')}</TableCell>
                 <TableCell align="left">{moment(schedule.endTime).format('HH:mm, DD/MM/YYYY')}</TableCell>
@@ -91,10 +91,12 @@ const ScheduleList = () => {
                       onClick={() => handleShowUpdateModal(schedule.id)}
                       className="!text-lg hover:text-primary"
                     />
-                    <DeleteOutline
-                      onClick={() => handleShowDeleteModal(schedule.id)}
-                      className="!text-xl hover:text-primary"
-                    />
+                    <Tooltip title="Không khả dụng" placement="top">
+                      <DeleteOutline
+                        // onClick={() => handleShowDeleteModal(schedule.id)}
+                        className="cursor-default opacity-[0.6]"
+                      />
+                    </Tooltip>
                   </Box>
                 </TableCell>
               </TableRow>
@@ -105,9 +107,9 @@ const ScheduleList = () => {
       <Box className="flex justify-center mt-6">
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
-      {/* <CreateScheduleModal open={isOpenCreateSchedule} onClose={setIsOpenCreateSchedule} />
+      <CreateScheduleModal open={isOpenCreateSchedule} onClose={setIsOpenCreateSchedule} />
       <UpdateScheduleModal id={isScheduleId} open={isOpenUpdateSchedule} onClose={setIsOpenUpdateSchedule} />
-      <DeleteScheduleModal id={isScheduleId} open={isOpenDeleteSchedule} onClose={setIsOpenDeleteSchedule} /> */}
+      {/* <DeleteScheduleModal id={isScheduleId} open={isOpenDeleteSchedule} onClose={setIsOpenDeleteSchedule} /> */}
     </>
   );
 };

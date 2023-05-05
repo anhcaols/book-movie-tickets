@@ -15,9 +15,10 @@ import { onGetRooms } from '@redux/actions/rooms.action';
 import dayjs from 'dayjs';
 import { onCreateSchedule } from '@redux/actions/schedules.action';
 
-interface CreateScheduleModalOpen {
+interface UpdateScheduleModalOpen {
   open: boolean;
   onClose: any;
+  id: number;
 }
 
 const scheduleFormSchema = z.object({
@@ -29,7 +30,7 @@ const scheduleFormSchema = z.object({
   }),
 });
 
-export const CreateScheduleModal = ({ open, onClose }: CreateScheduleModalOpen) => {
+export const UpdateScheduleModal = ({ open, onClose }: UpdateScheduleModalOpen) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -84,35 +85,35 @@ export const CreateScheduleModal = ({ open, onClose }: CreateScheduleModalOpen) 
       end_time: dayjs(data.endTime).format(),
     };
     setIsLoading(true);
-    executeCreate(dataValues);
+    // executeCreate(dataValues);
   });
 
-  const [executeCreate] = useAsync<{
-    movie_id: number;
-    room_id: number;
-    start_time: string;
-    end_time: string;
-  }>({
-    delay: 500,
-    asyncFunction: async payload => dispatch(onCreateSchedule(payload)),
-    onResolve: () => {
-      setIsLoading(false);
-      reset();
-      onClose(false);
-      enqueueSnackbar('Thêm thành công', {
-        variant: 'success',
-      });
-    },
-    onReject: (error: any) => {
-      setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
-        variant: 'error',
-      });
-    },
-  });
+  // const [executeCreate] = useAsync<{
+  //   movie_id: number;
+  //   room_id: number;
+  //   start_time: string;
+  //   end_time: string;
+  // }>({
+  //   delay: 500,
+  //   asyncFunction: async payload => dispatch(onCreateSchedule(payload)),
+  //   onResolve: () => {
+  //     setIsLoading(false);
+  //     reset();
+  //     onClose(false);
+  //     enqueueSnackbar('Thêm thành công', {
+  //       variant: 'success',
+  //     });
+  //   },
+  //   onReject: (error: any) => {
+  //     setIsLoading(false);
+  //     enqueueSnackbar('Thêm thất bại', {
+  //       variant: 'error',
+  //     });
+  //   },
+  // });
 
   return (
-    <AppDialog title="Thêm lịch trình" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Cập nhật lịch trình" open={open} onClose={() => onClose(false)}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <form onSubmit={onSubmit} action="#">
           <Stack spacing={3}>
@@ -201,7 +202,7 @@ export const CreateScheduleModal = ({ open, onClose }: CreateScheduleModalOpen) 
 
             <Box>
               <LoadingButton type="submit" className="w-full" variant="contained" size="large" loading={isLoading}>
-                Thêm
+                Cập nhật
               </LoadingButton>
             </Box>
           </Stack>
