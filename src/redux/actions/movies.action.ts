@@ -107,3 +107,19 @@ export const onDeleteMovie = createAsyncThunkWithCustomError(
     defaultErrorMessage: 'Error while delete movie',
   }
 );
+
+export const onSearchMovie = createAsyncThunkWithCustomError(
+  'movies/search',
+  async (payload: { keyword: string }) => {
+    const response: any = await moviesService.searchMovie(payload);
+    return {
+      allMovies: {
+        movies: response.movies,
+        paginationOptions: response.paginationOptions,
+      },
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while search movie',
+  }
+);

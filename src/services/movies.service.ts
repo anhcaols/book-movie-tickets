@@ -47,6 +47,14 @@ export class MoviesService extends BaseService {
 
     return data;
   }
+
+  async searchMovie(payload: { keyword: string }) {
+    const { data } = await this.httpClient.post(`/movies/search`, payload, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
 }
 
 export const moviesService = new MoviesService();

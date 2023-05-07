@@ -89,7 +89,7 @@ function Header() {
           </div>
           {/* Action */}
           <div className="actions ml-auto flex items-center">
-            <Link href={'/'}>
+            <Link href={'/search'}>
               <SearchIcon className={` w-[22px] h- fill-text hover:fill-[#ff55a5] mr-8 block`} />
             </Link>
             {/* <div>
