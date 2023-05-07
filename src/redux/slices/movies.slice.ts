@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { onCreateMovie, onGetMovies, onUpdateMovie } from '@redux/actions/movies.action';
+import { onCreateMovie, onDeleteMovie, onGetMovies, onUpdateMovie } from '@redux/actions/movies.action';
 
 interface MoviesState {
   allMovies: {
@@ -83,12 +83,14 @@ export const movieSlice = createSlice({
       if (movieIndex === -1) return;
       state.allMovies.movies[movieIndex] = { ...state.allMovies.movies[movieIndex], ...action.payload.updateValues };
     });
-    // builder.addCase(onDeleteCinema.fulfilled, (state, action) => {
-    //   const { cinemaId } = action.payload;
-    //   state.allMovies.paginationOptions = state.allMovies.paginationOptions.filter(item => item.id !== cinemaId);
-    //   state.paginationOptions.totalDocs -= 1;
-    //   state.paginationOptions.totalPages = Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit);
-    // });
+    builder.addCase(onDeleteMovie.fulfilled, (state, action) => {
+      const { movieId } = action.payload;
+      state.allMovies.movies = state.allMovies.movies.filter(item => item.id !== movieId);
+      state.allMovies.paginationOptions.totalDocs -= 1;
+      state.allMovies.paginationOptions.totalPages = Math.ceil(
+        state.allMovies.paginationOptions.totalDocs / state.allMovies.paginationOptions.limit
+      );
+    });
   },
 });
 

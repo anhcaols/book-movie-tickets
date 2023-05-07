@@ -19,6 +19,7 @@ import moment from 'moment';
 import { onGetMovies } from '@redux/actions/movies.action';
 import { CreateMovieModal } from './CreateMovieModal';
 import { UpdateMovieModal } from './UpdateMovieModal';
+import { DeleteMovieModal } from './DeleteMovieModal';
 
 const MovieList = () => {
   const [isOpenCreateMovie, setIsOpenCreateMovie] = useState<boolean>(false);
@@ -45,9 +46,9 @@ const MovieList = () => {
     setMovieId(id);
   };
 
-  const handleShowDeleteModal = (id: string) => {
+  const handleShowDeleteModal = (id: number) => {
     setIsOpenDeleteMovie(true);
-    setMovieSlug(id);
+    setMovieId(id);
   };
 
   const handleChange = (event: any, value: number) => {
@@ -110,12 +111,13 @@ const MovieList = () => {
                       onClick={() => handleShowUpdateModal(movie.slug, movie.id)}
                       className="!text-lg hover:text-primary"
                     />
-                    <Tooltip title="Không khả dụng" placement="top">
-                      <DeleteOutline
-                        // onClick={() => handleShowDeleteModal(movie.id)}
-                        className="cursor-default opacity-[0.6]"
-                      />
-                    </Tooltip>
+                    <DeleteOutline
+                      onClick={() => handleShowDeleteModal(movie.id)}
+                      // className="cursor-default opacity-[0.6]"
+                      className="!text-xl hover:text-primary"
+                    />
+                    {/* <Tooltip title="Không khả dụng" placement="top">
+                    </Tooltip> */}
                   </Box>
                 </TableCell>
               </TableRow>
@@ -128,7 +130,7 @@ const MovieList = () => {
       </Box>
       <CreateMovieModal open={isOpenCreateMovie} onClose={setIsOpenCreateMovie} />
       <UpdateMovieModal id={isMovieId} slug={isMovieSlug} open={isOpenUpdateMovie} onClose={setIsOpenUpdateMovie} />
-      {/* <DeleteMovieModal id={isMovieSlug} open={isOpenDeleteMovie} onClose={setIsOpenDeleteMovie} />  */}
+      <DeleteMovieModal id={isMovieId} open={isOpenDeleteMovie} onClose={setIsOpenDeleteMovie} />
     </>
   );
 };

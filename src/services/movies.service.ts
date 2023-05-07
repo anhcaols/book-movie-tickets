@@ -39,6 +39,14 @@ export class MoviesService extends BaseService {
 
     return data;
   }
+
+  async deleteMovie(movieId: number) {
+    const { data } = await this.httpClient.delete(`/movies/${movieId}`, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
 }
 
 export const moviesService = new MoviesService();

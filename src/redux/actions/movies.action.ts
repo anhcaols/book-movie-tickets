@@ -94,3 +94,16 @@ export const onUpdateMovie = createAsyncThunkWithCustomError(
     defaultErrorMessage: 'Error while update movie',
   }
 );
+
+export const onDeleteMovie = createAsyncThunkWithCustomError(
+  'movies/delete',
+  async (payload: number) => {
+    await moviesService.deleteMovie(payload);
+    return {
+      movieId: payload,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while delete movie',
+  }
+);
