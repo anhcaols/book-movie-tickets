@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { onGetMovies } from '@redux/actions/movies.action';
+import { onCreateMovie, onGetMovies } from '@redux/actions/movies.action';
 
 interface MoviesState {
   allMovies: {
     movies: MovieEntity[];
-    moviesPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   };
   nowShowing: {
     movies: MovieEntity[];
-    moviesPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   };
   comingSoon: {
     movies: MovieEntity[];
-    moviesPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   };
 }
 
@@ -29,15 +29,15 @@ const initialPagination = {
 const moviesInitialState: MoviesState = {
   allMovies: {
     movies: [],
-    moviesPagination: initialPagination,
+    paginationOptions: initialPagination,
   },
   nowShowing: {
     movies: [],
-    moviesPagination: initialPagination,
+    paginationOptions: initialPagination,
   },
   comingSoon: {
     movies: [],
-    moviesPagination: initialPagination,
+    paginationOptions: initialPagination,
   },
 };
 
@@ -48,19 +48,33 @@ export const movieSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(onGetMovies.fulfilled, (state, action) => {
       if (action.payload.allMovies) {
-        state.allMovies.movies.push(...action.payload.allMovies.movies);
-        state.allMovies.moviesPagination = action.payload.allMovies.moviesPagination;
+        state.allMovies.movies = action.payload.allMovies.movies;
+        state.allMovies.paginationOptions = action.payload.allMovies.paginationOptions;
       }
 
       if (action.payload.nowShowing) {
         state.nowShowing.movies = action.payload.nowShowing.movies;
-        state.nowShowing.moviesPagination = action.payload.nowShowing.moviesPagination;
+        state.nowShowing.paginationOptions = action.payload.nowShowing.paginationOptions;
       }
 
       if (action.payload.comingSoon) {
         state.comingSoon.movies = action.payload.comingSoon.movies;
-        state.comingSoon.moviesPagination = action.payload.comingSoon.moviesPagination;
+        state.comingSoon.paginationOptions = action.payload.comingSoon.paginationOptions;
       }
+    });
+
+    builder.addCase(onCreateMovie.fulfilled, (state, action) => {
+      const { newMovie } = action.payload;
+      state.allMovies.movies = [newMovie, ...state.allMovies.movies];
+      state.allMovies.paginationOptions = {
+        totalDocs: state.allMovies.paginationOptions.totalDocs + 1,
+        offset: 0,
+        limit: state.allMovies.paginationOptions.limit,
+        page: Math.ceil(state.allMovies.paginationOptions.totalDocs / state.allMovies.paginationOptions.limit),
+        totalPages: Math.ceil(state.allMovies.paginationOptions.totalDocs / state.allMovies.paginationOptions.limit),
+        hasPrevPage: state.allMovies.paginationOptions.page > 1,
+        hasNextPage: state.allMovies.paginationOptions.page < state.allMovies.paginationOptions.totalPages,
+      };
     });
   },
 });

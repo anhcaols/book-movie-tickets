@@ -61,10 +61,10 @@ const BookTicketPage: NextPageWithLayout = () => {
   const [dateTime, setDateTime] = useState(moment().format('MM/DD/YYYY'));
 
   const slug = router.query.bookTicket;
-  const lastGenre = movie?.genres[movie?.genres.length - 1];
+  const lastGenre: any = movie?.genres[movie?.genres.length - 1];
   const genres = movie?.genres.map(genre => {
-    let spread = genre === lastGenre ? ' ' : ', ';
-    return genre + spread;
+    let spread = genre.name === lastGenre.name ? ' ' : ', ';
+    return genre.name + spread;
   });
 
   useEffect(() => {
@@ -83,7 +83,9 @@ const BookTicketPage: NextPageWithLayout = () => {
         );
       }
     };
-    fetchMovie();
+    if (slug) {
+      fetchMovie();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, dateTime]);
 

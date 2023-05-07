@@ -24,7 +24,10 @@ interface MovieEntity {
   age: number;
   image: string;
   trailer: string;
-  genres: string[];
+  genres: {
+    id: number;
+    name: string;
+  }[];
   slug: string;
   scoreRate: number;
 }
@@ -161,4 +164,9 @@ interface SeatTypeEntity {
   id: number;
   type: string;
   price: string;
+}
+
+interface GenreEntity {
+  id: number;
+  name: string;
 }

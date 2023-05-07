@@ -24,6 +24,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .css-52f9f3-MuiPaper-root-MuiDialog-paper': {
     backgroundColor: '#222b36',
   },
+  '& .css-aj7jje-MuiPaper-root-MuiDialog-paper': {
+    backgroundColor: '#222b36',
+  },
 }));
 
 export interface AppDialogProps extends PropsWithChildren {
@@ -31,6 +34,7 @@ export interface AppDialogProps extends PropsWithChildren {
   textEnter?: string;
   textCancel?: string;
   title: string;
+  size?: any;
   onClose: () => void;
   onEnter?: () => void;
   onCancel?: () => void;
@@ -42,12 +46,19 @@ export const AppDialog = ({
   textEnter = 'Ok',
   textCancel = 'cancel',
   title,
+  size,
   onClose,
   onEnter,
   onCancel,
 }: AppDialogProps) => {
   return (
-    <BootstrapDialog fullWidth onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
+    <BootstrapDialog
+      maxWidth={size || 'sm'}
+      fullWidth
+      onClose={onClose}
+      aria-labelledby="customized-dialog-title"
+      open={open}
+    >
       <DialogTitle sx={{ m: 0, p: 2 }}>
         {title}
         {onClose ? (

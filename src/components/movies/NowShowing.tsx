@@ -38,7 +38,7 @@ function NowShowing() {
           </div>
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
             <Pagination
-              count={nowShowing.moviesPagination.totalPages}
+              count={nowShowing.paginationOptions.totalPages}
               onChange={handleChangePage}
               className="mt-12"
               size="large"

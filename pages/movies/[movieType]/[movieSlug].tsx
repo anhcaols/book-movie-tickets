@@ -57,10 +57,10 @@ const MovieDetailPage: NextPageWithLayout = () => {
   const slug = router.query.movieSlug;
   const movieType = router.query.movieType;
 
-  const lastGenre = movie?.genres[movie?.genres.length - 1];
+  const lastGenre: any = movie?.genres[movie?.genres.length - 1];
   const genres = movie?.genres.map(genre => {
-    let spread = genre === lastGenre ? ' ' : ', ';
-    return genre + spread;
+    let spread = genre?.name === lastGenre.name ? ' ' : ', ';
+    return genre?.name + spread;
   });
 
   useEffect(() => {
@@ -69,7 +69,9 @@ const MovieDetailPage: NextPageWithLayout = () => {
       const res: any = await moviesService.getMovie(`${slug}`);
       setMovie(res.movie);
     };
-    fetchMovie();
+    if (slug) {
+      fetchMovie();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 

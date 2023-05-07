@@ -15,6 +15,7 @@ import roomReducer from '@redux/slices/rooms.slice';
 import seatReducer from '@redux/slices/seats.slice';
 import seatTypeReducer from '@redux/slices/seatTypes.slice';
 import orderReducer from '@redux/slices/orders.slice';
+import genreReducer from '@redux/slices/genres.slice';
 
 const persistConfig = {
   key: 'root',
@@ -39,6 +40,7 @@ const store = configureStore({
     seats: seatReducer,
     seatTypes: seatTypeReducer,
     orders: orderReducer,
+    genres: genreReducer,
   },
 });
 

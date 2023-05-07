@@ -13,15 +13,15 @@ export const onGetMovies = createAsyncThunkWithCustomError<
   {
     allMovies?: {
       movies: MovieEntity[];
-      moviesPagination: ApiPagination;
+      paginationOptions: ApiPagination;
     };
     nowShowing?: {
       movies: MovieEntity[];
-      moviesPagination: ApiPagination;
+      paginationOptions: ApiPagination;
     };
     comingSoon?: {
       movies: MovieEntity[];
-      moviesPagination: ApiPagination;
+      paginationOptions: ApiPagination;
     };
   },
   GetMoviesPayload
@@ -46,24 +46,37 @@ export const onGetMovies = createAsyncThunkWithCustomError<
       ...(allMovies && {
         allMovies: {
           movies: allMovies.movies,
-          moviesPagination: allMovies.paginationOptions,
+          paginationOptions: allMovies.paginationOptions,
         },
       }),
       ...(nowShowingMovies && {
         nowShowing: {
           movies: nowShowingMovies.movies,
-          moviesPagination: nowShowingMovies.paginationOptions,
+          paginationOptions: nowShowingMovies.paginationOptions,
         },
       }),
       ...(comingSoonMovies && {
         comingSoon: {
           movies: comingSoonMovies.movies,
-          moviesPagination: comingSoonMovies.paginationOptions,
+          paginationOptions: comingSoonMovies.paginationOptions,
         },
       }),
     };
   },
   {
     defaultErrorMessage: 'Error while fetching movies',
+  }
+);
+
+export const onCreateMovie = createAsyncThunkWithCustomError(
+  'movies/create',
+  async (payload: FormData) => {
+    const response: any = await moviesService.createMovie(payload);
+    return {
+      newMovie: response.movie,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while create movie',
   }
 );
