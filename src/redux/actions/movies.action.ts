@@ -80,3 +80,17 @@ export const onCreateMovie = createAsyncThunkWithCustomError(
     defaultErrorMessage: 'Error while create movie',
   }
 );
+
+export const onUpdateMovie = createAsyncThunkWithCustomError(
+  'movies/update',
+  async (payload: { movieId: number; updateValues: FormData }) => {
+    const { movieId, updateValues } = payload;
+    const response: any = await moviesService.updateMovie(movieId, updateValues);
+    return {
+      updateValues: response.movie,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while update movie',
+  }
+);

@@ -31,6 +31,14 @@ export class MoviesService extends BaseService {
 
     return data;
   }
+
+  async updateMovie(movieId: number, payload: FormData) {
+    const { data } = await this.httpClient.patch(`/movies/${movieId}`, payload, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
 }
 
 export const moviesService = new MoviesService();

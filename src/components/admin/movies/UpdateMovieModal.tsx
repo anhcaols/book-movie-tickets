@@ -24,14 +24,17 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { useAsync } from '@hooks/useAsync';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { onCreateMovie } from '@redux/actions/movies.action';
+import { onCreateMovie, onUpdateMovie } from '@redux/actions/movies.action';
 import dayjs from 'dayjs';
 import { DeleteOutline, FileUpload } from '@mui/icons-material';
 import { onGetGenres } from '@redux/actions/genres.action';
+import { moviesService } from '@services/movies.service';
 
-interface CreateMovieModalProps {
+interface UpdateMovieModalProps {
   open: boolean;
   onClose: any;
+  slug: string;
+  id: number;
 }
 
 const movieFormSchema = z.object({
@@ -53,13 +56,23 @@ const movieFormSchema = z.object({
   trailer: z.string(),
 });
 
-export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
+export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [selectedFile, setSelectedFile] = useState<any>();
-  const [genresSelected, setGenresSelected] = useState<{ id: number; name: string }[]>([]);
-  const [status] = useState('');
+  // const [genresSelected, setGenresSelected] = useState<{ id: number; name: string }[]>([]);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<z.infer<typeof movieFormSchema>>({
+    resolver: zodResolver(movieFormSchema),
+  });
 
   const handleOnChangeFile = async (e: any) => {
     const file = e.target.files[0];
@@ -79,24 +92,36 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
 
   // get movie
   useEffect(() => {
+    const fetchMovie = async () => {
+      const res: any = await moviesService.getMovie(`${slug}`);
+      setValue('name', res.movie.name);
+      setValue('duration', String(res.movie.duration));
+      setValue('releaseDate', res.movie.releaseDate);
+      setValue('actor', res.movie.actor);
+      setValue('director', res.movie.director);
+      setValue('producer', res.movie.producer);
+      setValue('country', res.movie.country);
+      setValue('language', res.movie.language);
+      setValue('age', String(res.movie.age));
+      setValue('status', res.movie.status);
+      setValue('trailer', res.movie.trailer);
+      setValue('description', res.movie.description);
+    };
+    if (slug) {
+      fetchMovie();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, id]);
+
+  useEffect(() => {
     dispatch(onGetGenres({ query: { page: 1, limit: Infinity } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { genres } = useAppSelector(state => state.genres);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<z.infer<typeof movieFormSchema>>({
-    resolver: zodResolver(movieFormSchema),
-  });
-
   const onSubmit = handleSubmit(data => {
-    const genresId = genresSelected.map(genre => genre.id);
+    // const genresId = genresSelected.map(genre => genre.id);
     const dataValues = new FormData();
     dataValues.append('name', data.name);
     dataValues.append('duration', data.duration);
@@ -110,13 +135,13 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
     dataValues.append('status', data.status);
     dataValues.append('trailer', data.trailer);
     dataValues.append('description', data.description);
-    genresId.map(item => {
-      dataValues.append('genre_id[]', item as any);
-    });
+    // genresId.map(item => {
+    //   dataValues.append('genre_id[]', item as any);
+    // });
     dataValues.append('image', selectedFile);
 
     console.log(dataValues);
-    if (!!selectedFile && genresId.length > 0) {
+    if (!!selectedFile) {
       setIsLoading(true);
       executeCreate(dataValues);
     }
@@ -124,25 +149,27 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
 
   const [executeCreate] = useAsync({
     delay: 500,
-    asyncFunction: async (payload: FormData) => dispatch(onCreateMovie(payload)),
+    asyncFunction: async (payload: FormData) => dispatch(onUpdateMovie({ movieId: id, updateValues: payload })),
     onResolve: () => {
       setIsLoading(false);
       reset();
       onClose(false);
-      enqueueSnackbar('Thêm thành công', {
+      enqueueSnackbar('Cập nhật thành công', {
         variant: 'success',
       });
     },
     onReject: (error: any) => {
       setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
+      enqueueSnackbar('Cập nhật thất bại', {
         variant: 'error',
       });
     },
   });
 
+  const [status] = useState('');
+
   return (
-    <AppDialog size="md" title="Thêm phim" open={open} onClose={() => onClose(false)}>
+    <AppDialog size="md" title="Cập nhật phim" open={open} onClose={() => onClose(false)}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <form onSubmit={onSubmit} action="#">
           <Stack spacing={3}>
@@ -304,7 +331,7 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
               </Box>
             </Box>
 
-            <Box display="flex" gap={1}>
+            {/* <Box display="flex" gap={1}>
               <Autocomplete
                 className="flex-1"
                 sx={{ width: 278 }}
@@ -323,7 +350,7 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
                 }
                 renderInput={params => <TextField {...params} label="Chọn thể loại" />}
               />
-            </Box>
+            </Box> */}
 
             <TextField
               rows={4}
@@ -338,7 +365,7 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
 
             <Box className="flex justify-end ">
               <LoadingButton type="submit" variant="contained" size="large" loading={isLoading}>
-                Thêm
+                Lưu
               </LoadingButton>
             </Box>
           </Stack>

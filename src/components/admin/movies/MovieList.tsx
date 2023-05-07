@@ -18,11 +18,13 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import moment from 'moment';
 import { onGetMovies } from '@redux/actions/movies.action';
 import { CreateMovieModal } from './CreateMovieModal';
+import { UpdateMovieModal } from './UpdateMovieModal';
 
 const MovieList = () => {
   const [isOpenCreateMovie, setIsOpenCreateMovie] = useState<boolean>(false);
   const [isOpenUpdateMovie, setIsOpenUpdateMovie] = useState<boolean>(false);
   const [isOpenDeleteMovie, setIsOpenDeleteMovie] = useState<boolean>(false);
+  const [isMovieSlug, setMovieSlug] = useState<string>('');
   const [isMovieId, setMovieId] = useState<number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
@@ -37,14 +39,15 @@ const MovieList = () => {
     return (currentPage - 1) * pageSize + index + 1;
   };
 
-  const handleShowUpdateModal = (id: number) => {
+  const handleShowUpdateModal = (slug: string, id: number) => {
     setIsOpenUpdateMovie(true);
+    setMovieSlug(slug);
     setMovieId(id);
   };
 
-  const handleShowDeleteModal = (id: number) => {
+  const handleShowDeleteModal = (id: string) => {
     setIsOpenDeleteMovie(true);
-    setMovieId(id);
+    setMovieSlug(id);
   };
 
   const handleChange = (event: any, value: number) => {
@@ -104,7 +107,7 @@ const MovieList = () => {
                 <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
                     <BorderColorOutlined
-                      onClick={() => handleShowUpdateModal(movie.id)}
+                      onClick={() => handleShowUpdateModal(movie.slug, movie.id)}
                       className="!text-lg hover:text-primary"
                     />
                     <Tooltip title="Không khả dụng" placement="top">
@@ -124,8 +127,8 @@ const MovieList = () => {
         <Pagination count={paginationOptions.totalPages} page={currentPage} onChange={handleChange} />
       </Box>
       <CreateMovieModal open={isOpenCreateMovie} onClose={setIsOpenCreateMovie} />
-      {/*<UpdateMovieModal id={isMovieId} open={isOpenUpdateMovie} onClose={setIsOpenUpdateMovie} />
-     <DeleteMovieModal id={isMovieId} open={isOpenDeleteMovie} onClose={setIsOpenDeleteMovie} />  */}
+      <UpdateMovieModal id={isMovieId} slug={isMovieSlug} open={isOpenUpdateMovie} onClose={setIsOpenUpdateMovie} />
+      {/* <DeleteMovieModal id={isMovieSlug} open={isOpenDeleteMovie} onClose={setIsOpenDeleteMovie} />  */}
     </>
   );
 };
