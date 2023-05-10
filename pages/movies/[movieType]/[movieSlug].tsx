@@ -30,8 +30,9 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { ratingsService } from '@services/ratings.service';
 import { useAsync } from '@hooks/useAsync';
 import { useSnackbar } from 'notistack';
-import { onGetRatings } from '@redux/actions/ratings.action';
+import { onCreateRating, onGetRatings } from '@redux/actions/ratings.action';
 import { onClearRatings } from '@redux/slices/ratings.slice';
+import { log } from 'console';
 
 const StyledRating = styled(Rating)(() => ({
   '& .css-1c99szj-MuiRating-icon': {
@@ -52,7 +53,6 @@ const MovieDetailPage: NextPageWithLayout = () => {
 
   const dispatch = useAppDispatch();
   const account = useAppSelector(state => state.auth);
-  const { ratings, ratingsPagination } = useAppSelector(state => state.ratings);
 
   const slug = router.query.movieSlug;
   const movieType = router.query.movieType;
@@ -79,7 +79,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
     const { query, movieId } = {
       query: {
         page: currentPage,
-        limit: 1,
+        limit: 10,
       },
       movieId: movie?.id,
     };
@@ -89,6 +89,8 @@ const MovieDetailPage: NextPageWithLayout = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie?.id, currentPage]);
+
+  const { ratings, paginationOptions } = useAppSelector(state => state.ratings);
 
   useEffect(() => {
     setIsCheckStar(false);
@@ -120,19 +122,18 @@ const MovieDetailPage: NextPageWithLayout = () => {
     content: string | undefined;
   }>({
     delay: 500,
-    asyncFunction: async payload => ratingsService.createRating(payload),
-    onResolve: () => {
-      enqueueSnackbar('Đánh giá bộ phim thành công', {
-        variant: 'success',
-      });
-    },
-    onReject: (error: any) => {
-      if (!error.response.data.success) {
-        enqueueSnackbar('Bạn đã đánh giá bộ phim này', {
-          variant: 'warning',
-        });
-      }
-    },
+    asyncFunction: async payload =>
+      dispatch(onCreateRating(payload)).then(res => {
+        if (res.meta.requestStatus === 'fulfilled') {
+          enqueueSnackbar('Đánh giá bộ phim thành công', {
+            variant: 'success',
+          });
+        } else {
+          enqueueSnackbar('Bạn đã đánh giá bộ phim này', {
+            variant: 'warning',
+          });
+        }
+      }),
   });
 
   return (
@@ -264,7 +265,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                             <Comment key={rating.id} rating={rating} />
                           ))}
                         </Box>
-                        {ratingsPagination?.hasNextPage && (
+                        {paginationOptions?.hasNextPage && (
                           <Box display="flex" justifyContent="center">
                             <Button
                               onClick={() => setCurrentPage(currentPage + 1)}

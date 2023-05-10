@@ -1,9 +1,9 @@
-import { onGetRatings } from '@redux/actions/ratings.action';
+import { onCreateRating, onGetRatings } from '@redux/actions/ratings.action';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface RatingsState {
   ratings: RatingEntity[];
-  ratingsPagination: ApiPagination;
+  paginationOptions: ApiPagination;
 }
 
 const initialPagination = {
@@ -18,7 +18,7 @@ const initialPagination = {
 
 const ratingsInitialState: RatingsState = {
   ratings: [],
-  ratingsPagination: initialPagination,
+  paginationOptions: initialPagination,
 };
 
 export const ratingSlice = createSlice({
@@ -27,15 +27,30 @@ export const ratingSlice = createSlice({
   reducers: {
     onClearRatings: state => {
       state.ratings = [];
-      state.ratingsPagination = initialPagination;
+      state.paginationOptions = initialPagination;
     },
   },
   extraReducers(builder) {
     builder.addCase(onGetRatings.fulfilled, (state, action) => {
-      if (action.payload.ratings && typeof action.payload.ratings[Symbol.iterator] === 'function') {
-        state.ratings.push(...action.payload.ratings);
-      }
-      state.ratingsPagination = action.payload.ratingsPagination;
+      // if (action.payload.ratings && typeof action.payload.ratings[Symbol.iterator] === 'function') {
+      //   state.ratings.push(...action.payload.ratings);
+      // }
+      state.ratings = action.payload.ratings;
+      state.paginationOptions = action.payload.paginationOptions;
+    });
+
+    builder.addCase(onCreateRating.fulfilled, (state, action) => {
+      const { newRating } = action.payload;
+      state.ratings = [newRating, ...state.ratings];
+      state.paginationOptions = {
+        totalDocs: state.paginationOptions.totalDocs + 1,
+        offset: 0,
+        limit: state.paginationOptions.limit,
+        page: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        totalPages: Math.ceil(state.paginationOptions.totalDocs / state.paginationOptions.limit),
+        hasPrevPage: state.paginationOptions.page > 1,
+        hasNextPage: state.paginationOptions.page < state.paginationOptions.totalPages,
+      };
     });
   },
 });

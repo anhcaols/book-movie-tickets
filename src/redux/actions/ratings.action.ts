@@ -12,7 +12,7 @@ type GetRatingsPayload = z.infer<typeof getRatingsPayloadSchema>;
 export const onGetRatings = createAsyncThunkWithCustomError<
   {
     ratings: RatingEntity[];
-    ratingsPagination: ApiPagination;
+    paginationOptions: ApiPagination;
   },
   GetRatingsPayload
 >(
@@ -23,10 +23,23 @@ export const onGetRatings = createAsyncThunkWithCustomError<
     const ratings: any = await ratingsService.getRatings(query, movieId);
     return {
       ratings: ratings.ratings,
-      ratingsPagination: ratings.paginationOptions,
+      paginationOptions: ratings.paginationOptions,
     };
   },
   {
     defaultErrorMessage: 'Error while fetching ratings',
+  }
+);
+
+export const onCreateRating = createAsyncThunkWithCustomError(
+  'ratings/add',
+  async (payload: any) => {
+    const response: any = await ratingsService.createRating(payload);
+    return {
+      newRating: response.rating,
+    };
+  },
+  {
+    defaultErrorMessage: 'Error while create ratings',
   }
 );
