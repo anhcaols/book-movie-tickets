@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onSignOut } from '@redux/slices/auth.slice';
 import { deleteCookie } from 'cookies-next';
 import { useSnackbar } from 'notistack';
-import { Avatar, Box, Button } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -83,8 +83,14 @@ function Header() {
                 </Tippy>
               </div>
 
-              <NavbarItem className={cx(pathname === '/event' ? 'text-primary' : '')} title="Sự kiện" href={'/'} />
               <NavbarItem className={cx(pathname === '/help' ? 'text-primary' : '')} title="Hỗ trợ" href={'/'} />
+              {account.role === 'admin' && (
+                <NavbarItem
+                  className={cx(pathname === '/admin' ? 'text-primary' : '')}
+                  title="Quản Lý"
+                  href={'/admin'}
+                />
+              )}
             </Navbar>
           </div>
           {/* Action */}
@@ -120,14 +126,12 @@ function Header() {
                   <Tippy
                     interactive
                     delay={[200, 500]}
-                    trigger="click"
                     render={(attrs: any) => (
                       <PopperWrapper>
                         <div className="" tabIndex="-1" {...attrs}>
                           <Subnav>
-                            <SubnavItem title="View Profile" href={'/'} icon={<UserIcon />} />
-                            <SubnavItem title="Feedback and help" href={'/'} icon={<FeedbackIcon />} />
-                            <SubnavItem onClick={handleLogout} title="Logout" href={'/'} icon={<LogoutIcon />} />
+                            <SubnavItem title="Tài khoản" href={`/profile/${account.id}`} icon={<LogoutIcon />} />
+                            <SubnavItem onClick={handleLogout} title="Đăng xuất" href={'/'} icon={<LogoutIcon />} />
                           </Subnav>
                         </div>
                       </PopperWrapper>
@@ -135,13 +139,18 @@ function Header() {
                     placement="top-end"
                     offset={[18, 19]}
                   >
-                    <div className="ml-[10px] xl:ml-0 w-9 h-9">
-                      <Avatar
-                        className="w-full h-full rounded-full cursor-pointer object-cover"
-                        src={account.avatar || '/assets/images/avatar.jpg'}
-                        alt="img"
-                      />
-                    </div>
+                    <Box className="flex items-end gap-3">
+                      <div className="ml-[10px] xl:ml-0 w-8 h-8 ">
+                        <Avatar
+                          className="w-full h-full rounded-full cursor-pointer object-cover"
+                          src={account.avatar || '/assets/images/avatar.jpg'}
+                          alt="img"
+                        />
+                      </div>
+                      <Box>
+                        <Typography className="!text-sm">{account.fullName}</Typography>
+                      </Box>
+                    </Box>
                   </Tippy>
                 </div>
               </div>

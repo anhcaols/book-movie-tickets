@@ -66,6 +66,8 @@ const BookTicketPage: NextPageWithLayout = () => {
     let spread = genre.name === lastGenre.name ? ' ' : ', ';
     return genre.name + spread;
   });
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const disabledDates = [{ before: new Date() }];
 
   useEffect(() => {
     dispatch(onClearSchedules());
@@ -267,6 +269,9 @@ const BookTicketPage: NextPageWithLayout = () => {
                   control={control}
                   render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
                     <DesktopDatePicker
+                      shouldDisableDate={current => {
+                        return current && current < dayjs().startOf('day');
+                      }}
                       {...field}
                       inputFormat="DD/MM/YYYY"
                       inputRef={ref}

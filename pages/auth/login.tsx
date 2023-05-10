@@ -37,11 +37,7 @@ const LoginPage: NextPageWithLayout = () => {
         const accessToken = (result.payload as any).accessToken;
         setCookie('accessToken', accessToken);
         authService.setToken(accessToken);
-        if (result.payload.account.role === 'admin') {
-          router.push('/admin');
-        } else {
-          router.push('/');
-        }
+        router.push('/');
         enqueueSnackbar('Đăng nhập thành công', {
           variant: 'success',
         });

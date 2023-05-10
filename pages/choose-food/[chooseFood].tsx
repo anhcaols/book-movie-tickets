@@ -171,7 +171,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
     enqueueSnackbar('Đã đặt vé thành công', {
       variant: 'success',
     });
-    router.push(`/`);
+    router.push(`/profile/${invoiceData.user_id}`);
   };
 
   return (
