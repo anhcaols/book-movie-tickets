@@ -24,7 +24,7 @@ const UserList = () => {
   const [isOpenCreateUser, setIsOpenCreateUser] = useState<boolean>(false);
   const [isOpenUpdateUser, setIsOpenUpdateUser] = useState<boolean>(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
-  const [isUserId, setUserId] = useState<number>(0);
+  const [isUserId, setUserId] = useState<string | number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
 
@@ -38,12 +38,12 @@ const UserList = () => {
     return (currentPage - 1) * pageSize + index + 1;
   };
 
-  const handleShowUpdateModal = (id: number) => {
+  const handleShowUpdateModal = (id: number | string) => {
     setIsOpenUpdateUser(true);
     setUserId(id);
   };
 
-  const handleShowDeleteModal = (id: number) => {
+  const handleShowDeleteModal = (id: number | string) => {
     setIsOpenDeleteUser(true);
     setUserId(id);
   };
@@ -85,10 +85,10 @@ const UserList = () => {
                 <TableCell align="left">{account.gender}</TableCell>
                 <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
-                    <BorderColorOutlined
+                    {/* <BorderColorOutlined
                       onClick={() => handleShowUpdateModal(account.id)}
                       className="!text-lg hover:text-primary"
-                    />
+                    /> */}
                     <DeleteOutline
                       onClick={() => handleShowDeleteModal(account.id)}
                       className="!text-xl hover:text-primary"

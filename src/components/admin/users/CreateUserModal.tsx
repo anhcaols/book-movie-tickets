@@ -10,6 +10,8 @@ import {
   Box,
   FormControl,
   FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -23,6 +25,7 @@ import { useSnackbar } from 'notistack';
 import { useAppDispatch } from '@hooks/useRedux';
 import { onCreateUser } from '@redux/actions/accounts.action';
 import { useAsync } from '@hooks/useAsync';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface CreateUserModalOpen {
   open: boolean;
@@ -36,8 +39,18 @@ const registerFormSchema = z
   .object({
     fullName: z.string().min(1, 'Họ tên là bắt buộc.'),
     email: z.string().email('Địa chỉ email không hợp lệ.'),
-    password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
-    confirmPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    password: z
+      .string()
+      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
+      .refine(value => /^[a-zA-Z]*$/.test(value), {
+        message: 'Mật khẩu không được có dấu và không có dấu cách',
+      }),
+    confirmPassword: z
+      .string()
+      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
+      .refine(value => /^[a-zA-Z]*$/.test(value), {
+        message: 'Mật khẩu không được có dấu và không có dấu cách',
+      }),
     phoneNumber: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ.'),
     gender: z.any().refine(value => value !== '', {
       message: 'Giới tính là bắt buộc',
@@ -56,6 +69,20 @@ export const CreateUserModal = ({ open, onClose }: CreateUserModalOpen) => {
   const [gender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setIsShowPassword(show => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowConfirmPassword = () => setIsShowConfirmPassword(show => !show);
+
+  const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
   const {
     register,
     control,
@@ -132,24 +159,65 @@ export const CreateUserModal = ({ open, onClose }: CreateUserModalOpen) => {
               fullWidth
             />
             <Box display="flex" gap={1}>
-              <TextField
-                {...register('password')}
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                type="password"
-                label="Mật khẩu"
-                variant="outlined"
-                fullWidth
-              />
-              <TextField
-                {...register('confirmPassword')}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                type="password"
-                label="Xác nhận mật khẩu"
-                variant="outlined"
-                fullWidth
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="filled-adornment-password">Mật khẩu</InputLabel>
+                <OutlinedInput
+                  {...register('password')}
+                  error={!!errors.password}
+                  fullWidth
+                  id="filled-adornment-password"
+                  type={isShowPassword ? 'text' : 'password'}
+                  label="Mật khẩu"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {isShowPassword ? (
+                          <Visibility className="!text-[16px]" />
+                        ) : (
+                          <VisibilityOff className="!text-[16px]" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <FormHelperText error={!!errors.password}>
+                  {errors.password ? String(errors.password.message) : ''}
+                </FormHelperText>
+              </FormControl>
+
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="filled-adornment-confirm-password">Xác nhận mật khẩu</InputLabel>
+                <OutlinedInput
+                  {...register('confirmPassword')}
+                  error={!!errors.confirmPassword}
+                  fullWidth
+                  id="filled-adornment-confirm-password"
+                  type={isShowConfirmPassword ? 'text' : 'password'}
+                  label="Xác nhận mật khẩu"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle confirm password visibility"
+                        onClick={handleClickShowConfirmPassword}
+                        onMouseDown={handleMouseDownConfirmPassword}
+                      >
+                        {isShowConfirmPassword ? (
+                          <Visibility className="!text-[16px]" />
+                        ) : (
+                          <VisibilityOff className="!text-[16px]" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <FormHelperText error={!!errors.confirmPassword}>
+                  {errors.confirmPassword ? String(errors.confirmPassword.message) : ''}
+                </FormHelperText>
+              </FormControl>
             </Box>
             <Box display="flex" gap={1}>
               <TextField
