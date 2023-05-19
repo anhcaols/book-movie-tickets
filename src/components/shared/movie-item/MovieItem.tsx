@@ -45,7 +45,7 @@ function MovieItem({ movie, state }: MovieItemProps) {
         </div>
       </div>
       <div className="text-[white]">
-        <Link href={`/movies/${state}/slug`}>
+        <Link href={`/movies/${state}/${movie?.slug}`}>
           <h3 className="hover:text-primary text-xl mt-4 mb-1 leading-[30px] overflow-hidden whitespace-nowrap text-ellipsis ">
             {movie?.name}
           </h3>

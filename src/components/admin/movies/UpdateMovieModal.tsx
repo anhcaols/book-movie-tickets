@@ -114,7 +114,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
   }, [slug, id]);
 
   useEffect(() => {
-    dispatch(onGetGenres({ query: { page: 1, limit: Infinity } }));
+    // dispatch(onGetGenres({ query: { page: 1, limit: Infinity } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

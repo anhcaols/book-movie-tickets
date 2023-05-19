@@ -1,5 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Box, Button, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+  TextField,
+} from '@mui/material';
 import Link from 'next/link';
 import AuthenticationLayout from '@layouts/AuthenticationLayout/AuthenticationLayout';
 import { NextPageWithLayout } from '../_app';
@@ -12,6 +23,8 @@ import { onSignIn } from '@redux/actions/auth.action';
 import { useAppDispatch } from '@hooks/useRedux';
 import { setCookie } from 'cookies-next';
 import { authService } from '@services/auth.service';
+import { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const loginFormSchema = z.object({
   email: z.string().email('Địa chỉ email không hợp lệ.'),
@@ -22,6 +35,7 @@ const LoginPage: NextPageWithLayout = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
   const {
     handleSubmit,
@@ -49,6 +63,12 @@ const LoginPage: NextPageWithLayout = () => {
     });
   });
 
+  const handleClickShowPassword = () => setIsShowPassword(show => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <form onSubmit={onSubmit} action="#">
@@ -61,15 +81,36 @@ const LoginPage: NextPageWithLayout = () => {
             variant="outlined"
             fullWidth
           />
-          <TextField
-            {...register('password')}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            type="password"
-            label="Mật khẩu"
-            variant="outlined"
-            fullWidth
-          />
+
+          <FormControl fullWidth variant="outlined">
+            <InputLabel htmlFor="filled-adornment-password">Mật khẩu</InputLabel>
+            <OutlinedInput
+              {...register('password')}
+              error={!!errors.password}
+              fullWidth
+              id="filled-adornment-password"
+              type={isShowPassword ? 'text' : 'password'}
+              label="Mật khẩu"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {isShowPassword ? (
+                      <Visibility className="!text-[16px]" />
+                    ) : (
+                      <VisibilityOff className="!text-[16px]" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            <FormHelperText error={!!errors.password}>
+              {errors.password ? String(errors.password.message) : ''}
+            </FormHelperText>
+          </FormControl>
           <Box>
             <Button type="submit" className="w-full" variant="contained" size="large">
               Đăng nhập

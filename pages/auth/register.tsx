@@ -4,6 +4,8 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -27,6 +29,7 @@ import { authService } from '@services/auth.service';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const phoneRegex =
   /^(086|096|097|098|032|033|034|035|036|037|038|039|089|090|093|070|079|077|076|078|084|091|094|088|083|082|085|081|092|056|058|099|059)\d{7}$/;
@@ -54,6 +57,21 @@ const RegisterPage: NextPageWithLayout = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [gender, setGender] = useState('');
   const router = useRouter();
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setIsShowPassword(show => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowConfirmPassword = () => setIsShowConfirmPassword(show => !show);
+
+  const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   const handleGender = (event: any) => {
     setGender(event.target.value as string);
   };
@@ -126,24 +144,65 @@ const RegisterPage: NextPageWithLayout = () => {
             fullWidth
           />
           <Box display="flex" gap={1}>
-            <TextField
-              {...register('password')}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              type="password"
-              label="Mật khẩu"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              {...register('confirmPassword')}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword?.message}
-              type="password"
-              label="Xác nhận mật khẩu"
-              variant="outlined"
-              fullWidth
-            />
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="filled-adornment-password">Mật khẩu</InputLabel>
+              <OutlinedInput
+                {...register('password')}
+                error={!!errors.password}
+                fullWidth
+                id="filled-adornment-password"
+                type={isShowPassword ? 'text' : 'password'}
+                label="Mật khẩu"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {isShowPassword ? (
+                        <Visibility className="!text-[16px]" />
+                      ) : (
+                        <VisibilityOff className="!text-[16px]" />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <FormHelperText error={!!errors.password}>
+                {errors.password ? String(errors.password.message) : ''}
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="filled-adornment-confirm-password">Xác nhận mật khẩu</InputLabel>
+              <OutlinedInput
+                {...register('confirmPassword')}
+                error={!!errors.confirmPassword}
+                fullWidth
+                id="filled-adornment-confirm-password"
+                type={isShowConfirmPassword ? 'text' : 'password'}
+                label="Xác nhận mật khẩu"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle confirm password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownConfirmPassword}
+                    >
+                      {isShowConfirmPassword ? (
+                        <Visibility className="!text-[16px]" />
+                      ) : (
+                        <VisibilityOff className="!text-[16px]" />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <FormHelperText error={!!errors.confirmPassword}>
+                {errors.confirmPassword ? String(errors.confirmPassword.message) : ''}
+              </FormHelperText>
+            </FormControl>
           </Box>
           <Box display="flex" gap={1}>
             <TextField

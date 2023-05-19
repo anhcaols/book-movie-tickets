@@ -351,7 +351,7 @@ const UserProfilePage: NextPageWithLayout = () => {
                       </Table>
                     </TableContainer>
                   ) : (
-                    <Typography className="text-center text-text !text-sm w-full">
+                    <Typography className="text-center pb-8 italic text-text !text-sm w-full">
                       Bạn chưa đặt một vé phim nào
                     </Typography>
                   )}
