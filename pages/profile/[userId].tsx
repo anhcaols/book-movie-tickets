@@ -3,6 +3,7 @@ import { NextPageWithLayout } from '../_app';
 import {
   Avatar,
   Box,
+  Checkbox,
   FormControl,
   FormHelperText,
   Grid,
@@ -66,7 +67,13 @@ const StyledNav = styled(Box)(() => ({
   },
 }));
 
-const registerFormSchema = z.object({
+const StyledGenre = styled(TextField)(() => ({
+  '.css-11e0ke3-MuiInputBase-input-MuiOutlinedInput-input': {
+    textTransform: 'capitalize',
+  },
+}));
+
+const userInfoSchema = z.object({
   fullName: z.string().min(1, 'Họ tên là bắt buộc.'),
   email: z.string().email('Địa chỉ email không hợp lệ.'),
   phoneNumber: z.string(),
@@ -78,6 +85,32 @@ const registerFormSchema = z.object({
   }),
 });
 
+const changePasswordSchema = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
+      .refine(value => /^[a-zA-Z]*$/.test(value), {
+        message: 'Mật khẩu không được có dấu và không có dấu cách',
+      }),
+    newPassword: z
+      .string()
+      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
+      .refine(value => /^[a-zA-Z]*$/.test(value), {
+        message: 'Mật khẩu không được có dấu và không có dấu cách',
+      }),
+    newConfirmPassword: z
+      .string()
+      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
+      .refine(value => /^[a-zA-Z]*$/.test(value), {
+        message: 'Mật khẩu không được có dấu và không có dấu cách',
+      }),
+  })
+  .refine(data => data.newPassword === data.newConfirmPassword, {
+    message: 'Hai mật khẩu phải trùng nhau',
+    path: ['newConfirmPassword'],
+  });
+
 const UserProfilePage: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,6 +119,7 @@ const UserProfilePage: NextPageWithLayout = () => {
   const id = router.query.userId as string;
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const [isChecked, setIsChecked] = useState(false);
 
   const {
     register,
@@ -93,9 +127,18 @@ const UserProfilePage: NextPageWithLayout = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors },
-  } = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+  } = useForm<z.infer<typeof userInfoSchema>>({
+    resolver: zodResolver(userInfoSchema),
+  });
+
+  const {
+    register: registerChangePassword,
+    handleSubmit: handleSubmitChangePasswordForm,
+    formState: { errors: errorsChangePassword },
+  } = useForm<z.infer<typeof changePasswordSchema>>({
+    resolver: zodResolver(changePasswordSchema),
   });
 
   const { account } = useAppSelector(state => state.auth);
@@ -133,8 +176,7 @@ const UserProfilePage: NextPageWithLayout = () => {
       setValue('email', response.account.email);
       setValue('phoneNumber', response.account.phoneNumber);
       setValue('dateOfBirth', response.account.dateOfBirth);
-      const gender = response.account.gender === 'nam' ? 1 : 0;
-      setValue('gender', gender);
+      setValue('gender', response.account.gender);
     };
     if (id) {
       fetchUser();
@@ -144,7 +186,7 @@ const UserProfilePage: NextPageWithLayout = () => {
 
   const onSubmit = handleSubmit(data => {
     setIsLoading(true);
-    const gender = data.gender === 1 ? 'nam' : 'nữ';
+    const gender = data.gender;
     const dataValues = {
       full_name: data.fullName,
       email: data.email,
@@ -170,6 +212,7 @@ const UserProfilePage: NextPageWithLayout = () => {
       enqueueSnackbar('Cập nhập thành công', {
         variant: 'success',
       });
+      window.location.reload();
     },
     onReject: (error: any) => {
       setIsLoading(false);
@@ -178,6 +221,12 @@ const UserProfilePage: NextPageWithLayout = () => {
       });
     },
   });
+
+  const handleSubmitChangePassword = handleSubmitChangePasswordForm(data => {
+    console.log(data);
+    console.log('a');
+  });
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -234,10 +283,12 @@ const UserProfilePage: NextPageWithLayout = () => {
                             <TextField
                               fullWidth
                               {...register('fullName')}
+                              defaultValue={getValues('fullName') || ''}
                               error={!!errors.fullName}
                               helperText={errors.fullName?.message}
                               label=" Họ tên"
                               variant="outlined"
+                              InputLabelProps={{ shrink: true }}
                             />
                             <TextField
                               disabled
@@ -247,6 +298,7 @@ const UserProfilePage: NextPageWithLayout = () => {
                               helperText={errors.email?.message}
                               label="Email"
                               variant="outlined"
+                              InputLabelProps={{ shrink: true }}
                             />
                           </Box>
                         </Grid>
@@ -262,15 +314,18 @@ const UserProfilePage: NextPageWithLayout = () => {
                               helperText={errors.phoneNumber?.message}
                               label="Số điện thoại"
                               variant="outlined"
+                              InputLabelProps={{ shrink: true }}
                               fullWidth
+                              focused
                             />
 
-                            <TextField
+                            <StyledGenre
                               disabled
                               {...register('gender')}
                               error={!!errors.gender}
                               label="Giới tính"
                               variant="outlined"
+                              InputLabelProps={{ shrink: true }}
                               fullWidth
                             />
 
@@ -310,6 +365,52 @@ const UserProfilePage: NextPageWithLayout = () => {
                   </Box>
                 </form>
                 <Box mt={4}>
+                  <Box className="flex gap-2">
+                    <Checkbox
+                      checked={isChecked}
+                      onChange={event => {
+                        setIsChecked(event.target.checked);
+                      }}
+                    />
+                    <Typography>Đổi mật khẩu</Typography>
+                  </Box>
+                  {isChecked && (
+                    <form action="#" onSubmit={handleSubmitChangePassword}>
+                      <Box mt={3} className="flex flex-col" gap={3}>
+                        <TextField
+                          style={{ width: 560 }}
+                          {...registerChangePassword('oldPassword')}
+                          error={!!errorsChangePassword.oldPassword}
+                          helperText={errorsChangePassword.oldPassword?.message}
+                          label="Nhập mật khẩu cũ"
+                          variant="outlined"
+                        />
+                        <TextField
+                          style={{ width: 560 }}
+                          {...registerChangePassword('newPassword')}
+                          error={!!errorsChangePassword.newPassword}
+                          helperText={errorsChangePassword.newPassword?.message}
+                          label="Nhập mật khẩu mới"
+                          variant="outlined"
+                        />
+                        <TextField
+                          style={{ width: 560 }}
+                          {...registerChangePassword('newPassword')}
+                          error={!!errorsChangePassword.newPassword}
+                          helperText={errorsChangePassword.newPassword?.message}
+                          label="Xác nhận mật khẩu"
+                          variant="outlined"
+                        />
+                      </Box>
+                      <Box pt={3}>
+                        <LoadingButton type="submit" variant="contained" size="large" loading={isLoading}>
+                          Cập nhật
+                        </LoadingButton>
+                      </Box>
+                    </form>
+                  )}
+                </Box>
+                <Box mt={4}>
                   <Typography className="!text-xl !font-medium py-4">Giao dịch của tôi</Typography>
                   {orders.length > 0 ? (
                     <TableContainer component={Paper}>
@@ -324,6 +425,7 @@ const UserProfilePage: NextPageWithLayout = () => {
                             <TableCell align="left">Rạp</TableCell>
                             <TableCell align="left">Suất chiếu</TableCell>
                             <TableCell align="left">Ngày lập</TableCell>
+                            <TableCell align="left">Trạng thái</TableCell>
                             <TableCell align="left">Tổng tiền</TableCell>
                           </TableRow>
                         </TableHead>
@@ -344,7 +446,10 @@ const UserProfilePage: NextPageWithLayout = () => {
                                 {moment(order.schedule?.startTime).format('HH:mm, DD/MM/YYYY ')}
                               </TableCell>
                               <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
-                              <TableCell align="left">{order.totalAmount} đ</TableCell>
+                              <TableCell align="left">
+                                {order.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                              </TableCell>
+                              <TableCell align="left">{order.totalAmount}đ</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

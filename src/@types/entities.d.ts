@@ -122,6 +122,7 @@ interface OrderByUserEntity {
   };
   orderDate: string;
   totalAmount: number;
+  status: number;
 }
 
 interface CinemaEntity {
