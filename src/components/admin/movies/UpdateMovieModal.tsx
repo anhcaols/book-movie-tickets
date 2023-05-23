@@ -180,6 +180,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.name?.message}
                 label=" Tên phim"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <TextField
@@ -188,6 +189,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.duration?.message}
                 label=" Thời lượng (phút)"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
                 type="number"
               />
@@ -222,6 +224,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.actor?.message}
                 label="Diễn viên"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <TextField
@@ -230,6 +233,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.director?.message}
                 label="Đạo diễn"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <TextField
@@ -238,6 +242,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.producer?.message}
                 label="Nhà sản xuất"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
             </Box>
@@ -248,6 +253,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.country?.message}
                 label="Quốc gia"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <TextField
@@ -256,6 +262,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.language?.message}
                 label="Ngôn ngữ"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <TextField
@@ -264,6 +271,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.age?.message}
                 label="Độ tuổi"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
                 type="number"
               />
@@ -276,6 +284,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.status?.message}
                 label="Trạng thái"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               /> */}
 
@@ -309,6 +318,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 helperText={errors.trailer?.message}
                 label="Trailer"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
               <Box>
@@ -360,6 +370,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
               helperText={errors.description?.message}
               label="Tóm tắt"
               variant="outlined"
+              InputLabelProps={{ shrink: true }}
               fullWidth
             />
 

@@ -132,6 +132,7 @@ const InvoiceList = () => {
                 <TableCell align="left">Lịch trình</TableCell>
                 <TableCell align="left">Ghế</TableCell>
                 <TableCell align="left">Ngày lập</TableCell>
+                <TableCell align="left">Trạng thái</TableCell>
                 <TableCell align="left">Tổng tiền</TableCell>
                 <TableCell align="left">Thao tác</TableCell>
               </TableRow>
@@ -153,7 +154,13 @@ const InvoiceList = () => {
                     {order.seats?.map(seat => getSeatName(seat.rowPosition, seat.columnPosition))}
                   </TableCell>
                   <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
-                  <TableCell align="left">{order.totalAmount} đ</TableCell>
+                  <TableCell align="left"> {order.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</TableCell>
+                  <TableCell align="left">
+                    {order.totalAmount.toLocaleString('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND',
+                    })}
+                  </TableCell>
 
                   <TableCell align="left">
                     <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">

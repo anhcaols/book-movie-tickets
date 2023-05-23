@@ -449,7 +449,12 @@ const UserProfilePage: NextPageWithLayout = () => {
                               <TableCell align="left">
                                 {order.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
                               </TableCell>
-                              <TableCell align="left">{order.totalAmount}đ</TableCell>
+                              <TableCell align="left">
+                                {order.totalAmount.toLocaleString('vi-VN', {
+                                  style: 'currency',
+                                  currency: 'VND',
+                                })}
+                              </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

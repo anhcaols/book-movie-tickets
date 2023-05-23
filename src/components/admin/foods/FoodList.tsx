@@ -78,7 +78,12 @@ const FoodList = () => {
                 </TableCell>
                 <TableCell align="left">{food.name}</TableCell>
                 <TableCell align="left">{food.description}</TableCell>
-                <TableCell align="left">{parseFloat(food.price.toString())} đ</TableCell>
+                <TableCell align="left">
+                  {parseFloat(String(food.price)).toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })}
+                </TableCell>
 
                 <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">

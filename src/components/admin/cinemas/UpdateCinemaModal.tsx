@@ -95,6 +95,7 @@ export const UpdateCinemaModal = ({ open, onClose, id }: UpdateCinemaModalOpen) 
               helperText={errors.name?.message}
               label=" Tên rạp"
               variant="outlined"
+              InputLabelProps={{ shrink: true }}
               fullWidth
             />
             <TextField
@@ -103,6 +104,7 @@ export const UpdateCinemaModal = ({ open, onClose, id }: UpdateCinemaModalOpen) 
               helperText={errors.address?.message}
               label="Địa chỉ"
               variant="outlined"
+              InputLabelProps={{ shrink: true }}
               fullWidth
             />
 

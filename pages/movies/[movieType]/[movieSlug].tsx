@@ -162,7 +162,7 @@ const MovieDetailPage: NextPageWithLayout = () => {
                     </Typography>
                     <Star fontSize="small" style={{ color: '#ffc028', marginLeft: 10 }} />
                     <Typography color="#fff" fontSize={18}>
-                      {movie?.scoreRate}
+                      {movie?.scoreRate.toFixed(1)}
                       <span className="text-text mr-2">/10</span>
                     </Typography>
                   </>

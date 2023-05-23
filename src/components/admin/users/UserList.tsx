@@ -38,12 +38,12 @@ const UserList = () => {
     return (currentPage - 1) * pageSize + index + 1;
   };
 
-  const handleShowUpdateModal = (id: number | string) => {
+  const handleShowUpdateModal = (id: number) => {
     setIsOpenUpdateUser(true);
     setUserId(id);
   };
 
-  const handleShowDeleteModal = (id: number | string) => {
+  const handleShowDeleteModal = (id: number) => {
     setIsOpenDeleteUser(true);
     setUserId(id);
   };
@@ -90,7 +90,7 @@ const UserList = () => {
                       className="!text-lg hover:text-primary"
                     /> */}
                     <DeleteOutline
-                      onClick={() => handleShowDeleteModal(account.id)}
+                      onClick={() => handleShowDeleteModal(Number(account.id))}
                       className="!text-xl hover:text-primary"
                     />
                   </Box>

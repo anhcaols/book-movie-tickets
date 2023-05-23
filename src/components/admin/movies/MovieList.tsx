@@ -12,6 +12,11 @@ import {
   Button,
   Pagination,
   Tooltip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -27,14 +32,26 @@ const MovieList = () => {
   const [isOpenDeleteMovie, setIsOpenDeleteMovie] = useState<boolean>(false);
   const [isMovieSlug, setMovieSlug] = useState<string>('');
   const [isMovieId, setMovieId] = useState<number>(0);
-  const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
+  const [status, setStatus] = useState<string>('all');
+
+  const dispatch = useAppDispatch();
 
   const pageSize = 10;
   useEffect(() => {
-    dispatch(onGetMovies({ type: 'all', query: { page: currentPage, limit: pageSize } }));
-  }, [currentPage]);
-  const { movies, paginationOptions } = useAppSelector(state => state.movies.allMovies);
+    dispatch(onGetMovies({ type: status, query: { page: currentPage, limit: pageSize } }));
+  }, [currentPage, status]);
+  const { movies, paginationOptions } = useAppSelector((state: any) => {
+    if (status === 'all') {
+      return state?.movies.allMovies;
+    }
+    if (status === 'nowShowing') {
+      return state?.movies.nowShowing;
+    }
+    if (status === 'comingSoon') {
+      return state?.movies.comingSoon;
+    }
+  });
 
   const calculateRowIndex = (index: number) => {
     return (currentPage - 1) * pageSize + index + 1;
@@ -55,9 +72,29 @@ const MovieList = () => {
     setPage(value);
   };
 
+  const handleChangeStatus = (event: any) => {
+    setStatus(event.target.value as string);
+  };
+
   return (
     <>
-      <Box className="pt-4 pb-6 flex justify-end">
+      <Box className="pt-6 pb-6 flex justify-between">
+        <FormControl size="small" style={{ width: 220 }}>
+          <InputLabel id="demo-simple-select-label">Trạng thái</InputLabel>
+          <Select
+            size="small"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={status}
+            label="Trạng thái"
+            input={<OutlinedInput label="Trạng thái" />}
+            onChange={handleChangeStatus}
+          >
+            <MenuItem value={'all'}>Tất cả</MenuItem>
+            <MenuItem value={'nowShowing'}>Đang chiếu</MenuItem>
+            <MenuItem value={'comingSoon'}>Sắp chiếu</MenuItem>
+          </Select>
+        </FormControl>
         <Button onClick={() => setIsOpenCreateMovie(true)} startIcon={<Add />} size="medium" variant="contained">
           Thêm
         </Button>
@@ -78,7 +115,7 @@ const MovieList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {movies?.map((movie, index) => (
+            {movies?.map((movie: any, index: number) => (
               <TableRow key={movie.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {calculateRowIndex(index)}
@@ -96,7 +133,7 @@ const MovieList = () => {
                   {movie.actor}
                 </TableCell> */}
                 <TableCell component="th" scope="row">
-                  {movie.genres.map(genre => `${genre?.name}, `)}
+                  {movie.genres.map((genre: any) => `${genre?.name}, `)}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {movie.status === 1 ? 'Đang chiếu' : 'Sắp chiếu'}

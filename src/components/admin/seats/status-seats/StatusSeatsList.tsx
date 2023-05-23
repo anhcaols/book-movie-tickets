@@ -134,7 +134,7 @@ const StatusSeatList = () => {
                   {','} {statusSeat.room.name}
                   {','} {moment(statusSeat.schedule.showTime).format('HH:mm')}
                 </TableCell>
-                <TableCell align="left">{statusSeat.status}</TableCell>
+                <TableCell align="left">{statusSeat.status === 'available' ? 'Còn trống' : 'Đã đặt'}</TableCell>
                 {/* <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
                     <BorderColorOutlined

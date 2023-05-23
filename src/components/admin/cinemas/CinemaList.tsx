@@ -66,7 +66,7 @@ const CinemaList = () => {
             <TableRow>
               <TableCell>STT</TableCell>
               <TableCell align="left">Tên rạp</TableCell>
-              <TableCell align="left">Dịa chỉ</TableCell>
+              <TableCell align="left">Địa chỉ</TableCell>
               <TableCell align="left">Thao tác</TableCell>
             </TableRow>
           </TableHead>

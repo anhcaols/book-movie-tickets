@@ -50,7 +50,7 @@ const movieFormSchema = z.object({
   }),
   age: z.string().min(1, 'Độ tuổi là bắt buộc'),
   description: z.string().min(1, 'Tóm tắt là bắt buộc'),
-  trailer: z.string(),
+  trailer: z.string().optional(),
 });
 
 export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
@@ -108,7 +108,9 @@ export const CreateMovieModal = ({ open, onClose }: CreateMovieModalProps) => {
     dataValues.append('language', data.language);
     dataValues.append('age', data.age);
     dataValues.append('status', data.status);
-    dataValues.append('trailer', data.trailer);
+    if (data.trailer) {
+      dataValues.append('trailer', data.trailer);
+    }
     dataValues.append('description', data.description);
     genresId.map(item => {
       dataValues.append('genre_id[]', item as any);
