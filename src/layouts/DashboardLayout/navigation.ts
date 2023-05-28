@@ -12,7 +12,7 @@ import {
 
 export const navigations = [
   {
-    name: 'Trang chủ',
+    name: 'Dashboard',
     path: '/admin',
     icon: Dashboard,
   },

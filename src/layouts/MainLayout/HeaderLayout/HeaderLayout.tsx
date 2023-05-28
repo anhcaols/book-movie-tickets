@@ -88,7 +88,7 @@ function Header() {
                 <NavbarItem
                   className={cx(pathname === '/admin' ? 'text-primary' : '')}
                   title="Quản Lý"
-                  href={'/admin'}
+                  href={'/admin/movies'}
                 />
               )}
             </Navbar>

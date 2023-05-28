@@ -17,6 +17,36 @@ export class OrdersService extends BaseService {
     return data;
   }
 
+  async getReportRevenue(model: string) {
+    const { data } = await this.httpClient.get(
+      `/orders/report-revenue?model=${model}`,
+      accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken} `,
+            },
+          }
+        : { isPrivateAPI: true }
+    );
+
+    return data;
+  }
+
+  async getTicketByMonth(model: string) {
+    const { data } = await this.httpClient.get(
+      `/orders/ticket?model=${model}`,
+      accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken} `,
+            },
+          }
+        : { isPrivateAPI: true }
+    );
+
+    return data;
+  }
+
   async createOrder(payload: {
     user_id: number;
     seats: number[];
