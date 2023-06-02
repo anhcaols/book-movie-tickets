@@ -53,7 +53,7 @@ const movieFormSchema = z.object({
   }),
   age: z.string().min(1, 'Độ tuổi là bắt buộc'),
   description: z.string().min(1, 'Tóm tắt là bắt buộc'),
-  trailer: z.string(),
+  trailer: z.any().optional(),
 });
 
 export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalProps) => {
@@ -61,7 +61,6 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [selectedFile, setSelectedFile] = useState<any>();
-  // const [genresSelected, setGenresSelected] = useState<{ id: number; name: string }[]>([]);
 
   const {
     register,
@@ -113,15 +112,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, id]);
 
-  useEffect(() => {
-    // dispatch(onGetGenres({ query: { page: 1, limit: Infinity } }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const { genres } = useAppSelector(state => state.genres);
-
   const onSubmit = handleSubmit(data => {
-    // const genresId = genresSelected.map(genre => genre.id);
     const dataValues = new FormData();
     dataValues.append('name', data.name);
     dataValues.append('duration', data.duration);
@@ -135,12 +126,8 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
     dataValues.append('status', data.status);
     dataValues.append('trailer', data.trailer);
     dataValues.append('description', data.description);
-    // genresId.map(item => {
-    //   dataValues.append('genre_id[]', item as any);
-    // });
     dataValues.append('image', selectedFile);
 
-    console.log(dataValues);
     if (!!selectedFile) {
       setIsLoading(true);
       executeCreate(dataValues);
@@ -278,16 +265,6 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
             </Box>
 
             <Box display="flex" gap={1}>
-              {/* <TextField
-                {...register('status')}
-                error={!!errors.status}
-                helperText={errors.status?.message}
-                label="Trạng thái"
-                variant="outlined"
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-              /> */}
-
               <FormControl fullWidth>
                 <InputLabel id="select-gender" error={!!errors.status}>
                   Chọn trạng thái
@@ -340,27 +317,6 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
                 )}
               </Box>
             </Box>
-
-            {/* <Box display="flex" gap={1}>
-              <Autocomplete
-                className="flex-1"
-                sx={{ width: 278 }}
-                multiple
-                limitTags={3}
-                id="multiple-limit-tags"
-                onChange={(event, newValue) => {
-                  setGenresSelected([...newValue]);
-                }}
-                options={genres as any}
-                getOptionLabel={option => `${option.name}`}
-                renderTags={(value: any[], getTagProps: (arg0: { index: any }) => JSX.IntrinsicAttributes) =>
-                  value.map((option: any, index: any) => {
-                    return <Chip key={index} variant="outlined" label={option.name} {...getTagProps({ index })} />;
-                  })
-                }
-                renderInput={params => <TextField {...params} label="Chọn thể loại" />}
-              />
-            </Box> */}
 
             <TextField
               rows={4}

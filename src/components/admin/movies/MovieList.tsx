@@ -17,6 +17,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Chip,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -136,10 +137,14 @@ const MovieList = () => {
                   {movie.genres.map((genre: any) => `${genre?.name}, `)}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {movie.status === 1 ? 'Đang chiếu' : 'Sắp chiếu'}
+                  <Chip
+                    label={movie.status === 1 ? 'Đang chiếu' : 'Sắp chiếu'}
+                    color={movie.status === 1 ? 'success' : 'warning'}
+                    variant="filled"
+                  ></Chip>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {movie.scoreRate || 'Chưa có đánh giá'}
+                  {movie?.scoreRate?.toFixed(1) || 'Chưa có đánh giá'}
                 </TableCell>
 
                 <TableCell align="left">
