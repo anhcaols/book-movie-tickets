@@ -114,7 +114,7 @@ export const UpdateFoodModal = ({ open, onClose, id }: UpdateFoodModalOpen) => {
   });
 
   return (
-    <AppDialog title="Cập nhật khách hàng" open={open} onClose={() => onClose(false)}>
+    <AppDialog title="Cập nhật đồ ăn" open={open} onClose={() => onClose(false)}>
       <form onSubmit={onSubmit} action="#">
         <Stack spacing={3}>
           <TextField
@@ -124,6 +124,7 @@ export const UpdateFoodModal = ({ open, onClose, id }: UpdateFoodModalOpen) => {
             label=" Tên"
             variant="outlined"
             fullWidth
+            InputLabelProps={{ shrink: true }}
           />
           <TextField
             {...register('price')}
@@ -132,6 +133,7 @@ export const UpdateFoodModal = ({ open, onClose, id }: UpdateFoodModalOpen) => {
             label="Giá"
             variant="outlined"
             fullWidth
+            InputLabelProps={{ shrink: true }}
             type="number"
           />
           <TextField
@@ -141,6 +143,7 @@ export const UpdateFoodModal = ({ open, onClose, id }: UpdateFoodModalOpen) => {
             label="Mô tả"
             variant="outlined"
             fullWidth
+            InputLabelProps={{ shrink: true }}
           />
           {!selectedFile && (
             <>

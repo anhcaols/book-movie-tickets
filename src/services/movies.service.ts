@@ -12,6 +12,11 @@ export class MoviesService extends BaseService {
     return data;
   }
 
+  async getMovieById(id: number) {
+    const { data } = await this.httpClient.get(`/movies/id/${id}`);
+    return data;
+  }
+
   async getNowShowingMovies(query: { page: number; limit: number }) {
     const { data } = await this.httpClient.get(`/movies/now-showing?page=${query.page}&limit=${query.limit}`);
 

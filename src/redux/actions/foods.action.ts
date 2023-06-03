@@ -33,7 +33,6 @@ export const onGetFoods = createAsyncThunkWithCustomError<
 >(
   'foods',
   async payload => {
-    getFoodsPayloadSchema.parse(payload);
     const { query } = payload;
     const response: any = await foodsService.getFoods(query);
     return {
@@ -67,7 +66,6 @@ export const onUpdateFood = createAsyncThunkWithCustomError<
 >(
   'foods/update',
   async payload => {
-    updateFoodPayloadSchema.parse(payload);
     const { dataValues, foodId } = payload;
 
     const payloadUpdate = new FormData();

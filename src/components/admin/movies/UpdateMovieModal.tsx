@@ -4,10 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import {
-  Autocomplete,
   Box,
   Button,
-  Chip,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -20,14 +18,13 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { useAppDispatch } from '@hooks/useRedux';
 import { useAsync } from '@hooks/useAsync';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { onCreateMovie, onUpdateMovie } from '@redux/actions/movies.action';
+import { onUpdateMovie } from '@redux/actions/movies.action';
 import dayjs from 'dayjs';
 import { DeleteOutline, FileUpload } from '@mui/icons-material';
-import { onGetGenres } from '@redux/actions/genres.action';
 import { moviesService } from '@services/movies.service';
 
 interface UpdateMovieModalProps {
@@ -92,7 +89,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
   // get movie
   useEffect(() => {
     const fetchMovie = async () => {
-      const res: any = await moviesService.getMovie(`${slug}`);
+      const res: any = await moviesService.getMovieById(id);
       setValue('name', res.movie.name);
       setValue('duration', String(res.movie.duration));
       setValue('releaseDate', res.movie.releaseDate);
@@ -106,11 +103,11 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
       setValue('trailer', res.movie.trailer);
       setValue('description', res.movie.description);
     };
-    if (slug) {
+    if (id) {
       fetchMovie();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, id]);
+  }, [id]);
 
   const onSubmit = handleSubmit(data => {
     const dataValues = new FormData();
@@ -292,7 +289,7 @@ export const UpdateMovieModal = ({ open, onClose, slug, id }: UpdateMovieModalPr
               <TextField
                 {...register('trailer')}
                 error={!!errors.trailer}
-                helperText={errors.trailer?.message}
+                // helperText={errors.trailer?.message}
                 label="Trailer"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
