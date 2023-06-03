@@ -67,7 +67,6 @@ export const CreateScheduleModal = ({ open, onClose }: CreateScheduleModalOpen) 
   const [inputRoomValue, setInputRoomValue] = React.useState<string>('');
 
   const {
-    register,
     control,
     handleSubmit,
     reset,

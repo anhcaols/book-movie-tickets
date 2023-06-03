@@ -16,6 +16,14 @@ export class SchedulesService extends BaseService {
     return data;
   }
 
+  async getSchedule(scheduleId: number) {
+    const { data } = await this.httpClient.get(`/schedules/${scheduleId}`, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
+
   async createSchedule(payload: { movie_id: number; room_id: number; start_time: string; end_time: string }) {
     const { data } = await this.httpClient.post(`/schedules`, payload, {
       isPrivateAPI: true,
