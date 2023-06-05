@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchTicketNumber = async () => {
-      const model = today.getFullYear();
+      const model = today.getMonth() + 1;
       const res: any = await ordersService.getTicketByMonth(String(model));
       setTicketNumber(res.data);
     };

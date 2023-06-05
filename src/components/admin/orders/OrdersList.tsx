@@ -15,6 +15,7 @@ import {
   Autocomplete,
   TextField,
   Typography,
+  Chip,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { animateScroll as scroll } from 'react-scroll';
@@ -154,7 +155,14 @@ const InvoiceList = () => {
                     {order.seats?.map(seat => getSeatName(seat.rowPosition, seat.columnPosition))}
                   </TableCell>
                   <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
-                  <TableCell align="left"> {order.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</TableCell>
+                  <TableCell align="left">
+                    <Chip
+                      label={order.status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                      color={order.status === 1 ? 'success' : 'warning'}
+                      variant="filled"
+                    ></Chip>
+                  </TableCell>
+
                   <TableCell align="left">
                     {order.totalAmount.toLocaleString('vi-VN', {
                       style: 'currency',
