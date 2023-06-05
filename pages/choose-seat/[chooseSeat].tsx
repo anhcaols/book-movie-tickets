@@ -312,9 +312,17 @@ const ChooseSeatPage: NextPageWithLayout = () => {
                   {totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                 </span>
               </p>
-              <Button variant="contained" onClick={handleContinue} className="!mt-4 w-full">
-                Tiếp tục
-              </Button>
+
+              <Box className="flex gap-4 justify-between">
+                <Link href={`/book-ticket/${slug}`} className="block w-full">
+                  <Button variant="outlined" className="!mt-4  w-full">
+                    Quay lại
+                  </Button>
+                </Link>
+                <Button variant="contained" onClick={handleContinue} className="!mt-4 w-full">
+                  Tiếp tục
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>

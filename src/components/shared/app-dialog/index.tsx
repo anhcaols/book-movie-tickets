@@ -9,9 +9,7 @@ import { styled } from '@mui/material/styles';
 import { PropsWithChildren } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .css-2o5617-MuiPaper-root-MuiDialog-paper': {
-    background: '#222b36',
-  },
+  '& .css-2o5617-MuiPaper-root-MuiDialog-paper': {},
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -38,6 +36,7 @@ export interface AppDialogProps extends PropsWithChildren {
   onClose: () => void;
   onEnter?: () => void;
   onCancel?: () => void;
+  bgColor?: string;
 }
 
 export const AppDialog = ({
@@ -50,6 +49,7 @@ export const AppDialog = ({
   onClose,
   onEnter,
   onCancel,
+  bgColor,
 }: AppDialogProps) => {
   return (
     <BootstrapDialog
@@ -59,7 +59,7 @@ export const AppDialog = ({
       aria-labelledby="customized-dialog-title"
       open={open}
     >
-      <DialogTitle sx={{ m: 0, p: 2 }}>
+      <DialogTitle style={{ background: `${bgColor}` || '#222b36' }} sx={{ m: 0, p: 2 }}>
         {title}
         {onClose ? (
           <IconButton
@@ -78,6 +78,7 @@ export const AppDialog = ({
       </DialogTitle>
       <DialogContent
         style={{
+          background: `${bgColor}` || '#222b36',
           width: '100%',
           padding: '18px 16px',
         }}

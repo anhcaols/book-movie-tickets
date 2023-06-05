@@ -148,7 +148,9 @@ function Header() {
                         />
                       </div>
                       <Box>
-                        <Typography className="!text-sm">{account.fullName}</Typography>
+                        <Typography sx={{ cursor: 'pointer' }} className="!text-sm">
+                          {account.fullName}
+                        </Typography>
                       </Box>
                     </Box>
                   </Tippy>
