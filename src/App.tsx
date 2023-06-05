@@ -3,6 +3,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { PropsWithChildren } from 'react';
 import components from 'theme/components';
 import { PaletteMode } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 let theme = createTheme({
   breakpoints: {
@@ -26,10 +28,12 @@ theme.components = components(theme);
 
 function MainApp({ children }: PropsWithChildren) {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <main>{children}</main>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <main>{children}</main>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

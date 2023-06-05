@@ -83,31 +83,22 @@ export const CreateScheduleModal = ({ open, onClose }: CreateScheduleModalOpen) 
       end_time: dayjs(data.endTime).format(),
     };
     setIsLoading(true);
-    executeCreate(dataValues);
-  });
-
-  const [executeCreate] = useAsync<{
-    movie_id: number;
-    room_id: number;
-    start_time: string;
-    end_time: string;
-  }>({
-    delay: 500,
-    asyncFunction: async payload => dispatch(onCreateSchedule(payload)),
-    onResolve: () => {
-      setIsLoading(false);
-      reset();
-      onClose(false);
-      enqueueSnackbar('Thêm thành công', {
-        variant: 'success',
-      });
-    },
-    onReject: (error: any) => {
-      setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
-        variant: 'error',
-      });
-    },
+    dispatch(onCreateSchedule(dataValues)).then((res: any) => {
+      if (onCreateSchedule.fulfilled.match(res)) {
+        setIsLoading(false);
+        reset();
+        onClose(false);
+        enqueueSnackbar('Thêm thành công', {
+          variant: 'success',
+        });
+      }
+      if (onCreateSchedule.rejected.match(res)) {
+        setIsLoading(false);
+        enqueueSnackbar('Lịch trình này đã trùng với lịch trình khác', {
+          variant: 'error',
+        });
+      }
+    });
   });
 
   return (

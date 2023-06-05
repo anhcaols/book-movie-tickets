@@ -8,10 +8,20 @@ export class SchedulesService extends BaseService {
     return data;
   }
 
-  async getSchedules(query: { page: number; limit: number }) {
-    const { data } = await this.httpClient.get(`/all-schedules?page=${query.page}&limit=${query.limit}`, {
-      isPrivateAPI: true,
-    });
+  async getSchedules(query: { page: number; limit: number; dateTime?: any }) {
+    function isValidDate(dateString: string) {
+      var date = new Date(dateString);
+      return !isNaN(date.getTime());
+    }
+
+    const { data } = await this.httpClient.get(
+      isValidDate(query.dateTime)
+        ? `/all-schedules?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}`
+        : `/all-schedules?page=${query.page}&limit=${query.limit}`,
+      {
+        isPrivateAPI: true,
+      }
+    );
 
     return data;
   }

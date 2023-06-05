@@ -12,6 +12,7 @@ import {
   Button,
   Pagination,
   Tooltip,
+  TextField,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -19,6 +20,9 @@ import moment from 'moment';
 import { onGetSchedules } from '@redux/actions/schedules.action';
 import { CreateScheduleModal } from './CreateScheduleModal';
 import { UpdateScheduleModal } from './UpdateScheduleModal';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 
 const ScheduleList = () => {
   const [isOpenCreateSchedule, setIsOpenCreateSchedule] = useState<boolean>(false);
@@ -27,11 +31,14 @@ const ScheduleList = () => {
   const [isScheduleId, setScheduleId] = useState<number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
+  const [dateTime, setDateTime] = useState(null);
 
   const pageSize = 10;
   useEffect(() => {
-    dispatch(onGetSchedules({ query: { page: currentPage, limit: pageSize } }));
-  }, [currentPage]);
+    dispatch(
+      onGetSchedules({ query: { page: currentPage, limit: pageSize, dateTime: dayjs(dateTime).format('YYYY-MM-DD') } })
+    );
+  }, [currentPage, dateTime]);
   const { schedules, paginationOptions } = useAppSelector(state => state.schedules);
 
   const calculateRowIndex = (index: number) => {
@@ -54,7 +61,16 @@ const ScheduleList = () => {
 
   return (
     <>
-      <Box className="pt-4 pb-6 flex justify-end">
+      <Box className="pt-4 pb-6 flex justify-between">
+        <DesktopDatePicker
+          inputFormat="DD/MM/YYYY"
+          label="Ngày"
+          renderInput={inputProps => <TextField size="small" value={dateTime} sx={{ width: 250 }} {...inputProps} />}
+          value={dateTime}
+          onChange={(dateTime: any) => {
+            setDateTime(dateTime);
+          }}
+        />
         <Button onClick={() => setIsOpenCreateSchedule(true)} startIcon={<Add />} size="medium" variant="contained">
           Thêm
         </Button>
@@ -91,12 +107,12 @@ const ScheduleList = () => {
                       onClick={() => handleShowUpdateModal(schedule.id)}
                       className="!text-lg hover:text-primary"
                     />
-                    <Tooltip title="Không khả dụng" placement="top">
+                    {/* <Tooltip title="Không khả dụng" placement="top">
                       <DeleteOutline
                         // onClick={() => handleShowDeleteModal(schedule.id)}
                         className="cursor-default opacity-[0.6]"
                       />
-                    </Tooltip>
+                    </Tooltip> */}
                   </Box>
                 </TableCell>
               </TableRow>
