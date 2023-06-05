@@ -38,18 +38,8 @@ const registerFormSchema = z
   .object({
     fullName: z.string().min(1, 'Họ tên là bắt buộc.'),
     email: z.string().email('Địa chỉ email không hợp lệ.'),
-    password: z
-      .string()
-      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
-      .refine(value => /^[a-zA-Z]*$/.test(value), {
-        message: 'Mật khẩu không được có dấu và không có dấu cách',
-      }),
-    confirmPassword: z
-      .string()
-      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
-      .refine(value => /^[a-zA-Z]*$/.test(value), {
-        message: 'Mật khẩu không được có dấu và không có dấu cách',
-      }),
+    password: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    confirmPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
     phoneNumber: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ.'),
     gender: z.any().refine(value => value !== '', {
       message: 'Giới tính là bắt buộc',

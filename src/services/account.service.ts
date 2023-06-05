@@ -50,6 +50,14 @@ export class AccountsService extends BaseService {
 
     return data;
   }
+
+  async changePassword(payload: { old_password: string; confirm_old_password: string; new_password: string }) {
+    const { data } = await this.httpClient.post(`/accounts/change_password`, payload, {
+      isPrivateAPI: true,
+    });
+
+    return data;
+  }
 }
 
 export const accountsService = new AccountsService();

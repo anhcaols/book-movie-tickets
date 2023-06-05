@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Checkbox,
+  Chip,
   FormControl,
   FormHelperText,
   Grid,
@@ -87,28 +88,13 @@ const userInfoSchema = z.object({
 
 const changePasswordSchema = z
   .object({
-    oldPassword: z
-      .string()
-      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
-      .refine(value => /^[a-zA-Z]*$/.test(value), {
-        message: 'Mật khẩu không được có dấu và không có dấu cách',
-      }),
-    newPassword: z
-      .string()
-      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
-      .refine(value => /^[a-zA-Z]*$/.test(value), {
-        message: 'Mật khẩu không được có dấu và không có dấu cách',
-      }),
-    newConfirmPassword: z
-      .string()
-      .min(8, 'Mật khẩu phải có 8 ký tự trở lên.')
-      .refine(value => /^[a-zA-Z]*$/.test(value), {
-        message: 'Mật khẩu không được có dấu và không có dấu cách',
-      }),
+    oldPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    confirmOldPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    newPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
   })
-  .refine(data => data.newPassword === data.newConfirmPassword, {
+  .refine(data => data.oldPassword === data.confirmOldPassword, {
     message: 'Hai mật khẩu phải trùng nhau',
-    path: ['newConfirmPassword'],
+    path: ['confirmOldPassword'],
   });
 
 const UserProfilePage: NextPageWithLayout = () => {
@@ -222,9 +208,22 @@ const UserProfilePage: NextPageWithLayout = () => {
     },
   });
 
-  const handleSubmitChangePassword = handleSubmitChangePasswordForm(data => {
-    console.log(data);
-    console.log('a');
+  const handleSubmitChangePassword = handleSubmitChangePasswordForm(async data => {
+    const payload = {
+      old_password: data.oldPassword,
+      confirm_old_password: data.confirmOldPassword,
+      new_password: data.newPassword,
+    };
+    try {
+      await accountsService.changePassword(payload);
+      enqueueSnackbar('Đổi mật khẩu thành công', {
+        variant: 'success',
+      });
+    } catch (e) {
+      enqueueSnackbar('Mật khẩu cũ không chính xác', {
+        variant: 'error',
+      });
+    }
   });
 
   return (
@@ -387,9 +386,9 @@ const UserProfilePage: NextPageWithLayout = () => {
                         />
                         <TextField
                           style={{ width: 560 }}
-                          {...registerChangePassword('newPassword')}
-                          error={!!errorsChangePassword.newPassword}
-                          helperText={errorsChangePassword.newPassword?.message}
+                          {...registerChangePassword('confirmOldPassword')}
+                          error={!!errorsChangePassword.confirmOldPassword}
+                          helperText={errorsChangePassword.confirmOldPassword?.message}
                           label="Nhập mật khẩu mới"
                           variant="outlined"
                         />
@@ -447,7 +446,11 @@ const UserProfilePage: NextPageWithLayout = () => {
                               </TableCell>
                               <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
                               <TableCell align="left">
-                                {order.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                <Chip
+                                  label={order.status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                                  color={order.status === 1 ? 'success' : 'warning'}
+                                  variant="filled"
+                                ></Chip>
                               </TableCell>
                               <TableCell align="left">
                                 {order.totalAmount.toLocaleString('vi-VN', {
