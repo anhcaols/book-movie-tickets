@@ -198,7 +198,7 @@ const UserProfilePage: NextPageWithLayout = () => {
       enqueueSnackbar('Cập nhập thành công', {
         variant: 'success',
       });
-      window.location.reload();
+      // window.location.reload();
     },
     onReject: (error: any) => {
       setIsLoading(false);

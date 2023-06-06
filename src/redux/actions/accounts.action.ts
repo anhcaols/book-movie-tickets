@@ -86,7 +86,6 @@ export const onUpdateUser = createAsyncThunkWithCustomError<
 >(
   'accounts/update',
   async payload => {
-    updateUserPayloadSchema.parse(payload);
     const { dataValues, userId } = payload;
     const response: any = await accountsService.updateUser(dataValues, userId);
     return {

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { onSignIn } from '@redux/actions/auth.action';
+import { onUpdateUser } from '@redux/actions/accounts.action';
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -38,6 +39,9 @@ export const authSlice = createSlice({
     builder.addCase(onSignIn.fulfilled, (state, action) => {
       const { account } = action.payload;
       (state.isLoggedIn = true), (state.account = account);
+    });
+    builder.addCase(onUpdateUser.fulfilled, (state, action) => {
+      state.account = { ...state.account, ...action.payload.updateValues };
     });
   },
 });
