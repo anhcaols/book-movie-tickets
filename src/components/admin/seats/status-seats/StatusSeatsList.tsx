@@ -14,6 +14,7 @@ import {
   styled,
   Autocomplete,
   TextField,
+  Chip,
 } from '@mui/material';
 // import { BorderColorOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -107,7 +108,7 @@ const StatusSeatList = () => {
           }}
           // defaultValue={newSchedules[0]}
           options={newSchedules}
-          sx={{ width: 250 }}
+          sx={{ width: 300 }}
           renderInput={params => <TextField {...params} label="Lịch trình" />}
         />
       </Box>
@@ -134,7 +135,13 @@ const StatusSeatList = () => {
                   {','} {statusSeat.room.name}
                   {','} {moment(statusSeat.schedule.showTime).format('HH:mm')}
                 </TableCell>
-                <TableCell align="left">{statusSeat.status === 'available' ? 'Còn trống' : 'Đã đặt'}</TableCell>
+                <TableCell align="left">
+                  <Chip
+                    label={statusSeat.status === 'available' ? 'Còn trống' : 'Đã đặt'}
+                    color={statusSeat.status === 'available' ? 'success' : 'warning'}
+                    variant="filled"
+                  />
+                </TableCell>
                 {/* <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
                     <BorderColorOutlined

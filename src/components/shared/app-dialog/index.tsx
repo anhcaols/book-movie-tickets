@@ -59,7 +59,7 @@ export const AppDialog = ({
       aria-labelledby="customized-dialog-title"
       open={open}
     >
-      <DialogTitle style={{ background: `${bgColor}` || '#222b36' }} sx={{ m: 0, p: 2 }}>
+      <DialogTitle style={{ background: bgColor ? `${bgColor}` : '#222b36' }} sx={{ m: 0, p: 2 }}>
         {title}
         {onClose ? (
           <IconButton
@@ -78,7 +78,7 @@ export const AppDialog = ({
       </DialogTitle>
       <DialogContent
         style={{
-          background: `${bgColor}` || '#222b36',
+          background: bgColor ? `${bgColor}` : '#222b36',
           width: '100%',
           padding: '18px 16px',
         }}

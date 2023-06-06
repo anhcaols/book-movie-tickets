@@ -7,7 +7,7 @@ const getSchedulesByMoviePayloadSchema = z.object({
 });
 
 const getSchedulesPayloadSchema = z.object({
-  query: z.object({ page: z.number(), limit: z.number(), dateTime: z.any() }),
+  query: z.object({ page: z.number(), limit: z.number(), dateTime: z.any(), movieId: z.number() }),
 });
 
 const filterSchedulesPayloadSchema = z.object({
@@ -44,7 +44,6 @@ export const onGetSchedules = createAsyncThunkWithCustomError<
 >(
   'schedules',
   async payload => {
-    getSchedulesPayloadSchema.parse(payload);
     const { query } = payload;
     const response: any = await schedulesService.getSchedules(query);
     return {

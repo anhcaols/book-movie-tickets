@@ -13,6 +13,8 @@ import {
   Pagination,
   Tooltip,
   TextField,
+  Autocomplete,
+  styled,
 } from '@mui/material';
 import { Add, BorderColorOutlined, DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -23,6 +25,17 @@ import { UpdateScheduleModal } from './UpdateScheduleModal';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import { onGetMovies } from '@redux/actions/movies.action';
+
+const StyledAutocomplete = styled(Autocomplete)({
+  '& .MuiOutlinedInput-root': { fontSize: 14 },
+  '& .MuiAutocomplete-listbox .MuiAutocomplete-option': {
+    fontSize: 16,
+  },
+  '& .MuiInputLabel-outlined': {
+    fontSize: 16,
+  },
+});
 
 const ScheduleList = () => {
   const [isOpenCreateSchedule, setIsOpenCreateSchedule] = useState<boolean>(false);
@@ -30,15 +43,35 @@ const ScheduleList = () => {
   const [isOpenDeleteSchedule, setIsOpenDeleteSchedule] = useState<boolean>(false);
   const [isScheduleId, setScheduleId] = useState<number>(0);
   const dispatch = useAppDispatch();
-  const [currentPage, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [dateTime, setDateTime] = useState(null);
+
+  useEffect(() => {
+    dispatch(onGetMovies({ type: 'nowShowing', query: { page: 1, limit: Infinity } }));
+  }, []);
+  const { movies } = useAppSelector(state => state?.movies.nowShowing);
+  const newMovies = movies?.map(movie => {
+    return {
+      label: `${movie.name} (${movie.duration} phút)`,
+      id: movie.id,
+    };
+  });
+  const [movie, setMovie] = React.useState<any>();
+  const [inputMovieValue, setInputMovieValue] = React.useState<string>('');
 
   const pageSize = 10;
   useEffect(() => {
     dispatch(
-      onGetSchedules({ query: { page: currentPage, limit: pageSize, dateTime: dayjs(dateTime).format('YYYY-MM-DD') } })
+      onGetSchedules({
+        query: {
+          page: currentPage,
+          limit: pageSize,
+          dateTime: dayjs(dateTime).format('YYYY-MM-DD'),
+          movieId: movie?.id,
+        },
+      })
     );
-  }, [currentPage, dateTime]);
+  }, [currentPage, dateTime, movie]);
   const { schedules, paginationOptions } = useAppSelector(state => state.schedules);
 
   const calculateRowIndex = (index: number) => {
@@ -56,21 +89,42 @@ const ScheduleList = () => {
   };
 
   const handleChange = (event: any, value: number) => {
-    setPage(value);
+    setCurrentPage(value);
   };
 
   return (
     <>
       <Box className="pt-4 pb-6 flex justify-between">
-        <DesktopDatePicker
-          inputFormat="DD/MM/YYYY"
-          label="Ngày"
-          renderInput={inputProps => <TextField size="small" value={dateTime} sx={{ width: 250 }} {...inputProps} />}
-          value={dateTime}
-          onChange={(dateTime: any) => {
-            setDateTime(dateTime);
-          }}
-        />
+        <Box className="flex gap-4">
+          <DesktopDatePicker
+            inputFormat="DD/MM/YYYY"
+            label="Ngày"
+            renderInput={inputProps => <TextField size="small" value={dateTime} sx={{ width: 250 }} {...inputProps} />}
+            value={dateTime}
+            onChange={(dateTime: any) => {
+              setDateTime(dateTime);
+              setCurrentPage(1);
+            }}
+          />
+          <StyledAutocomplete
+            sx={{ width: 250 }}
+            size="small"
+            disablePortal
+            id="combo-box-demo"
+            value={movie}
+            defaultValue={movie}
+            onChange={(event: any, newValue: any) => {
+              setMovie(newValue);
+              setCurrentPage(1);
+            }}
+            inputValue={inputMovieValue}
+            onInputChange={(event, newInputValue) => {
+              setInputMovieValue(newInputValue);
+            }}
+            options={newMovies}
+            renderInput={params => <TextField {...params} label="Phim" />}
+          />
+        </Box>
         <Button onClick={() => setIsOpenCreateSchedule(true)} startIcon={<Add />} size="medium" variant="contained">
           Thêm
         </Button>

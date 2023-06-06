@@ -8,20 +8,27 @@ export class SchedulesService extends BaseService {
     return data;
   }
 
-  async getSchedules(query: { page: number; limit: number; dateTime?: any }) {
+  async getSchedules(query: { page: number; limit: number; dateTime?: any; movieId?: number }) {
     function isValidDate(dateString: string) {
       var date = new Date(dateString);
       return !isNaN(date.getTime());
     }
 
-    const { data } = await this.httpClient.get(
-      isValidDate(query.dateTime)
-        ? `/all-schedules?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}`
-        : `/all-schedules?page=${query.page}&limit=${query.limit}`,
-      {
-        isPrivateAPI: true,
+    let url = '';
+    if (isValidDate(query.dateTime)) {
+      url = `/all-schedules?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}`;
+      if (query.movieId) {
+        url = `/all-schedules?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}&movieId=${query.movieId}`;
+      } else {
+        url = `/all-schedules?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}`;
       }
-    );
+    } else {
+      url = `/all-schedules?page=${query.page}&limit=${query.limit}`;
+    }
+
+    const { data } = await this.httpClient.get(url, {
+      isPrivateAPI: true,
+    });
 
     return data;
   }
