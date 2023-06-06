@@ -4,6 +4,7 @@ import { Pagination } from '@mui/material';
 import { onGetMovies } from '@redux/actions/movies.action';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
 function ComingSoon() {
   const dispatch = useAppDispatch();
@@ -15,9 +16,6 @@ function ComingSoon() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
-    setPage(newPage);
-  };
   return (
     <div className="bg-bgd">
       <div className="container flex flex-row flex-wrap content-center items-center mx-auto py-16">
@@ -38,7 +36,10 @@ function ComingSoon() {
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
             <Pagination
               count={comingSoon.paginationOptions.totalPages}
-              onChange={handleChangePage}
+              onChange={(event: ChangeEvent<unknown>, newPage: number) => {
+                setPage(newPage);
+                scroll.scrollToTop({ duration: 500, delay: 10 });
+              }}
               className="mt-12"
               size="large"
               variant="outlined"

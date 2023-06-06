@@ -4,6 +4,7 @@ import { Pagination } from '@mui/material';
 import { onGetMovies } from '@redux/actions/movies.action';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
 function NowShowing() {
   const dispatch = useAppDispatch();
@@ -14,10 +15,6 @@ function NowShowing() {
     dispatch(onGetMovies({ type: 'nowShowing', query: { page, limit: 8 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
-
-  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
-    setPage(newPage);
-  };
 
   return (
     <div className="bg-bgd">
@@ -39,7 +36,10 @@ function NowShowing() {
           <div className="container flex flex-row flex-wrap content-center justify-center items-center ">
             <Pagination
               count={nowShowing.paginationOptions.totalPages}
-              onChange={handleChangePage}
+              onChange={(event: ChangeEvent<unknown>, newPage: number) => {
+                setPage(newPage);
+                scroll.scrollToTop({ duration: 500, delay: 10 });
+              }}
               className="mt-12"
               size="large"
               variant="outlined"

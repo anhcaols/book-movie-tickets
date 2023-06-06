@@ -23,6 +23,21 @@ export class OrdersService extends BaseService {
     return data;
   }
 
+  async getRevenueByMonth() {
+    const { data } = await this.httpClient.get(
+      `/orders/revenue-month`,
+      accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken} `,
+            },
+          }
+        : { isPrivateAPI: true }
+    );
+
+    return data;
+  }
+
   async getReportRevenue(model: string) {
     const { data } = await this.httpClient.get(
       `/orders/report-revenue?model=${model}`,
