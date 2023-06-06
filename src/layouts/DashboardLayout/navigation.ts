@@ -30,14 +30,14 @@ export const navigations = [
         name: 'Tất cả phim',
         path: '/admin/movies',
       },
-      {
-        name: 'Thể loại phim',
-        path: '/admin/movies/genre',
-      },
-      {
-        name: 'Đánh giá phim',
-        path: '/admin/movies/rating',
-      },
+      // {
+      //   name: 'Thể loại phim',
+      //   path: '/admin/movies/genre',
+      // },
+      // {
+      //   name: 'Đánh giá phim',
+      //   path: '/admin/movies/rating',
+      // },
     ],
   },
 

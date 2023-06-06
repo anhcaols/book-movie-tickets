@@ -17,7 +17,7 @@ const createOrderPayloadSchema = z.object({
 });
 
 const getOrdersPayloadSchema = z.object({
-  query: z.object({ page: z.number(), limit: z.number() }),
+  query: z.object({ page: z.number(), limit: z.number(), dateTime: z.any() }),
   userId: z.union([z.string(), z.number()]),
 });
 

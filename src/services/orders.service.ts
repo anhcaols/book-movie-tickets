@@ -2,9 +2,15 @@ import { getCookie } from 'cookies-next';
 import { BaseService } from './base.service';
 const accessToken = getCookie('accessToken');
 export class OrdersService extends BaseService {
-  async getOrdersByUser(userId: number | string, query: { page: number; limit: number }) {
+  async getOrdersByUser(userId: number | string, query: { page: number; limit: number; dateTime?: any }) {
+    function isValidDate(dateString: string) {
+      var date = new Date(dateString);
+      return !isNaN(date.getTime());
+    }
     const { data } = await this.httpClient.get(
-      `/user-orders/${userId}/?page=${query.page}&limit=${query.limit}`,
+      isValidDate(query.dateTime)
+        ? `/user-orders/${userId}/?page=${query.page}&limit=${query.limit}&dateTime=${query.dateTime}`
+        : `/user-orders/${userId}/?page=${query.page}&limit=${query.limit}`,
       accessToken
         ? {
             headers: {

@@ -7,7 +7,7 @@ const getSchedulesByMoviePayloadSchema = z.object({
 });
 
 const getSchedulesPayloadSchema = z.object({
-  query: z.object({ page: z.number(), limit: z.number(), dateTime: z.any(), movieId: z.number() }),
+  query: z.object({ page: z.number(), limit: z.number(), dateTime: z.any(), movieId: z.number().optional() }),
 });
 
 const filterSchedulesPayloadSchema = z.object({

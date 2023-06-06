@@ -26,17 +26,19 @@ import { onGetUsers } from '@redux/actions/accounts.action';
 import { onGetOrders } from '@redux/actions/orders.action';
 import { DeleteOutlineOutlined, RemoveRedEye } from '@mui/icons-material';
 import { DeleteOrderModal } from './DeleteOrderModal';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 // import { UpdateStatusSeatTypeModal } from './UpdateStatusSeatModal';
 
-const StyledAutocomplete = styled(Autocomplete)({
-  '& .MuiOutlinedInput-root': { fontSize: 14 },
-  '& .MuiAutocomplete-listbox .MuiAutocomplete-option': {
-    fontSize: 14,
-  },
-  '& .MuiInputLabel-outlined': {
-    fontSize: 13,
-  },
-});
+// const StyledAutocomplete = styled(Autocomplete)({
+//   '& .MuiOutlinedInput-root': { fontSize: 14 },
+//   '& .MuiAutocomplete-listbox .MuiAutocomplete-option': {
+//     fontSize: 14,
+//   },
+//   '& .MuiInputLabel-outlined': {
+//     fontSize: 13,
+//   },
+// });
 
 const InvoiceList = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +46,7 @@ const InvoiceList = () => {
   const [isOpenDeleteOrder, setIsOpenDeleteOrder] = useState<boolean>(false);
   const [isOpenUpdateOrder, setIsOpenUpdateOrder] = useState<boolean>(false);
   const [isOrderId, setOrderId] = useState<number>(0);
+  const [dateTime, setDateTime] = useState(null);
 
   const pageSize = 10;
 
@@ -74,10 +77,20 @@ const InvoiceList = () => {
 
   useEffect(() => {
     if (user === undefined || user === null) {
-      dispatch(onGetOrders({ userId: 'all', query: { page: currentPage, limit: pageSize } }));
+      dispatch(
+        onGetOrders({
+          userId: 'all',
+          query: { page: currentPage, limit: pageSize, dateTime: dayjs(dateTime).format('YYYY-MM-DD') },
+        })
+      );
     }
-    dispatch(onGetOrders({ userId: user?.id, query: { page: currentPage, limit: pageSize } }));
-  }, [user, currentPage]);
+    dispatch(
+      onGetOrders({
+        userId: user?.id,
+        query: { page: currentPage, limit: pageSize, dateTime: dayjs(dateTime).format('YYYY-MM-DD') },
+      })
+    );
+  }, [user, currentPage, dateTime]);
 
   const { orders, paginationOptions } = useAppSelector(state => state.orders);
 
@@ -104,7 +117,17 @@ const InvoiceList = () => {
   return (
     <>
       <Box className="py-6 flex items-center justify-between">
-        <StyledAutocomplete
+        <DesktopDatePicker
+          inputFormat="DD/MM/YYYY"
+          label="Ngày"
+          renderInput={inputProps => <TextField size="small" value={dateTime} sx={{ width: 250 }} {...inputProps} />}
+          value={dateTime}
+          onChange={(dateTime: any) => {
+            setDateTime(dateTime);
+            setCurrentPage(1);
+          }}
+        />
+        {/* <StyledAutocomplete
           size="small"
           disablePortal
           id="combo-box-demo"
@@ -121,7 +144,7 @@ const InvoiceList = () => {
           options={users}
           sx={{ width: 250 }}
           renderInput={params => <TextField {...params} label="Khách hàng" />}
-        />
+        /> */}
       </Box>
       {orders.length > 0 ? (
         <TableContainer component={Paper}>
@@ -147,14 +170,14 @@ const InvoiceList = () => {
                   <TableCell align="left">{order.user?.fullName}</TableCell>
                   <TableCell align="left">
                     {order.schedule?.movieName}
-                    {','} {moment(order.schedule?.startTime).format('HH:mm')}
+                    {','} {moment(order.schedule?.startTime).format('HH:mm - DD/MM/YYYY')}
                     {','} {order.schedule?.roomName}
                     {','} {order.schedule?.cinemaName}
                   </TableCell>
                   <TableCell align="left">
                     {order.seats?.map(seat => getSeatName(seat.rowPosition, seat.columnPosition))}
                   </TableCell>
-                  <TableCell align="left">{moment(order.orderDate).format('HH:mm, DD/MM/YYYY')}</TableCell>
+                  <TableCell align="left">{moment(order.orderDate).format('HH:mm - DD/MM/YYYY')}</TableCell>
                   <TableCell align="left">
                     <Chip
                       label={order.status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán'}

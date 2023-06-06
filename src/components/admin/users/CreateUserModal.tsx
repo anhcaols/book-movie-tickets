@@ -107,34 +107,23 @@ export const CreateUserModal = ({ open, onClose }: CreateUserModalOpen) => {
     };
 
     setIsLoading(true);
-    executeCreate(dataValues);
-  });
 
-  const [executeCreate] = useAsync<{
-    full_name: string;
-    email: string;
-    phone_number: string;
-    password: string;
-    confirm_password: string;
-    gender: string;
-    date_of_birth: string;
-  }>({
-    delay: 500,
-    asyncFunction: async payload => dispatch(onCreateUser(payload)),
-    onResolve: () => {
-      setIsLoading(false);
-      reset();
-      onClose(false);
-      enqueueSnackbar('Thêm thành công', {
-        variant: 'success',
-      });
-    },
-    onReject: (error: any) => {
-      setIsLoading(false);
-      enqueueSnackbar('Thêm thất bại', {
-        variant: 'error',
-      });
-    },
+    dispatch(onCreateUser(dataValues)).then((res: any) => {
+      if (onCreateUser.fulfilled.match(res)) {
+        setIsLoading(false);
+        reset();
+        onClose(false);
+        enqueueSnackbar('Thêm thành công', {
+          variant: 'success',
+        });
+      }
+      if (onCreateUser.rejected.match(res)) {
+        setIsLoading(false);
+        enqueueSnackbar('Tài khoản đã tồn tại', {
+          variant: 'error',
+        });
+      }
+    });
   });
 
   return (
