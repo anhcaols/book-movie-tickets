@@ -5,6 +5,7 @@ import SubnavItem from '@components/shared/Navbar/subnav/SubnavItem';
 
 import styles from '@components/home/home.module.scss';
 import classNames from 'classnames/bind';
+import { Typography } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -95,9 +96,9 @@ function Footer() {
           )}
         >
           <h4 className="text-[#ffffff99] text-sm pb-[20px] xl:pb-0">
-            © FlixGo, 2022—2023. Tạo bởi{' '}
-            <Link className="hover:underline" href={'#'}>
-              Cao Anh
+            © ANHLS, 2023. Tạo bởi{' '}
+            <Link className="hover:underline" href={'https://github.com/anhcaols'} target="_blank">
+              <span className="text-primary"> Cao Anh</span>
             </Link>
             .
           </h4>
