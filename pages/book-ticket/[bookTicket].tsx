@@ -269,9 +269,9 @@ const BookTicketPage: NextPageWithLayout = () => {
                   control={control}
                   render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
                     <DesktopDatePicker
-                      // shouldDisableDate={current => {
-                      //   return current && current < dayjs().startOf('day');
-                      // }}
+                      shouldDisableDate={current => {
+                        return current && current < dayjs().startOf('day');
+                      }}
                       {...field}
                       inputFormat="DD/MM/YYYY"
                       inputRef={ref}

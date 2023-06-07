@@ -8,6 +8,8 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -44,6 +46,7 @@ import dayjs from 'dayjs';
 import { useAsync } from '@hooks/useAsync';
 import { onUpdateUser } from '@redux/actions/accounts.action';
 import { useSnackbar } from 'notistack';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const StyledHeader = styled(Box)(() => ({
   background: '50%/cover no-repeat',
@@ -89,10 +92,10 @@ const userInfoSchema = z.object({
 const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
-    confirmOldPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
     newPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
+    confirmNewPassword: z.string().min(8, 'Mật khẩu phải có 8 ký tự trở lên.'),
   })
-  .refine(data => data.oldPassword === data.confirmOldPassword, {
+  .refine(data => data.newPassword === data.confirmNewPassword, {
     message: 'Hai mật khẩu phải trùng nhau',
     path: ['confirmOldPassword'],
   });
@@ -106,6 +109,9 @@ const UserProfilePage: NextPageWithLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [isChecked, setIsChecked] = useState(false);
+  const [isShowOldPassword, setIsShowOldPassword] = useState<boolean>(false);
+  const [isShowNewPassword, setIsShowNewPassword] = useState<boolean>(false);
+  const [isShowConfirmNewPassword, setIsShowConfirmNewPassword] = useState<boolean>(false);
 
   const {
     register,
@@ -123,6 +129,7 @@ const UserProfilePage: NextPageWithLayout = () => {
     register: registerChangePassword,
     handleSubmit: handleSubmitChangePasswordForm,
     formState: { errors: errorsChangePassword },
+    setValue: setValueChangePassword,
   } = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
   });
@@ -211,14 +218,17 @@ const UserProfilePage: NextPageWithLayout = () => {
   const handleSubmitChangePassword = handleSubmitChangePasswordForm(async data => {
     const payload = {
       old_password: data.oldPassword,
-      confirm_old_password: data.confirmOldPassword,
       new_password: data.newPassword,
+      confirm_password: data.confirmNewPassword,
     };
     try {
       await accountsService.changePassword(payload);
       enqueueSnackbar('Đổi mật khẩu thành công', {
         variant: 'success',
       });
+      setValueChangePassword('oldPassword', '');
+      setValueChangePassword('newPassword', '');
+      setValueChangePassword('confirmNewPassword', '');
     } catch (e) {
       enqueueSnackbar('Mật khẩu cũ không chính xác', {
         variant: 'error',
@@ -376,30 +386,94 @@ const UserProfilePage: NextPageWithLayout = () => {
                   {isChecked && (
                     <form action="#" onSubmit={handleSubmitChangePassword}>
                       <Box mt={3} className="flex flex-col" gap={3}>
-                        <TextField
-                          style={{ width: 560 }}
-                          {...registerChangePassword('oldPassword')}
-                          error={!!errorsChangePassword.oldPassword}
-                          helperText={errorsChangePassword.oldPassword?.message}
-                          label="Nhập mật khẩu cũ"
-                          variant="outlined"
-                        />
-                        <TextField
-                          style={{ width: 560 }}
-                          {...registerChangePassword('confirmOldPassword')}
-                          error={!!errorsChangePassword.confirmOldPassword}
-                          helperText={errorsChangePassword.confirmOldPassword?.message}
-                          label="Nhập mật khẩu mới"
-                          variant="outlined"
-                        />
-                        <TextField
-                          style={{ width: 560 }}
-                          {...registerChangePassword('newPassword')}
-                          error={!!errorsChangePassword.newPassword}
-                          helperText={errorsChangePassword.newPassword?.message}
-                          label="Xác nhận mật khẩu"
-                          variant="outlined"
-                        />
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel htmlFor="filled-adornment-password">Nhập mật khẩu cũ</InputLabel>
+                          <OutlinedInput
+                            {...registerChangePassword('oldPassword')}
+                            error={!!errorsChangePassword.oldPassword}
+                            style={{ width: 560 }}
+                            type={isShowOldPassword ? 'text' : 'password'}
+                            label="Nhập mật khẩu cũ"
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={() => setIsShowOldPassword(show => !show)}
+                                  onMouseDown={(e: any) => e.preventDefault()}
+                                >
+                                  {isShowOldPassword ? (
+                                    <Visibility className="!text-[16px]" />
+                                  ) : (
+                                    <VisibilityOff className="!text-[16px]" />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          <FormHelperText error={!!errorsChangePassword.oldPassword}>
+                            {errorsChangePassword.oldPassword ? String(errorsChangePassword.oldPassword.message) : ''}
+                          </FormHelperText>
+                        </FormControl>
+
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel htmlFor="filled-adornment-password">Nhập mật khẩu mới</InputLabel>
+                          <OutlinedInput
+                            {...registerChangePassword('newPassword')}
+                            error={!!errorsChangePassword.newPassword}
+                            style={{ width: 560 }}
+                            type={isShowNewPassword ? 'text' : 'password'}
+                            label="Nhập mật khẩu mới"
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={() => setIsShowNewPassword(show => !show)}
+                                  onMouseDown={(e: any) => e.preventDefault()}
+                                >
+                                  {isShowNewPassword ? (
+                                    <Visibility className="!text-[16px]" />
+                                  ) : (
+                                    <VisibilityOff className="!text-[16px]" />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          <FormHelperText error={!!errorsChangePassword.newPassword}>
+                            {errorsChangePassword.newPassword ? String(errorsChangePassword.newPassword.message) : ''}
+                          </FormHelperText>
+                        </FormControl>
+
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel htmlFor="filled-adornment-password">Xác nhận mật khẩu mới</InputLabel>
+                          <OutlinedInput
+                            {...registerChangePassword('confirmNewPassword')}
+                            error={!!errorsChangePassword.confirmNewPassword}
+                            style={{ width: 560 }}
+                            type={isShowConfirmNewPassword ? 'text' : 'password'}
+                            label="Xác nhận mật khẩu mới"
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={() => setIsShowConfirmNewPassword(show => !show)}
+                                  onMouseDown={(e: any) => e.preventDefault()}
+                                >
+                                  {isShowConfirmNewPassword ? (
+                                    <Visibility className="!text-[16px]" />
+                                  ) : (
+                                    <VisibilityOff className="!text-[16px]" />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          <FormHelperText error={!!errorsChangePassword.confirmNewPassword}>
+                            {errorsChangePassword.confirmNewPassword
+                              ? String(errorsChangePassword.confirmNewPassword.message)
+                              : ''}
+                          </FormHelperText>
+                        </FormControl>
                       </Box>
                       <Box pt={3}>
                         <LoadingButton type="submit" variant="contained" size="large" loading={isLoading}>
