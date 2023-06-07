@@ -97,7 +97,7 @@ const changePasswordSchema = z
   })
   .refine(data => data.newPassword === data.confirmNewPassword, {
     message: 'Hai mật khẩu phải trùng nhau',
-    path: ['confirmOldPassword'],
+    path: ['confirmNewPassword'],
   });
 
 const UserProfilePage: NextPageWithLayout = () => {

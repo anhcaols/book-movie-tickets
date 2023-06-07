@@ -16,9 +16,9 @@ function SimpleSlider() {
   return (
     <div className="w-full block">
       <Slider {...settings}>
-        <img alt="img" src="/assets/images/banner1.jpg" />
-        <img alt="img" src="/assets/images/banner2.jpg" />
-        <img alt="img" src="/assets/images/banner3.jpg" />
+        <img alt="img" src="/assets/images/banner-5.jpg" />
+        <img alt="img" src="/assets/images/banner-4.jpg" />
+        <img alt="img" src="/assets/images/banner-1.jpg" />
       </Slider>
     </div>
   );

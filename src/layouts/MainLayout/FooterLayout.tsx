@@ -71,12 +71,12 @@ function Footer() {
               <div className={cx('social-media flex items-center h-[40px]')}>
                 <SubnavItem
                   icon={<FacebookIcon className="fill-[#3b5999] w-[22px] h-[22px] mr-[12px]" />}
-                  href={'https://www.facebook.com/anhcao.201'}
+                  href={'https://www.facebook.com/anhcaols10'}
                   target="_blank"
                 />
                 <SubnavItem
                   icon={<InstagramIcon className="fill-[#ff55a5] w-[22px] h-[22px] mr-[12px]" />}
-                  href={'https://www.instagram.com/__anhcao.201/'}
+                  href={'https://www.instagram.com/_anhcaols'}
                   target="_blank"
                 />
                 <SubnavItem
