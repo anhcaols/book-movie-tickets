@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Box, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ChartReport } from './chart-report';
 import { ordersService } from '@services/orders.service';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 const StyledCard = styled(Card)(() => ({
   background: '#222b36',
@@ -44,6 +46,9 @@ const Dashboard = () => {
     fetchTicketNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [year, setYear] = useState<any>(dayjs().format('YYYY'));
+  console.log(dayjs(year).format('YYYY'));
 
   return (
     <>
@@ -91,7 +96,25 @@ const Dashboard = () => {
           <Grid item xs={12} lg={8}>
             <StyledCard>
               <CardContent>
-                <ChartReport />
+                <Box className="float-right mb-2">
+                  <DatePicker
+                    views={['year']}
+                    disableFuture={true}
+                    value={year}
+                    onChange={(date: any) => setYear(date)}
+                    renderInput={(inputProps: any) => (
+                      <TextField
+                        sx={{ width: 120 }}
+                        size="small"
+                        views={['year']}
+                        {...inputProps}
+                        label="Năm"
+                        fullWidth
+                      />
+                    )}
+                  />
+                </Box>
+                <ChartReport year={dayjs(year).format('YYYY')} />
               </CardContent>
             </StyledCard>
           </Grid>

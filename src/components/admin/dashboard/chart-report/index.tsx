@@ -29,22 +29,22 @@ const labels = [
   'Tháng 12',
 ];
 
-export const ChartReport = () => {
+export const ChartReport = ({ year }: { year: any }) => {
   const [monthlyRevenue, setMonthlyRevenue] = useState<number[]>([]);
   useEffect(() => {
     const fetchRevenueByMonth = async () => {
-      const res: any = await ordersService.getRevenueByMonth();
+      const res: any = await ordersService.getRevenueByMonth(year);
       const data = res.data.map((item: { month: number; total: number }) => item.total);
       setMonthlyRevenue(data);
     };
     fetchRevenueByMonth();
-  }, []);
+  }, [year]);
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'Doanh thu của năm',
+        label: 'Doanh thu theo năm',
         data: monthlyRevenue,
         backgroundColor: 'rgba(255, 85, 165, 0.5)',
       },

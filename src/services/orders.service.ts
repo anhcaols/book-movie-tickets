@@ -23,9 +23,9 @@ export class OrdersService extends BaseService {
     return data;
   }
 
-  async getRevenueByMonth() {
+  async getRevenueByMonth(year: any) {
     const { data } = await this.httpClient.get(
-      `/orders/revenue-month`,
+      `/orders/revenue-month/${year}`,
       accessToken
         ? {
             headers: {

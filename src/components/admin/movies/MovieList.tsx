@@ -153,11 +153,11 @@ const MovieList = () => {
                       onClick={() => handleShowUpdateModal(movie.slug, movie.id)}
                       className="!text-lg hover:text-primary"
                     />
-                    <DeleteOutline
+                    {/* <DeleteOutline
                       onClick={() => handleShowDeleteModal(movie.id)}
                       // className="cursor-default opacity-[0.6]"
                       className="!text-xl hover:text-primary"
-                    />
+                    /> */}
                     {/* <Tooltip title="Không khả dụng" placement="top">
                     </Tooltip> */}
                   </Box>
