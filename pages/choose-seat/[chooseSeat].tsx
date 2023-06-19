@@ -12,7 +12,7 @@ import styles from './ChooseSeat.module.scss';
 import moment from 'moment';
 import { onSetInvoiceData } from '@redux/slices/invoiceData.slice';
 import { useSnackbar } from 'notistack';
-import getVietnameseDayOfWeek from '@utils/index';
+import getVietnameseDayOfWeek, { isWeekend } from '@utils/index';
 
 const Seat = styled(Box)(() => ({
   cursor: 'default',
@@ -54,10 +54,19 @@ const ChooseSeatPage: NextPageWithLayout = () => {
       price: number;
     }[]
   >([]);
+  const [isCheckWeekend, setIsCheckWeekend] = useState<boolean>(false);
 
   const slug = router.query.chooseSeat;
 
   const { invoiceData } = useAppSelector(state => state.invoiceData);
+
+  useEffect(() => {
+    if (invoiceData) {
+      const isCheckWeekend = isWeekend(`${invoiceData.showTime}`);
+      setIsCheckWeekend(isCheckWeekend);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, invoiceData]);
 
   useEffect(() => {
     dispatch(onGetStatusSeats({ query: { page: 1, limit: 200 }, payload: { schedule_id: invoiceData.schedule_id } }));
@@ -104,7 +113,6 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   const totalAlphabetOfColumns = alphabets.slice(0, totalRows);
   let totalSeats = [];
   for (const seat of statusSeats) {
-    console.log(seat);
     totalSeats.push({
       id: seat.id,
       seatId: seat.seatId,
@@ -163,7 +171,12 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   // calc total amount
   let totalAmount = 0;
   displaySeats?.map(seat => {
-    return (totalAmount += parseFloat(seat.price.toString()));
+    if (isCheckWeekend) {
+      return (totalAmount += parseFloat(seat.price.toString()));
+    } else {
+      const price = parseFloat(seat.price.toString()) - (10 / 100) * parseFloat(seat.price.toString());
+      return (totalAmount += price);
+    }
   });
 
   const handleContinue = () => {
@@ -178,7 +191,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
         variant: 'warning',
       });
     } else {
-      const data = { ...invoiceData, seats, totalAmount };
+      const data = { ...invoiceData, seats, totalAmount, isCheckWeekend };
       dispatch(onSetInvoiceData(data));
       router.push(`/choose-food/${slug}`);
     }
@@ -303,6 +316,9 @@ const ChooseSeatPage: NextPageWithLayout = () => {
                   {vietnameseDayOfWeek}, {moment(invoiceData?.startTime).format('DD/MM/YYYY')}
                 </span>
               </p>
+              {!isCheckWeekend && (
+                <p className="text-xs mt-2  text-primary opacity-[0.8] italic">* Giảm giá 10% từ thứ 2 đến thứ 6</p>
+              )}
               <p className=" text-[15px] text-text ">
                 Phòng chiếu: <span className="font-semibold text-white">{invoiceData?.room}</span> - Ghế:{' '}
                 <span className="font-semibold text-white">{customDisplaySeats.map(seat => seat)}</span>

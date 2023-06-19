@@ -18,3 +18,9 @@ export default function getVietnameseDayOfWeek(dayOfWeek: string) {
       return '';
   }
 }
+
+export const isWeekend = (dateString: any) => {
+  const date = new Date(dateString);
+  const day = date.getDay();
+  return day === 6 || day === 0;
+};

@@ -160,6 +160,8 @@ const ChooseFoodPage: NextPageWithLayout = () => {
     }
   };
 
+  console.log(invoiceData.isCheckWeekend);
+
   const handleBookTicket = () => {
     const foods = displayFoods?.map(food => {
       return {
@@ -167,12 +169,24 @@ const ChooseFoodPage: NextPageWithLayout = () => {
         quantity: food.quantity,
       };
     });
-    const data = {
-      user_id: invoiceData.user_id,
-      schedule_id: invoiceData.schedule_id,
-      seats: invoiceData.seats.map((seat: any) => seat.id),
-      foods,
-    };
+
+    let data: any;
+    if (!invoiceData.isCheckWeekend) {
+      data = {
+        user_id: invoiceData.user_id,
+        schedule_id: invoiceData.schedule_id,
+        seats: invoiceData.seats.map((seat: any) => seat.id),
+        foods,
+        discount: 10,
+      };
+    } else {
+      data = {
+        user_id: invoiceData.user_id,
+        schedule_id: invoiceData.schedule_id,
+        seats: invoiceData.seats.map((seat: any) => seat.id),
+        foods,
+      };
+    }
     dispatch(onCreateOrder(data));
     setOpenPayment(false);
     enqueueSnackbar('Đã đặt vé thành công.', {

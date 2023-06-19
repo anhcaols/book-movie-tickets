@@ -14,6 +14,7 @@ const createOrderPayloadSchema = z.object({
       })
     )
     .optional(),
+  discount: z.number().optional(),
 });
 
 const getOrdersPayloadSchema = z.object({

@@ -73,6 +73,7 @@ export class OrdersService extends BaseService {
     seats: number[];
     schedule_id: number;
     foods?: { id: number; quantity: number }[];
+    discount?: number;
   }) {
     const { data } = await this.httpClient.post('/orders', payload, {
       isPrivateAPI: true,

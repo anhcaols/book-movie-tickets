@@ -95,7 +95,7 @@ const ScheduleList = () => {
   return (
     <>
       <Box className="pt-4 pb-6 flex justify-between">
-        <Box className="flex gap-4">
+        <Box className="flex gap-4 flex-wrap">
           <DesktopDatePicker
             inputFormat="DD/MM/YYYY"
             label="Ngày"
