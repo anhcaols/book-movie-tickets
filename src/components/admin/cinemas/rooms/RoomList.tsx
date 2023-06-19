@@ -65,7 +65,7 @@ const RoomList = () => {
               <TableCell align="left">TênRạp</TableCell>
               <TableCell align="left">Số hàng</TableCell>
               <TableCell align="left">Số cột</TableCell>
-              <TableCell align="left">Thao tác</TableCell>
+              {/* <TableCell align="left">Thao tác</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,20 +78,20 @@ const RoomList = () => {
                 <TableCell align="left">{room.cinema.name}</TableCell>
                 <TableCell align="left">{room.rowNumber}</TableCell>
                 <TableCell align="left">{room.columnNumber}</TableCell>
-                <TableCell align="left">
+                {/* <TableCell align="left">
                   <Box className="flex gap-3 w-full justify-start items-center cursor-pointer">
-                    {/* <BorderColorOutlined
+                    <BorderColorOutlined
                       onClick={() => handleShowUpdateModal(room.id)}
                       className="!text-lg hover:text-primary"
-                    /> */}
+                    />
                     <Tooltip title="Không khả dụng" placement="top">
                       <DeleteOutline
-                        // onClick={() => handleShowDeleteModal(room.id)}
+                        onClick={() => handleShowDeleteModal(room.id)}
                         className="!text-xl text-[#888] cursor-default"
                       />
                     </Tooltip>
                   </Box>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

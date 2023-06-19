@@ -104,6 +104,7 @@ const ChooseSeatPage: NextPageWithLayout = () => {
   const totalAlphabetOfColumns = alphabets.slice(0, totalRows);
   let totalSeats = [];
   for (const seat of statusSeats) {
+    console.log(seat);
     totalSeats.push({
       id: seat.id,
       seatId: seat.seatId,
