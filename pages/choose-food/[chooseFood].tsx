@@ -288,7 +288,7 @@ const ChooseFoodPage: NextPageWithLayout = () => {
                   Suất:{' '}
                   <span className="font-semibold text-white">{moment(invoiceData?.showTime).format('HH:mm')}</span> -{' '}
                   <span className="font-semibold text-white">
-                    {vietnameseDayOfWeek}, {moment(invoiceData?.startTime).format('DD/MM/YYYY')}
+                    {vietnameseDayOfWeek}, {moment(invoiceData?.showTime).format('DD/MM/YYYY')}
                   </span>
                 </p>
                 <p className=" text-[15px] text-text ">
