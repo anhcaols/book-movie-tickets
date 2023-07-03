@@ -1,19 +1,22 @@
 import MainLayout from '@layouts/MainLayout/MainLayout';
 import { NextPageWithLayout } from '../_app';
-import { Box, Button, InputAdornment, InputBase, Pagination, Typography } from '@mui/material';
+import { Box, InputAdornment, InputBase, Pagination, Typography } from '@mui/material';
 import { SearchOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
 import { onSearchMovie } from '@redux/actions/movies.action';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAsync } from '@hooks/useAsync';
 import { LoadingButton } from '@mui/lab';
 import MovieItem from '@components/shared/movie-item/MovieItem';
+import useDebounce from '@hooks/useDebounced';
 
 const SearchPage: NextPageWithLayout = () => {
   const [value, setValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
+
+  const debouncedInputValue = useDebounce(value, 500);
 
   const { allMovies } = useAppSelector(state => state.movies);
 
@@ -28,6 +31,17 @@ const SearchPage: NextPageWithLayout = () => {
     };
     executeSearch(payload);
   };
+
+  useEffect(() => {
+    const payload = {
+      keyword: debouncedInputValue,
+    };
+    if (debouncedInputValue !== '') {
+      setIsLoading(true);
+      executeSearch(payload);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInputValue]);
 
   const [executeSearch] = useAsync<{
     keyword: string;
@@ -104,7 +118,10 @@ const SearchPage: NextPageWithLayout = () => {
               )}
             </Box>
           ) : (
-            <Typography className="text-text pt-9 text-center italic font-medium"> </Typography>
+            <Typography className="text-text pt-9 text-center italic font-medium">
+              {' '}
+              Không có phim với từ khóa <b className="text-primary">{value}</b>
+            </Typography>
           )}
         </Box>
       </Box>

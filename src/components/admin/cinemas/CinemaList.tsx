@@ -84,10 +84,10 @@ const CinemaList = () => {
                       onClick={() => handleShowUpdateModal(cinema.id)}
                       className="!text-lg hover:text-primary"
                     />
-                    <DeleteOutline
+                    {/* <DeleteOutline
                       onClick={() => handleShowDeleteModal(cinema.id)}
                       className="!text-xl hover:text-primary"
-                    />
+                    /> */}
                   </Box>
                 </TableCell>
               </TableRow>
