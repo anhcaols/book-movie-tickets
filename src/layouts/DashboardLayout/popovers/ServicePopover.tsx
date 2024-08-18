@@ -7,10 +7,10 @@ import {
   styled,
   IconButton,
 } from "@mui/material";
-import FlexBox from "components/flexbox/FlexBox";
-import { H6, Tiny } from "components/Typography";
 import { FC, Fragment, useRef, useState } from "react";
 import PopoverLayout from "./PopoverLayout";
+import FlexBox from '@components/shared/flexbox/FlexBox';
+import { H6, Tiny } from '@components/shared/typography';
 
 // dummy  data
 const services = [

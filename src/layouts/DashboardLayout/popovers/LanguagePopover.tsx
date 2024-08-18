@@ -1,7 +1,8 @@
 import { Box, IconButton, MenuItem, Popover, styled } from "@mui/material";
-import { H6 } from "components/Typography";
 import { FC, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+// @ts-ignore
+import { useTranslation } from 'react-i18next';
+import { H6 } from '@components/shared/typography';
 
 // dummy language options
 const languageOptions: {

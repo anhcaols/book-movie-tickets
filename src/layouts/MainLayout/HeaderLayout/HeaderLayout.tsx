@@ -4,9 +4,6 @@ import Link from 'next/link';
 import Tippy from '@tippyjs/react/headless';
 import { FeedbackIcon, LogoutIcon, SearchIcon, UserIcon } from '@components/shared/icons';
 import Navbar, { NavbarItem } from '@components/shared/Navbar';
-import PopperWrapper from '@components/shared/popper';
-import Subnav from '@components/shared/Navbar/subnav/Subnav';
-import SubnavItem from '@components/shared/Navbar/subnav/SubnavItem';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import styles from './header-layout.module.scss';
@@ -15,6 +12,9 @@ import { onSignOut } from '@redux/slices/auth.slice';
 import { deleteCookie } from 'cookies-next';
 import { useSnackbar } from 'notistack';
 import { Avatar, Box, Button, Typography } from '@mui/material';
+import  PopperWrapper from '@components/shared/Popper';
+import Subnav from '@components/shared/Navbar/Subnav/Subnav';
+import SubnavItem from '@components/shared/Navbar/Subnav/SubnavItem';
 
 const cx = classNames.bind(styles);
 
@@ -98,7 +98,7 @@ function Header() {
             <Link href={'/search'}>
               <SearchIcon className={` w-[22px] h- fill-text hover:fill-[#ff55a5] mr-8 block`} />
             </Link>
-            {/* <div>
+            <div>
               <Tippy
                 interactive
                 delay={[200, 500]}
@@ -119,7 +119,7 @@ function Header() {
                   VN
                 </button>
               </Tippy>
-            </div> */}
+            </div>
             {isLoggedIn ? (
               <div className="avatar">
                 <div>

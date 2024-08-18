@@ -1,11 +1,9 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Badge, Box, IconButton, styled, Tab, useTheme } from "@mui/material";
-import AppAvatar from "components/avatars/AppAvatar";
-import FlexBox from "components/flexbox/FlexBox";
-import { H6, Paragraph, Tiny } from "components/Typography";
-import NotificationsIcon from "icons/NotificationsIcon";
 import { FC, Fragment, SyntheticEvent, useRef, useState } from "react";
 import PopoverLayout from "./PopoverLayout";
+import { H6, Paragraph, Tiny } from '@components/shared/typography';
+import FlexBox from '@components/shared/flexbox/FlexBox';
 
 // dummy  data
 const messages = [
@@ -99,7 +97,7 @@ const NotificationsPopover: FC = () => {
     <Fragment>
       <StyledIconButton ref={anchorRef} onClick={() => setOpen(true)}>
         <Badge color="error" badgeContent={0}>
-          <NotificationsIcon sx={{ color: "text.disabled" }} />
+          {/*<NotificationsIcon sx={{ color: "text.disabled" }} />*/}
         </Badge>
       </StyledIconButton>
 
@@ -181,7 +179,7 @@ function ListItem({ msg }: ListItemProps) {
               msg.type === "new_message" ? "primary.main" : "text.disabled",
           }}
         />
-        <AppAvatar src={msg.image} sx={{ width: 35, height: 35 }} />
+        {/*<AppAvatar src={msg.image} sx={{ width: 35, height: 35 }} />*/}
       </FlexBox>
 
       <Box ml={2}>

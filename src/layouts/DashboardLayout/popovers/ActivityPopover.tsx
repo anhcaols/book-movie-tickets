@@ -13,12 +13,10 @@ import {
   IconButton,
   styled,
 } from "@mui/material";
-import AppAvatar from "components/avatars/AppAvatar";
-import FlexBox from "components/flexbox/FlexBox";
-import { H5, H6, Small, Tiny } from "components/Typography";
-import ActivityIcon from "icons/ActivityIcon";
 import { FC, Fragment, useState } from "react";
 import ScrollBar from "simplebar-react";
+import FlexBox from '@components/shared/flexbox/FlexBox';
+import { H5, H6, Small, Tiny } from '@components/shared/typography';
 
 // styled component
 const StyledTimelineItem = styled(TimelineItem)(() => ({
@@ -44,7 +42,7 @@ const ActivityPopover: FC = () => {
     <Fragment>
       <IconButton onClick={() => setOpen(true)}>
         <Badge color="error" badgeContent={0}>
-          <ActivityIcon fontSize="small" sx={{ color: "text.disabled" }} />
+          {/*<ActivityIcon fontSize="small" sx={{ color: "text.disabled" }} />*/}
         </Badge>
       </IconButton>
 
@@ -190,7 +188,7 @@ function SingleTimelineItem(props: SingleTimelineItemProps) {
     <StyledTimelineItem>
       <TimelineSeparator>
         <StyledTimelineDot>
-          <AppAvatar src={user.avatar} sx={{ width: 30, height: 30 }} />
+          {/*<AppAvatar src={user.avatar} sx={{ width: 30, height: 30 }} />*/}
         </StyledTimelineDot>
         <StyledTimelineConnector />
       </TimelineSeparator>

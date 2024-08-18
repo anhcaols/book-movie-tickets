@@ -52,8 +52,9 @@ const StyledHeader = styled(Box)(() => ({
   background: '50%/cover no-repeat',
 }));
 
+// @ts-ignore
 const StyledNav = styled(Box)(() => ({
-  backgroundColor: ' #28282d',
+  backgroundColor: '#28282d',
   boxShadow: '0 5px 25px 0 rgb(0 0 0 / 30%)',
   height: 82,
   display: 'flex',
@@ -68,12 +69,13 @@ const StyledNav = styled(Box)(() => ({
     position: 'absolute',
     right: 0,
     top: 0,
-  },
+  }
 }));
 
+// @ts-ignore
 const StyledGenre = styled(TextField)(() => ({
   '.css-11e0ke3-MuiInputBase-input-MuiOutlinedInput-input': {
-    textTransform: 'capitalize',
+    textTransform: 'capitalize'
   },
 }));
 

@@ -14,7 +14,7 @@ export class AuthService extends BaseService {
     return data;
   }
 
-  async signIn(signInPayload: { email: string; password: string }) {
+  async signIn(signInPayload: { email: string; password: string; role?: string }) {
     const { data } = await this.httpClient.post('/auth/login', signInPayload);
     return data;
   }

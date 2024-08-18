@@ -24,7 +24,7 @@ const UserList = () => {
   const [isOpenCreateUser, setIsOpenCreateUser] = useState<boolean>(false);
   const [isOpenUpdateUser, setIsOpenUpdateUser] = useState<boolean>(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState<boolean>(false);
-  const [isUserId, setUserId] = useState<string | number>(0);
+  const [isUserId, setUserId] = useState<number>(0);
   const dispatch = useAppDispatch();
   const [currentPage, setPage] = useState(1);
 
